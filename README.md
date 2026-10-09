@@ -11,6 +11,8 @@ See also: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/DEPLOYMENT.md](doc
 
 API and auth: [docs/API.md](docs/API.md). Database: see [docs/DATABASE.md](docs/DATABASE.md) (Postgres + Prisma).
 
+Clickable design prototypes (open in a browser): [prototypes/](prototypes/).
+
 ## Routes
 `/` home, `/lake-norman`, `/search`, `/boat`, `/checkout`, `/confirmation`, `/owner/signup`,
 `/owner` (+ calendar, bookings, boats, extras, customers, messages, earnings, reviews,
