@@ -13,7 +13,11 @@ API and auth: [docs/API.md](docs/API.md). Database: see [docs/DATABASE.md](docs/
 
 Clickable design prototypes (open in a browser): [prototypes/](prototypes/).
 
-Prototype index: open `index.html` (or enable GitHub Pages to serve it).
+## View the prototype
+- **Live page (GitHub Pages):** https://drinkryeziu.github.io/lundro/ (turn on first: Settings → Pages → Deploy from branch → `main` / root)
+- **Quick preview, no setup (public repo only):** https://htmlpreview.github.io/?https://github.com/drinkryeziu/lundro/blob/main/prototypes/lundro-prototype.html
+- **Locally:** download `prototypes/lundro-prototype.html` and open it in a browser, or run `npm run dev` and visit http://localhost:3000/prototype
+- **Landing page:** [`index.html`](index.html) links to the prototype and the platform map
 
 ## Routes
 `/` home, `/lake-norman`, `/search`, `/boat`, `/checkout`, `/confirmation`, `/owner/signup`,
