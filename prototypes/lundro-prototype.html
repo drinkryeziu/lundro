@@ -1,17 +1,226 @@
-<title>Lundro Owner and Admin Prototype</title>
+<title>Lundro Clickable Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* One prototype, two apps: renter site and owner/admin console each render in their own shadow root so their styles never collide. */
+:root{--navy:#0F2A3D;--sun:#FFC94A;color-scheme:light}
+body{margin:0;background:#F4F8F9;color:#0F2A3D}
+[hidden]{display:none!important}
+#renter,#owner{display:block;min-height:100vh}
+.sw{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--navy);color:#fff;border-radius:999px;padding:5px;display:flex;gap:2px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.3);font:600 13px 'Figtree',system-ui,sans-serif;max-width:calc(100vw - 16px);overflow-x:auto}
+.sw button{border:0;background:none;color:#fff;border-radius:999px;padding:9px 14px;font:700 13px 'Figtree',system-ui,sans-serif;white-space:nowrap;cursor:pointer;min-height:36px}
+.sw button[aria-pressed="true"]{background:var(--sun);color:var(--navy)}
+.sw button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+</style>
+<div id="renter"></div>
+<div id="owner" hidden></div>
+<div class="sw" role="group" aria-label="Prototype views"><button data-v="renter">Renter site</button><button data-v="ob">Owner signup</button><button data-v="own">Owner dashboard</button><button data-v="adm">Admin</button></div>
+
+<template id="t-renter"><style>
+/* Layout: faithful to the Lundro design PDF. Single light brand look: navy ink, teal actions, sun-yellow accents. */
+:host{display:block;
+  --bg:#F4F8F9; --white:#FFFFFF; --ink:#0F2A3D; --muted:#4B6272; --line:#DCE5EA; --teal:#0A6C7A; --teal-soft:#E3F2F4;
+  --navy:#0F2A3D; --sun:#FFC94A; --rust:#C2410C; --ok:#14532D; --ok-bg:#DDF3E4; --amber-bg:#FFF1C4; --sand:#F3EBDD;
+  --disp:'Bricolage Grotesque',Georgia,serif; --body:'Figtree',system-ui,sans-serif; color-scheme:light;
+}
+*{box-sizing:border-box}
+.app{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);padding-inline:0;padding-block:0}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:6px}
+.c{max-width:1100px;margin-inline:auto;padding-inline:16px}
+h1,h2,h3{font-family:var(--disp);margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.04}
+h2{font-size:clamp(24px,3.4vw,32px);line-height:1.15}
+.muted{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* header */
+.hd{background:var(--white);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.hd .c{display:flex;align-items:center;gap:16px;min-height:64px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;font:700 24px var(--disp);background:none;border:0;padding:0}
+.hd nav{margin-left:auto;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.hd nav button{background:none;border:0;font-weight:600;font-size:14px;padding:10px 10px;min-height:44px}
+.hd nav .nl{font-weight:600;font-size:14px;padding:0 10px;min-height:44px;display:inline-flex;align-items:center;text-decoration:none}
+.hd nav .pillb{border:1px solid var(--ink);border-radius:999px;padding:0 16px}
+.btn{min-height:48px;padding:0 24px;border-radius:999px;border:2px solid var(--teal);background:var(--teal);color:#fff;font-weight:700}
+.btn.o{background:#fff;color:var(--ink);border-color:var(--ink)}
+.btn.y{background:var(--sun);border-color:var(--sun);color:var(--navy)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{min-height:40px;padding:0 16px;font-size:14px}
+/* hero */
+.hero{background:#CFE8F5;position:relative;overflow:hidden;padding-block:48px 56px}
+.hero .bg{position:absolute;inset:0;width:100%;height:100%}
+.hero .c{position:relative}
+.tagp{display:inline-block;background:#fff;border-radius:999px;font-weight:700;font-size:12px;padding:6px 12px;margin-bottom:16px}
+.hero p.lead{max-width:420px;font-size:17px;margin:14px 0 26px}
+.sbox{background:#fff;border-radius:22px;padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:end;box-shadow:0 8px 28px rgba(15,42,61,.14);max-width:640px}
+.sbox label{display:grid;gap:3px;font:700 10px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);flex:1 1 150px}
+.inp{min-height:44px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:0 12px;width:100%}
+.gstep{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;min-height:44px;padding:0 8px;background:#fff}
+.gstep button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;font-weight:700}
+.trust{background:#fff;border-bottom:1px solid var(--line)}
+.trust .c{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;padding-block:22px}
+.trust div.t{display:flex;gap:12px;align-items:flex-start;font-size:13px}
+.ico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;font-weight:700}
+.sec{padding-block:44px 8px}
+.sechd{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.link{background:none;border:0;padding:0;font-weight:700;text-decoration:underline;color:var(--teal);font-size:14px}
+/* boat cards */
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:24px 16px}
+.bc{background:none;border:0;padding:0;text-align:left;display:grid;gap:4px;align-content:start;min-width:0}
+.art{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/3;margin-bottom:6px;background:#CFE8F5}
+.art svg{display:block;width:100%;height:100%}
+.heart{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;background:#fff;border:0;display:grid;place-items:center;font-size:16px}
+.heart[aria-pressed="true"]{color:#C2410C}
+.bc .r{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.bc h3{font-size:15px;line-height:1.25}
+.bc small{color:var(--muted);font-size:13px}
+.new{background:#FFE7DC;color:#9A3412;font-size:11px;font-weight:700;border-radius:999px;padding:2px 8px;white-space:nowrap}
+.tg{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tg span{font-size:11px;font-weight:700;border-radius:8px;padding:3px 8px}
+.t1{background:var(--teal-soft);color:#0A5360}.t2{background:var(--sand);color:#5B4A2E}.t3{background:var(--amber-bg);color:#6B4E00}
+.lakes{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+@media (max-width:760px){.lakes{grid-template-columns:1fr}}
+.lakecard{background:#256080;color:#fff;border-radius:22px;padding:28px;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;text-align:left;border:0;position:relative;overflow:hidden}
+.lakecard svg{position:absolute;right:10%;top:-10px;opacity:.25}
+.lakecard span.n{background:var(--sun);color:var(--navy);font-weight:700;font-size:12px;border-radius:999px;padding:3px 10px;align-self:flex-start;position:relative}
+.dash{border:1.5px dashed #9DB3C0;border-radius:22px;padding:28px;background:#fff;display:grid;gap:12px;align-content:center}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.how div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.how b.n{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;margin-bottom:10px}
+.own{background:var(--navy);color:#fff;border-radius:24px;padding:32px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-block:44px}
+.ft{background:var(--navy);color:#CFE0E8;padding-block:36px;margin-top:56px;font-size:14px}
+.ft .c{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px}
+.ft b{color:#fff;display:block;margin-bottom:6px}
+.ft a{display:block;color:#CFE0E8;padding:3px 0;text-decoration:none}
+.ft button{display:block;background:none;border:0;color:#CFE0E8;padding:3px 0;text-align:left}
+/* lake page */
+.dark{background:var(--navy);color:#fff;padding-block:28px 40px;position:relative;overflow:hidden}
+.dark svg.shape{position:absolute;right:6%;top:0;height:120%;opacity:.5}
+.dark .c{position:relative}
+.crumb{font-size:12px;margin-bottom:18px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left}
+.tile b{display:block;font-size:14px}.tile small{color:var(--muted);font-size:13px}
+.know{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;display:grid;grid-template-columns:1fr 1.3fr 1.3fr;gap:20px;margin-top:36px;font-size:13px}
+@media (max-width:760px){.know{grid-template-columns:1fr}}
+.faq{max-width:700px;margin:40px auto 0}
+.faq details{border-top:1px solid var(--line);padding-block:14px}.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{font-weight:700;cursor:pointer;font-size:15px}
+.faq p{margin:8px 0 0;color:var(--muted);font-size:14px}
+/* search */
+.sbar{background:#fff;border-bottom:1px solid var(--line)}
+.sbar .c{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-block:10px}
+.pillsearch{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;border:1px solid var(--line);border-radius:999px;padding:6px 14px;box-shadow:0 2px 8px rgba(15,42,61,.08)}
+.pillsearch label{font:700 9px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:grid}
+.pillsearch input,.pillsearch select{border:0;background:none;font-weight:600;padding:0;min-height:24px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid #9DB3C0;background:#fff;border-radius:999px;padding:0 14px;min-height:38px;font-weight:600;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.seg{display:inline-flex;background:#E8EFF2;border-radius:999px;padding:3px;margin-left:auto}
+.seg button{border:0;background:none;border-radius:999px;padding:6px 14px;font-weight:700;font-size:13px}
+.seg button[aria-pressed="true"]{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:start}
+@media (max-width:900px){.split{grid-template-columns:1fr}.mapcol{display:none}.split.showmap .listcol{display:none}.split.showmap .mapcol{display:block}}
+.listcol{padding:20px 16px}
+.listcol .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:24px 16px;margin-top:18px}
+.mapcol{position:sticky;top:112px;height:calc(100vh - 112px);min-height:480px}
+.map{position:relative;width:100%;height:100%;background:#E6EEDF;overflow:hidden}
+.map svg.l{position:absolute;inset:0;width:100%;height:100%}
+.pin{position:absolute;transform:translate(-50%,-50%);background:#fff;border:0;border-radius:999px;padding:5px 10px;font-weight:700;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.25);min-height:30px}
+.pin[aria-pressed="true"]{background:var(--navy);color:#fff;z-index:3}
+.pop{position:absolute;transform:translate(-50%,-100%);margin-top:-26px;background:#fff;border-radius:12px;padding:10px 14px;box-shadow:0 6px 20px rgba(0,0,0,.25);font-size:13px;z-index:4;min-width:210px}
+.mapnote{position:absolute;left:12px;bottom:12px;right:12px;background:#fff;border-radius:12px;padding:10px 14px;font-size:12px;max-width:300px}
+.mapfab{display:none;position:fixed;bottom:76px;left:50%;transform:translateX(-50%);z-index:10}
+@media (max-width:900px){.mapfab{display:block}}
+/* boat page */
+.gal{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;border-radius:20px;overflow:hidden;height:min(48vw,400px);min-height:220px}
+.gal div:first-child{grid-row:span 2}
+.gal button{border:0;padding:0;background:none;position:relative;min-height:0}
+.gal svg{width:100%;height:100%;display:block;object-fit:cover}
+@media (max-width:640px){.gal{grid-template-columns:1fr 1fr}.gal div:first-child{grid-column:span 2}.gal div:nth-child(n+4){display:none}}
+.badges{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.bd{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px}
+.bg1{background:var(--ok-bg);color:var(--ok)}.bg2{background:var(--teal-soft);color:#0A5360}.bg3{background:var(--amber-bg);color:#6B4E00}
+.two{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:36px;align-items:start;margin-top:26px}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.spec{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;padding-bottom:22px;border-bottom:1px solid var(--line);font-size:13px}
+.spec b{display:block;font-size:15px}
+.blk{padding-block:22px;border-bottom:1px solid var(--line)}
+.blk h2{font-size:22px;margin-bottom:12px}
+.opts2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.xcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.xcard small{display:block;color:var(--muted);font-size:13px}
+.rsv{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 8px 28px rgba(15,42,61,.1);position:sticky;top:84px}
+.rsv .price{font:700 28px var(--disp)}
+.rsv label{display:grid;gap:4px;font-size:12px;font-weight:700;margin-top:12px}
+.pickrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.pk{border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;text-align:left}
+.pk[aria-pressed="true"]{border:2px solid var(--teal);background:var(--teal-soft);padding:7px 11px}
+.tm{border:1px solid #9DB3C0;background:#fff;border-radius:999px;padding:0 16px;min-height:40px;font-weight:700}
+.tm[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.revs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.rev{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;font-size:14px}
+.resp{background:#EEF4F7;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:13px}
+.host{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.cc{width:50px;height:50px;border-radius:12px;background:var(--navy);color:var(--sun);display:grid;place-items:center;font:700 15px var(--disp)}
+dl.s{display:grid;grid-template-columns:1fr 1fr;margin:0;font-size:14px}dl.s dt,dl.s dd{margin:0;padding:8px 0;border-bottom:1px solid var(--line)}dl.s dd{font-weight:700;text-align:right}dl.s dt{color:var(--muted)}
+.pol{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;font-size:13px}
+.pol b{display:block;font-size:14px}
+.safe{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;font-size:14px}
+/* checkout */
+.cohd{background:#fff;border-bottom:1px solid var(--line)}
+.cohd .c{display:flex;align-items:center;gap:12px;min-height:68px}
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-block:18px 22px}
+.steps div{border-top:5px solid #DCE5EA;padding-top:6px;font-size:12px;font-weight:700;color:var(--muted);border-radius:3px}
+.steps div.on{border-color:var(--teal);color:var(--ink)}
+@media (max-width:640px){.steps div span{display:none}.steps div::after{content:attr(data-n)}}
+.cogrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.cogrid{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px}
+.card h2{margin-bottom:16px}
+.frow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.frow label{display:grid;gap:5px;font-size:13px;font-weight:700}
+.rad{display:flex;gap:12px;align-items:flex-start;border:1px solid #C9D6DD;border-radius:14px;padding:14px;background:#fff;text-align:left;width:100%}
+.rad[aria-pressed="true"]{border:2px solid var(--teal);background:var(--teal-soft);padding:13px}
+.rad i{width:20px;height:20px;border-radius:50%;border:2px solid #7B8F9B;flex:none;margin-top:2px;background:#fff}
+.rad[aria-pressed="true"] i{border-color:var(--teal);background:radial-gradient(var(--teal) 45%,#fff 50%)}
+.rad span small{display:block;color:var(--muted);font-size:14px}
+.stack{display:grid;gap:10px}
+.nav2{display:flex;justify-content:space-between;margin-top:18px;gap:10px;align-items:center}
+.sumcard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;position:sticky;top:20px;font-size:15px}
+.sum{display:grid;gap:7px;font-variant-numeric:tabular-nums}.sum div{display:flex;justify-content:space-between;gap:10px}
+.sum hr{border:0;border-top:1px solid var(--line);margin:6px 0;width:100%}
+.sum .t{font:700 22px var(--disp)}.sum .m{color:var(--muted);font-size:13px}
+.err{color:#B42318;font-weight:600;font-size:14px;margin:6px 0 0}
+.stp{display:flex;align-items:center;gap:10px}.stp button{width:36px;height:36px;border-radius:50%;border:1px solid #9DB3C0;background:#fff;font-weight:700}.stp button:disabled{opacity:.35}
+.xrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:12px;border-bottom:1px solid var(--line)}.xrow:last-child{border:0}
+.xrow small{display:block;color:var(--muted);font-size:13px}
+.note{background:var(--amber-bg);border-radius:12px;padding:12px 14px;font-size:14px}
+/* confirmation */
+.ok{background:var(--ok-bg);border-radius:20px;padding:22px;display:flex;gap:16px;align-items:center;margin-block:16px}
+.ok .ck{width:48px;height:48px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:22px;flex:none}
+.ok.rq{background:var(--teal-soft)}.ok.rq .ck{background:var(--teal)}
+.cgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:760px){.cgrid{grid-template-columns:1fr}}
+.cgrid .card{padding:18px;margin-bottom:14px}.cgrid h3{font-size:18px;margin-bottom:10px}
+.kv{display:grid;grid-template-columns:90px 1fr;gap:6px 10px;font-size:14px}.kv b{font-weight:700}.kv span:nth-child(odd){color:var(--muted)}
+.ck2{display:flex;gap:10px;align-items:center;padding-block:8px;font-size:14px}
+.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:12px;font-size:14px;z-index:50}
+
+[hidden]{display:none!important}
+</style><div class="app"><div id="root"></div><div id="toast" class="toast" role="status" hidden></div></div></template>
+<template id="t-owner"><style>
 /* Layout: owner dashboard = fixed 260px sidebar + content; admin = navy top bar + queue/detail split. A floating switcher jumps between flows. */
-:root{
+:host{display:block;
   --bg:#F4F8F9; --white:#FFFFFF; --ink:#0F2A3D; --muted:#4B6272; --line:#DCE5EA; --teal:#0A6C7A; --teal-soft:#E3F2F4; --navy:#0F2A3D;
   --sun:#FFC94A; --rust:#9A3412; --peach:#FCD9C4; --ok:#14532D; --ok-bg:#DDF3E4; --amber:#6B4E00; --amber-bg:#FFF4C9; --red:#B42318; --red-bg:#FDE8E6; --violet:#4C1D95; --violet-bg:#EDE4FA;
   --disp:'Bricolage Grotesque',Georgia,serif; --body:'Figtree',system-ui,sans-serif; color-scheme:light;
 }
 *{box-sizing:border-box}
-html{background:var(--bg)}
-body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);padding-inline:0;padding-block:0}
+.app{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);padding-inline:0;padding-block:0}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:8px}
@@ -172,22 +381,289 @@ tr:last-child td{border-bottom:0}
 .cb{display:flex;gap:10px;align-items:center;font-weight:600;padding-block:6px}
 .cb input{width:20px;height:20px;accent-color:var(--teal)}
 .err{color:var(--red);font-weight:600;font-size:13px;margin:4px 0 0}
-/* switcher + toast */
-.sw{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--navy);color:#fff;border-radius:999px;padding:5px;display:flex;gap:2px;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.3);font-size:13px}
-.sw span{padding:8px 10px 8px 14px;color:#9DB3C0;font-weight:600}
-.sw button{border:0;background:none;color:#fff;border-radius:999px;padding:8px 14px;font-weight:700}
-.sw button[aria-pressed="true"]{background:var(--sun);color:var(--navy)}
-@media (max-width:620px){.sw span{display:none}}
+/* toast */
 .toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:12px;font-size:14px;z-index:70;max-width:90vw}
-</style>
 
-<div id="root"></div>
-<div class="sw" role="group" aria-label="Prototype flows"><span>Prototype</span><button data-flow="ob">Owner signup</button><button data-flow="own">Owner dashboard</button><button data-flow="adm">Admin</button></div>
-<div id="toast" class="toast" role="status" hidden></div>
+[hidden]{display:none!important}
+</style><div class="app"><div id="root"></div><div id="toast" class="toast" role="status" hidden></div></div></template>
 
 <script>
 (function(){
-  var root=document.getElementById('root');
+  function mount(hostId,tplId){var h=document.getElementById(hostId),sh=h.attachShadow({mode:'open'});sh.appendChild(document.getElementById(tplId).content.cloneNode(true));return sh}
+  var rs=mount('renter','t-renter'),os=mount('owner','t-owner');
+  var cur='renter';
+  function mark(v){document.querySelectorAll('.sw button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.v===v)})}
+  window.__onOwnerFlow=function(f){if(cur!=='renter'){cur=f;mark(f)}};
+  function show(v){
+    cur=v;mark(v);
+    document.getElementById('renter').hidden=v!=='renter';
+    document.getElementById('owner').hidden=v==='renter';
+    if(v!=='renter'&&window.__ownerSetFlow)window.__ownerSetFlow(v);
+    else window.scrollTo(0,0);
+  }
+  document.querySelector('.sw').addEventListener('click',function(e){var b=e.target.closest('button');if(b)show(b.dataset.v)});
+  [rs,os].forEach(function(sh){sh.addEventListener('click',function(e){
+    var t=e.composedPath().filter(function(n){return n.dataset&&n.dataset.xlink})[0];
+    if(t){e.preventDefault();show(t.dataset.xlink)}
+  })});
+  // renter app
+  (function($$){
+  var PAL={midday:['#CFE8F5','#FFE7A3','#8FB8A0','#5E9478','#3E8FB0'],morning:['#E4F1F7','#FFF1C4','#A5C4B0','#6E9D84','#5BA3C0'],golden:['#FCE3C2','#FFC94A','#A3A982','#6F8065','#4C8DA8'],clear:['#BFE3F4','#FFF6D6','#86B39A','#4F8A6C','#2F7FA3']};
+  // id,title,area,guests,half,full,rating,reviews,captain,self,instant,extras,type,x,y,palette,accent
+  var R=[
+   ['b1',"24' Bennington Pontoon",'Cornelius',12,350,600,4.9,38,1,1,1,'tube sup mat cooler speaker','pontoon',60,66,'midday','#0A6C7A'],
+   ['b2',"22' MasterCraft XT22",'Mooresville',14,525,950,4.8,21,1,1,1,'tube wake skis speaker cooler','ski',70,23,'clear','#C2410C'],
+   ['b3',"25' Sun Tracker Party Barge",'Davidson',13,395,700,null,0,1,1,0,'tube cooler speaker mat','pontoon',65,54,'morning','#0F2A3D'],
+   ['b4',"23' Barletta Tritoon",'Huntersville',12,450,800,5.0,12,1,0,1,'tube cooler speaker sup','pontoon',62,81,'golden','#0A6C7A'],
+   ['b5',"21' Malibu Wakesetter",'Mooresville',12,560,1000,4.7,44,1,0,0,'wake skis tube speaker','ski',57,40,'clear','#0F2A3D'],
+   ['b6',"20' Bennington S Pontoon",'Denver',10,295,520,4.6,9,1,1,0,'tube cooler fishing','pontoon',37,63,'morning','#C2410C'],
+   ['b7',"26' Harris Grand Mariner",'Cornelius',14,575,1050,4.9,63,1,0,1,'tube mat cooler speaker sup','pontoon',55,71,'golden','#C2410C'],
+   ['b8',"24' Avalon Catalina",'Sherrills Ford',12,375,650,null,0,1,1,0,'tube cooler','pontoon',31,26,'midday','#0F2A3D'],
+   ['b9',"19' Yamaha AR190",'Cornelius',8,340,600,4.8,27,0,1,1,'tube wake skis','ski',66,61,'clear','#C2410C'],
+   ['b10','Sea-Doo GTX jet ski','Mooresville',3,180,320,4.5,16,0,1,1,'','jet',66,30,'morning','#0A6C7A'],
+   ['b11',"22' Sea Hunt Ultra 225",'Huntersville',9,410,720,4.4,8,1,1,0,'fishing cooler tube','center',58,78,'midday','#0F2A3D'],
+   ['b12','Catalina 25 sailboat','Davidson',6,300,520,4.9,11,1,0,0,'cooler','sail',61,49,'golden','#0A6C7A'],
+   ['b13',"22' Sun Tracker Fishin' Barge",'Denver',8,260,450,4.3,19,0,1,0,'fishing cooler','pontoon',41,58,'morning','#0F2A3D'],
+   ['b14',"25' Bennington QX",'Cornelius',12,650,1150,5.0,7,1,0,1,'tube sup mat cooler speaker','pontoon',58,67,'clear','#0A6C7A']
+  ].map(function(r,i){return{id:r[0],t:r[1],area:r[2],g:r[3],h:r[4],f:r[5],r:r[6],n:r[7],cap:!!r[8],self:!!r[9],inst:!!r[10],ex:r[11]?r[11].split(' '):[],type:r[12],x:r[13],y:r[14],pal:r[15],ac:r[16],i:i}});
+  var TYPES={pontoon:'Pontoon',ski:'Ski / wake',center:'Center console',sail:'Sailboat',jet:'Jet ski'};
+  var EX={tube:'Tube with rope',wake:'Wakeboard',skis:'Water skis',sup:'Paddleboard',mat:'Floating mat',cooler:'Cooler with ice',speaker:'Bluetooth speaker',fishing:'Fishing gear'};
+  var X=[['tube','Tube with rope',40,'per booking',2,'gear','1 to 2 riders, tow rope included'],['sup','Paddleboard',25,'each',2,'gear','Inflatable, with paddle'],['mat','Floating mat',35,'per booking',1,'gear','18 ft lily pad for the swim stop'],['cooler','Cooler with ice',20,'per booking',1,'gear','70 qt, filled with ice at pickup'],['speaker','Bluetooth speaker',15,'per booking',1,'gear','Waterproof, extra to the boat stereo'],['hour','Extra hour',85,'per hour',2,'boat','Add time to your trip']];
+
+  var S={v:'home',boat:'b1',guests:6,date:'2027-06-12',len:'half',time:'9:00 AM',cap:true,q:{tube:1,cooler:1},step:1,tried:false,
+    f:{name:'',email:'',phone:'',age:false,card:'',pre88:false},org:false,orgType:'nonprofit',terms:false,paid:'',
+    sf:{area:'all',types:[],capf:'any',rating:0,tube:false,sort:'rec',view:'list'},sel:'b1',saved:{},faq:'',codeN:'LND-2706-4821',openMap:false};
+  var root=$$.getElementById('root');
+  function B(id){return R.filter(function(b){return b.id===id})[0]}
+  function r2(n){return Math.round(n*100)/100}
+  function $(n){return '$'+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',')}
+  function $0(n){return '$'+String(n).replace(/\B(?=(\d{3})+(?!\d))/g,',')}
+  function fdate(s){var d=new Date(s+'T12:00:00');return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}
+  function fdateY(s){var d=new Date(s+'T12:00:00');return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
+
+  function scene(b,big){
+    var p=PAL[b.pal],bx=90+(b.i*23)%80,sx=b.i%2?80:320;
+    return '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of '+b.t+'"><rect width="400" height="300" fill="'+p[0]+'"/><circle cx="'+sx+'" cy="'+(big?70:64)+'" r="28" fill="'+p[1]+'"/>'
+     +'<path d="M0 170C60 120 120 110 190 150S330 170 400 120V210H0Z" fill="'+p[2]+'"/><path d="M0 195C90 150 170 190 260 160S360 150 400 175V215H0Z" fill="'+p[3]+'"/>'
+     +'<rect y="205" width="400" height="95" fill="'+p[4]+'"/><path d="M30 235h60M300 255h70" stroke="#fff" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>'
+     +'<g transform="translate('+bx+' 200)"><rect x="30" y="0" width="90" height="12" rx="6" fill="'+b.ac+'"/><path d="M40 12v22M110 12v22" stroke="#4B6272" stroke-width="2"/><rect x="0" y="34" width="150" height="8" rx="3" fill="#fff"/><rect x="0" y="44" width="150" height="6" rx="3" fill="#fff"/><rect x="-4" y="52" width="158" height="6" rx="3" fill="#B8C7CF"/></g></svg>';
+  }
+  function logo(sz){return '<svg width="'+(sz||34)+'" height="'+(sz||34)+'" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"/><circle cx="24" cy="12" r="4" fill="#FFC94A"/><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M9 26c2.5-2 4.5-2 7 0s4.5 2 7 0" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".7"/></svg>'}
+  function header(back){
+    return '<header class="hd"><div class="c"><button class="logo" data-go="home" aria-label="Lundro home">'+logo()+'Lundro</button><nav aria-label="Main">'
+     +(back?'<button data-go="search">Back to results</button>':'<button data-go="lake">Lake Norman</button>')+'<a class="nl" href="#" data-xlink="ob">List your boat</a><a class="nl pillb" href="#" data-xlink="own">Log in</a></nav></div></header>';
+  }
+  function footer(){
+    return '<footer class="ft"><div class="c"><div><b style="font:700 18px var(--disp)">Lundro</b>Boat rentals on North Carolina lakes.</div><div><b>Renters</b><button data-go="lake">Boat rentals on Lake Norman</button><button data-go="search">Search boats</button></div><div><b>Owners</b><a href="#" data-xlink="ob">List your boat</a><a href="#" data-xlink="own">Owner dashboard</a></div><div><b>Lundro</b><a href="#" data-xlink="adm">Admin console</a><button data-toast="Help center coming soon.">Help center</button></div></div></footer>';
+  }
+  function stars(b){return b.r?'<span><span style="color:#D99A00">★</span> <b>'+b.r.toFixed(1)+'</b> <span class="muted">('+b.n+')</span></span>':'<span class="new">New</span>'}
+  function card(b,showTags,half){
+    var tags='';
+    if(showTags)tags='<div class="tg">'+(b.cap?'<span class="t1">Captain available</span>':'')+(b.self?'<span class="t2">Self-drive</span>':'')+(b.inst?'<span class="t3">⚡ Instant book</span>':'')+'</div>';
+    return '<div style="position:relative"><button class="bc" data-boat="'+b.id+'" style="width:100%"><span class="art">'+scene(b)+'</span><span class="r"><h3>'+b.t+'</h3>'+stars(b)+'</span><small>Lake Norman · '+b.area+'</small><small>Up to '+b.g+' guests</small><span style="font-size:14px">From <b>'+$0(S.len==='full'&&!half?b.f:b.h)+'</b> <span class="muted">/ '+(S.len==='full'&&!half?'full':'half')+' day</span></span>'+tags+'</button><button class="heart" data-save="'+b.id+'" aria-pressed="'+!!S.saved[b.id]+'" aria-label="Save '+b.t+'">'+(S.saved[b.id]?'♥':'♡')+'</button></div>';
+  }
+  function guestStep(){return '<div class="gstep"><button data-g="-1" aria-label="Fewer guests">−</button><b>'+S.guests+' guests</b><button data-g="1" aria-label="More guests">+</button></div>'}
+
+  // ---------- HOME ----------
+  function home(){
+    var pop=[R[0],R[1],R[2],R[6]].map(function(b){return card(b,false,true)}).join('');
+    return header()+'<section class="hero"><svg class="bg" viewBox="0 0 1100 460" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><circle cx="930" cy="80" r="58" fill="#FFE7A3"/><path d="M0 250C180 180 360 190 520 240S860 260 1100 190V460H0Z" fill="#8FB8A0"/><path d="M0 290C220 240 400 300 600 270S900 230 1100 270V460H0Z" fill="#5E9478"/><rect y="320" width="1100" height="140" fill="#3E8FB0"/><g transform="translate(790 285)"><rect x="40" y="0" width="120" height="14" rx="7" fill="#0A6C7A"/><path d="M54 14v28M146 14v28" stroke="#4B6272" stroke-width="2"/><rect x="0" y="42" width="200" height="9" rx="3" fill="#fff"/><rect x="0" y="54" width="200" height="8" rx="3" fill="#fff"/><rect x="-5" y="64" width="210" height="8" rx="3" fill="#B8C7CF"/></g></svg><div class="c"><span class="tagp">Now booking on Lake Norman, NC</span><h1 style="max-width:520px">Your day on the lake starts here</h1><p class="lead">Rent pontoons, ski boats and more from verified local owners. See the full price, tax included, before you pay.</p>'
+     +'<form class="sbox" id="hsearch"><label>Lake or location<select class="inp"><option>Lake Norman, NC</option></select></label><label>Date<input class="inp" type="date" id="hdate" value="'+S.date+'"></label><label>Guests'+guestStep()+'</label><button class="btn" style="flex:1 1 150px">🔍 Search boats</button></form></div></section>'
+     +'<div class="trust"><div class="c"><div class="t"><span class="ico" style="background:var(--teal-soft);color:var(--teal)">✓</span><span><b style="font-size:14px">Verified owners, insured boats</b><br><span class="muted">Every boat’s registration and insurance is checked before it goes live.</span></span></div><div class="t"><span class="ico" style="background:var(--amber-bg);color:#6B4E00">≡</span><span><b style="font-size:14px">No surprise fees</b><br><span class="muted">Boat, extras, fees and NC tax are all shown before you pay.</span></span></div><div class="t"><span class="ico" style="background:#FFE7DC;color:#9A3412">◎</span><span><b style="font-size:14px">Captain or self-drive</b><br><span class="muted">Book a licensed captain, or take the wheel yourself.</span></span></div></div></div>'
+     +'<div class="c"><section class="sec"><div class="sechd"><div><h2>Popular on Lake Norman</h2><p class="muted" style="margin:6px 0 0;font-size:14px">Pontoons for a family day, ski boats for the wake crowd.</p></div><button class="link" data-go="search">See all boats</button></div><div class="grid4">'+pop+'</div></section>'
+     +'<section class="sec"><h2 style="margin-bottom:18px">Pick your lake</h2><div class="lakes"><button class="lakecard" data-go="lake"><svg width="190" height="260" viewBox="0 0 190 260" aria-hidden="true"><path d="M70 0C95 40 90 80 75 110c30 10 60 20 100 15-35 25-60 30-80 30 10 40 0 80-10 105-30-60-35-120-20-170C60 70 60 30 70 0Z" fill="#fff"/></svg><span class="n">Now booking</span><span style="font:700 32px var(--disp);position:relative">Lake Norman</span><span style="position:relative;font-size:14px">Cornelius · Davidson · Mooresville · Huntersville · Denver</span></button><div class="dash"><h3 style="font-size:22px">More NC lakes are on the way</h3><p class="muted" style="margin:0;font-size:14px">Get an email when Lundro opens on your lake.</p><form id="notify" style="display:flex;gap:8px;flex-wrap:wrap"><input class="inp" type="email" id="nem" placeholder="you@example.com" aria-label="Email" style="flex:1 1 180px;border-radius:999px" required><button class="btn o sm" style="min-height:44px">Notify me</button></form></div></div></section>'
+     +'<section class="sec"><h2 style="margin-bottom:18px">How it works</h2><div class="how"><div><b class="n">1</b><b>Search by lake, date and group</b><p class="muted" style="margin:4px 0 0;font-size:14px">Only boats free on your date that fit your group show up.</p></div><div><b class="n">2</b><b>Add tubes, coolers or a captain</b><p class="muted" style="margin:4px 0 0;font-size:14px">Your total updates as you go, tax and fees included.</p></div><div><b class="n">3</b><b>Pay online, meet at the marina</b><p class="muted" style="margin:4px 0 0;font-size:14px">You get the exact pickup address and owner contact once booked.</p></div></div></section>'
+     +'<div class="own"><div style="max-width:480px"><h2>Own a boat on Lake Norman?</h2><p style="margin:8px 0 0;color:#CFE0E8">List it on Lundro and earn on the days it would sit at the dock. Individuals and rental companies welcome. We handle payments and NC sales tax.</p></div><a class="btn y" href="#" data-xlink="ob" style="display:inline-grid;place-items:center;text-decoration:none">List your boat</a></div></div>'+footer();
+  }
+
+  // ---------- LAKE ----------
+  function lake(){
+    var areas=['Cornelius','Mooresville','Davidson','Huntersville','Denver','Sherrills Ford'].map(function(a){var n=R.filter(function(b){return b.area===a}).length;return '<button class="tile" data-area="'+a+'"><b>'+a+'</b><small>'+n+' boat'+(n>1?'s':'')+'</small></button>'}).join('');
+    var tp=[['pontoon','Pontoons','Roomy and easy for families',260],['ski','Ski and wake boats','For tubing, skiing and surfing',340],['center','Center consoles','Fishing and cruising',410],['sail','Sailboats','Quiet days, captain included',300],['jet','Jet skis','1 to 3 riders',180]].map(function(t){return '<button class="tile" data-type="'+t[0]+'"><b>'+t[1]+'</b><small>'+t[2]+'</small><br><small style="color:var(--ink)">From <b>$'+t[3]+'</b> / half day</small></button>'}).join('');
+    var top=[R[6],R[0],R[4]].map(function(b){return card(b,false,true)}).join('');
+    var qs=[['How does pickup work?','Each boat has a pickup marina shown on the map. Once your booking is confirmed you get the exact address, parking notes and the owner’s contact details.'],['Do I need a boating license?','North Carolina does not require a license, but anyone born on or after Jan 1, 1988 needs a boater education card to drive a boat with a 10 hp or larger motor. Book a captain and you don’t need one.'],['What does the price include?','The boat for the trip length you choose. Extras, captain, the Lundro service fee and NC tax are shown before you pay. Fuel is billed at the marina.'],['What happens if the weather is bad?','If the owner cancels for storms or high wind you get a full refund or a free reschedule.'],['Can I cancel?','Yes. Each boat lists its policy: Flexible, Moderate or Strict. Full refunds are available up to the cutoff.']].map(function(q,i){return '<details'+(S.faq===String(i)||(!S.faq&&i===0)?' open':'')+' data-faq="'+i+'"><summary>'+q[0]+'</summary><p>'+q[1]+'</p></details>'}).join('');
+    return header()+'<section class="dark"><svg class="shape" viewBox="0 0 220 300" aria-hidden="true"><path d="M110 0C150 50 140 100 120 135c40 12 80 25 100 18-40 30-85 38-105 38 10 50 0 90-10 109-35-70-45-140-25-195C75 85 85 40 110 0Z" fill="#1E5F82"/></svg><div class="c"><div class="crumb"><button class="link" style="color:#fff" data-go="home">Home</button> / North Carolina / Lake Norman</div><h1>Boat rentals on Lake Norman</h1><p style="max-width:460px;margin:14px 0 22px;color:#DCE8EE">Pontoons, ski and wake boats, center consoles and sailboats from verified owners around North Carolina’s largest man-made lake, just north of Charlotte.</p><form class="sbox" id="lsearch" style="max-width:520px"><label>Date<input class="inp" type="date" id="hdate" value="'+S.date+'"></label><label>Guests<select class="inp" id="lg">'+[2,4,6,8,10,12].map(function(n){return '<option value="'+n+'"'+(S.guests===n?' selected':'')+'>'+n+' guests</option>'}).join('')+'</select></label><button class="btn" style="flex:1 1 150px">See available boats</button></form></div></section>'
+     +'<div class="c"><section class="sec"><h2>Rent by area</h2><p class="muted" style="font-size:14px;margin:6px 0 16px">Boats are picked up at marinas around the lake. The exact pickup address is shared after booking.</p><div class="tiles">'+areas+'</div></section>'
+     +'<section class="sec"><h2 style="margin-bottom:16px">Boats on Lake Norman</h2><div class="tiles">'+tp+'</div></section>'
+     +'<section class="sec"><div class="sechd"><h2>Top-rated on Lake Norman</h2><button class="link" data-go="search">See all 14 boats</button></div><div class="grid4">'+top+'</div></section>'
+     +'<div class="know"><div><h3 style="font-size:16px">Good to know before you go</h3><p class="muted" style="margin:6px 0 0">Owners set their own age and experience rules. Each boat page lists them.</p></div><div><b>Boater education</b><p class="muted" style="margin:4px 0 0">In North Carolina, anyone born on or after January 1, 1988 needs a boater education card to drive a boat with a 10 hp or larger motor. Book a captain and you don’t need one.</p></div><div><b>Life jackets for kids</b><p class="muted" style="margin:4px 0 0">Children under 13 must wear a life jacket while the boat is moving. Owners list adult and child life jacket counts.</p><b style="display:block;margin-top:10px">Drinks on board</b><p class="muted" style="margin:4px 0 0">Lundro doesn’t sell alcohol. Some owners allow you to bring your own; check the house rules.</p></div></div>'
+     +'<section class="faq"><h2 style="margin-bottom:14px">Lake Norman boat rental questions</h2>'+qs+'</section></div>'+footer();
+  }
+
+  // ---------- SEARCH ----------
+  function filtered(){
+    var f=S.sf;
+    var res=R.filter(function(b){
+      if(b.g<S.guests)return false; if(f.area!=='all'&&b.area!==f.area)return false;
+      if(f.capf==='captain'&&!b.cap)return false; if(f.capf==='self'&&!b.self)return false;
+      if(f.rating&&b.r!==null&&b.r<f.rating)return false; if(f.rating&&b.r===null)return false;
+      if(f.tube&&b.ex.indexOf('tube')<0)return false; if(f.types.length&&f.types.indexOf(b.type)<0)return false; return true});
+    var pr=function(b){return S.len==='half'?b.h:b.f};
+    if(f.sort==='plo')res=res.slice().sort(function(a,b){return pr(a)-pr(b)});
+    if(f.sort==='phi')res=res.slice().sort(function(a,b){return pr(b)-pr(a)});
+    if(f.sort==='rating')res=res.slice().sort(function(a,b){return (b.r||0)-(a.r||0)});
+    return res;
+  }
+  function search(){
+    var f=S.sf,res=filtered();
+    var sel=B(S.sel);if(res.indexOf(sel)<0)sel=res[0];
+    var pins=res.map(function(b){return '<button class="pin" style="left:'+b.x+'%;top:'+b.y+'%" data-sel="'+b.id+'" aria-pressed="'+(sel&&sel.id===b.id)+'" aria-label="'+b.t+', '+$0(S.len==='half'?b.h:b.f)+'">'+$0(S.len==='half'?b.h:b.f)+'</button>'}).join('');
+    var pop=sel?'<div class="pop" style="left:'+sel.x+'%;top:'+sel.y+'%"><b>'+sel.t+'</b><br><span class="muted">'+sel.area+' · Up to '+sel.g+' guests</span><br>From <b>'+$0(S.len==='half'?sel.h:sel.f)+'</b> / '+S.len+' day · <button class="link" data-boat="'+sel.id+'">View boat</button></div>':'';
+    var cards=res.map(function(b){return card(b,true)}).join('');
+    return header()+'<div class="sbar"><div class="c"><form class="pillsearch" id="ssearch"><label>Lake<select><option>Lake Norman, NC</option></select></label><label>Date<input type="date" id="sdate" value="'+S.date+'"></label><label>Guests<span style="display:flex;gap:6px;align-items:center"><b>'+S.guests+' guests</b></span></label><span style="display:flex;gap:4px"><button type="button" class="heart" style="position:static;border:1px solid var(--line)" data-g="-1" aria-label="Fewer guests">−</button><button type="button" class="heart" style="position:static;border:1px solid var(--line)" data-g="1" aria-label="More guests">+</button></span></form></div>'
+     +'<div class="c" style="padding-bottom:10px"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><div class="chips">'
+     +'<button class="chip" aria-pressed="'+(f.capf==='captain')+'" data-fc="captain">Captain available</button><button class="chip" aria-pressed="'+(f.capf==='self')+'" data-fc="self">Self-drive</button><button class="chip" aria-pressed="'+(f.rating===4.5)+'" data-frate="1">4.5+ stars</button><button class="chip" aria-pressed="'+f.tube+'" data-ftube="1">Tube with rope</button><button class="chip" aria-pressed="'+(f.types.indexOf('pontoon')>=0)+'" data-ftype="pontoon">Pontoon</button><button class="chip" aria-pressed="'+(f.types.indexOf('ski')>=0)+'" data-ftype="ski">Ski / wake</button></div>'
+     +'<div class="seg" role="group" aria-label="Trip length"><button data-len="half" aria-pressed="'+(S.len==='half')+'">Half day</button><button data-len="full" aria-pressed="'+(S.len==='full')+'">Full day</button></div></div></div></div>'
+     +'<div class="split'+(S.openMap?' showmap':'')+'"><div class="listcol"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap"><div><h2 style="font-size:24px" aria-live="polite">'+res.length+' boat'+(res.length===1?'':'s')+' on Lake Norman</h2><p class="muted" style="font-size:13px;margin:4px 0 0">Available '+fdate(S.date)+' · fit '+S.guests+' or more guests · '+(S.len==='half'?'Half':'Full')+'-day prices</p></div><label style="font-size:14px">Sort <select class="inp" id="sort" style="width:auto;min-height:40px"><option value="rec">Recommended</option><option value="plo"'+(f.sort==='plo'?' selected':'')+'>Price: low to high</option><option value="phi"'+(f.sort==='phi'?' selected':'')+'>Price: high to low</option><option value="rating"'+(f.sort==='rating'?' selected':'')+'>Top rated</option></select></label></div>'
+     +(res.length?'<div class="grid">'+cards+'</div>':'<div class="note" style="margin-top:18px"><b>No boats match.</b> Loosen one of the filters to see more boats. <button class="link" data-clear="1">Clear all</button></div>')+'</div>'
+     +'<div class="mapcol"><div class="map"><svg class="l" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect width="100" height="100" fill="#E6EEDF"/><rect x="2" y="26" width="16" height="12" rx="3" fill="#D5E4C8"/><rect x="80" y="76" width="16" height="14" rx="3" fill="#D5E4C8"/><path d="M0 40H100M0 72H100M85 0V100" stroke="#fff" stroke-width="1.2" fill="none"/><path d="M52 0C62 10 66 20 62 32c-8 6-14 12-8 20 6 8 10 14 6 24-2 10 0 18 4 24H38c-4-20-4-34 0-48-10-4-22-8-28-10 12-4 24-6 30-12 4-10 4-22 12-30Z" fill="#B9DCEB" transform="translate(0 0)"/></svg>'
+     +'<div style="position:absolute;left:10%;top:18%;font-size:13px;color:#4B6272">Sherrills Ford</div><div style="position:absolute;right:6%;top:22%;font-size:13px;color:#4B6272">Mooresville</div><div style="position:absolute;right:6%;top:48%;font-size:13px;color:#4B6272">Davidson</div><div style="position:absolute;left:8%;top:60%;font-size:13px;color:#4B6272">Denver</div><div style="position:absolute;right:6%;top:68%;font-size:13px;color:#4B6272">Cornelius</div><div style="position:absolute;right:6%;top:86%;font-size:13px;color:#4B6272">Huntersville</div>'
+     +pins+pop+'<div class="mapnote">Pins show each boat’s pickup marina. The exact address is shared after booking.</div></div></div></div>'
+     +'<button class="btn mapfab" data-map="1">'+(S.openMap?'Show list':'Show map')+'</button>'+footer();
+  }
+
+  // ---------- BOAT ----------
+  function boatPage(){
+    var b=B(S.boat),price=S.len==='half'?b.h:b.f;
+    var gal=[0,1,2,3,4].map(function(k){var v=Object.assign({},b,{i:b.i+k,pal:['midday','golden','morning','clear','golden'][(b.i+k)%5]});return '<div><button data-lb="'+k+'" style="width:100%;height:100%" aria-label="Open photo '+(k+1)+'">'+scene(v,true)+(k===4?'<span class="tm" style="position:absolute;right:12px;bottom:12px;display:grid;place-items:center">Show all 14 photos</span>':'')+'</button></div>'}).join('');
+    var exs=X.map(function(x){return '<div class="xcard"><span><b>'+x[1]+'</b><small>'+x[6]+'</small></span><span style="white-space:nowrap"><b>'+$0(x[2])+'</b> <small style="display:inline">'+x[3]+'</small></span></div>'}).join('');
+    var rv=[['Alicia M.','May 2027',5,'Spotless boat and a super easy pickup. The floating mat was a hit with the kids.','Thanks Alicia, come back soon!'],['Derek P.','May 2027',5,'Captain Mike knew all the quiet coves. Worth every penny for a birthday trip.',''],['Priya S.','Apr 2027',4,'Great boat. Fuel top-off at the end took a while, but the owner was quick to help.','Thanks Priya, we have since added a second fuel attendant on weekends.'],['Tom W.','Sep 2026',5,'Plenty of shade and seating for 10 of us. Booking was clear, no surprise fees.','']].map(function(r){return '<div class="rev"><div style="display:flex;justify-content:space-between"><b>'+r[0]+'</b><span class="muted" style="font-size:12px">'+r[1]+'</span></div><div style="color:#B7791F;letter-spacing:2px" aria-label="'+r[2]+' stars">'+'★★★★★'.slice(0,r[2])+'☆☆☆☆☆'.slice(0,5-r[2])+'</div><p style="margin:6px 0 0">'+r[3]+'</p>'+(r[4]?'<div class="resp"><b>Response from Cove &amp; Co.</b> '+r[4]+'</div>':'')+'</div>'}).join('');
+    var times=S.len==='half'?['9:00 AM','1:30 PM']:['9:00 AM'];
+    if(times.indexOf(S.time)<0)S.time=times[0];
+    var spec=b.type==='jet'?'1 to 3 riders':'';
+    return header(true)+'<div class="c" style="padding-top:18px"><div class="crumb" style="color:var(--muted)"><button class="link" data-go="lake">Lake Norman</button> / <button class="link" data-area-link="1">'+b.area+'</button> / '+b.t+'</div>'
+     +'<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start"><div><h1 style="font-size:clamp(28px,4.5vw,40px)">'+b.t+'</h1><div class="badges" style="margin-top:8px">'+(b.r?'<span><span style="color:#D99A00">★</span> <b>'+b.r.toFixed(1)+'</b> <a href="#reviews" style="font-weight:700;font-size:14px">'+b.n+' reviews</a></span>':'<span class="new">New</span>')+'<span class="muted" style="font-size:14px">Lake Norman · '+b.area+'</span><span class="bd bg1">✓ Verified owner</span><span class="bd bg2">Insured</span>'+(b.inst?'<span class="bd bg3">Instant book</span>':'')+'</div></div><div style="display:flex;gap:8px"><button class="btn o sm" data-save="'+b.id+'" aria-pressed="'+!!S.saved[b.id]+'">'+(S.saved[b.id]?'♥ Saved':'♡ Save')+'</button><button class="btn o sm" data-toast="Link copied (demo).">Share</button></div></div>'
+     +'<div class="gal" style="margin-top:16px">'+gal+'</div>'
+     +'<div class="two"><div><div class="spec"><div>Guests<b>Up to '+b.g+'</b></div><div>Boat type<b>'+TYPES[b.type]+'</b></div><div>Length<b>'+(parseInt(b.t)||'—')+' ft</b></div><div>Engine<b>150 hp</b></div><div>Drive<b>'+(b.cap&&b.self?'Captain or self':b.cap?'Captain only':'Self-drive')+'</b></div></div>'
+     +'<div class="blk"><h2>About this boat</h2><p style="margin:0;max-width:60ch">A roomy ride with plush lounge seating, a Bimini top for shade and a swim ladder at the back. Great for family days, birthdays and sunset cruises out of '+b.area+'. Plenty of space for coolers, and a Bluetooth stereo is on board.</p></div>'
+     +'<div class="blk"><h2>Captain or self-drive</h2><div class="opts2"><div class="xcard" style="display:block"><b>Add a captain · $50 / hour</b><small>A USCG-licensed captain drives, so no boater education card is needed. Add it at checkout.</small></div><div class="xcard" style="display:block"><b>Drive it yourself</b><small>Driver must be 25 or older. If born on or after Jan 1, 1988, bring your NC boater education card.</small></div></div></div>'
+     +'<div class="blk"><h2>Extras you can add</h2><div class="opts2">'+exs+'</div></div>'
+     +'<div class="blk"><h2>Specs</h2><dl class="s"><dt>Make and model</dt><dd>'+b.t.replace(/^\d+'\s*/,'')+'</dd><dt>Year</dt><dd>2022</dd><dt>Length</dt><dd>'+(parseInt(b.t)||'—')+' ft</dd><dt>Max passengers (capacity plate)</dt><dd>'+b.g+'</dd><dt>Engine</dt><dd>Yamaha 150 hp outboard</dd></dl></div>'
+     +'<div class="blk"><h2>Where you’ll pick up</h2><svg viewBox="0 0 400 150" style="width:100%;border-radius:16px;display:block" role="img" aria-label="Approximate pickup area"><rect width="400" height="150" fill="#E6EEDF"/><path d="M110 0C130 30 120 60 110 80c-30 6-70 14-90 16 30 10 70 14 94 18-4 14-6 24-6 36h40c-8-30-8-50 6-70 20-8 40-18 60-30 16-8 26-30 28-50Z" fill="#B9DCEB"/><circle cx="150" cy="82" r="38" fill="#7FA9A8" opacity=".55"/><path d="M340 0V150" stroke="#fff" stroke-width="5"/><text x="230" y="62" font-size="12" fill="#4B6272" font-family="Figtree,sans-serif">'+b.area+'</text></svg><p style="font-size:14px;margin:10px 0 0"><b>Marina in '+b.area+', Lake Norman.</b> Approximate area shown. You’ll get the exact address, slip number and parking notes after booking.</p></div>'
+     +'<div class="blk"><h2>Policies</h2><div class="pol"><div><b>Cancellation: Moderate</b>Full refund, tax included, up to 5 days before your trip. 50% after that.</div><div><b>Weather</b>If the owner cancels for storms or high wind, you get a full refund or a free reschedule.</div><div><b>Fuel</b>Leaves full. You pay for fuel used, charged after the trip at the marina rate.</div><div><b>Security deposit: $500</b>A hold on your card, released within 3 days after the trip if there’s no damage.</div><div><b>House rules</b>Pets welcome · No smoking · BYOB allowed, no glass</div></div></div>'
+     +'<div class="blk"><h2>Safety equipment on board</h2><div class="safe"><span>✓ '+b.g+' adult life jackets</span><span>✓ 4 child life jackets</span><span>✓ Fire extinguisher</span><span>✓ Throwable flotation device</span><span>✓ Horn (sound device)</span><span>✓ First aid kit</span></div></div>'
+     +'<div class="blk" id="reviews"><h2><span style="color:#D99A00">★</span> '+(b.r?b.r.toFixed(1)+' · '+b.n+' reviews':'No reviews yet')+'</h2>'+(b.r?'<div class="revs">'+rv+'</div><p><button class="btn o sm" data-toast="All reviews load in the full app.">Show all '+b.n+' reviews</button></p>':'<p class="muted">This boat is new on Lundro. Be the first to review it.</p>')+'</div>'
+     +'<div class="blk" style="border:0"><h2>Your host</h2><div class="host"><span class="cc">C&amp;C</span><span style="flex:1;min-width:200px"><b>Cove &amp; Co. Boat Rentals</b><br><span class="muted" style="font-size:13px">★ 4.9 owner rating · 3 years hosting · 3 boats on Lundro · Usually replies within an hour</span><br><span class="badges" style="margin-top:4px"><span class="bd bg1">✓ Verified owner</span><span class="bd bg2">Insured</span></span></span><button class="btn o sm" data-toast="Messaging opens after you book (demo).">Message the owner</button></div></div></div>'
+     +'<aside><div class="rsv"><div class="price">'+$0(price)+' <span class="muted" style="font:500 15px var(--body)">/ '+S.len+' day</span></div>'
+     +'<label>Date<input class="inp" type="date" id="bdate" value="'+S.date+'"></label><div style="margin-top:12px;font-size:12px;font-weight:700">Trip length</div><div class="pickrow"><button class="pk" data-len="half" aria-pressed="'+(S.len==='half')+'"><b>Half day</b><br><small class="muted">4 hrs · '+$0(b.h)+'</small></button><button class="pk" data-len="full" aria-pressed="'+(S.len==='full')+'"><b>Full day</b><br><small class="muted">8 hrs · '+$0(b.f)+'</small></button></div>'
+     +'<div style="margin-top:12px;font-size:12px;font-weight:700">Start time</div><div style="display:flex;gap:8px;margin-top:4px">'+times.map(function(t){return '<button class="tm" data-time="'+t+'" aria-pressed="'+(S.time===t)+'">'+t+'</button>'}).join('')+'</div>'
+     +'<label>Guests<span class="gstep">'+'<button type="button" data-g="-1" aria-label="Fewer guests">−</button><b>'+Math.min(S.guests,b.g)+' guests</b><button type="button" data-g="1" aria-label="More guests">+</button></span></label>'
+     +'<button class="btn" id="reserve" style="width:100%;margin-top:16px;min-height:52px">Reserve</button><p class="muted" style="font-size:12px;text-align:center;margin:8px 0 0">You won’t be charged yet. Extras, captain, fees and tax are added on the next step.</p><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="sum" style="font-size:14px"><div><span>Boat · '+S.len+' day ('+(S.len==='half'?4:8)+' hrs)</span><b>'+$0(price)+'</b></div><div class="m"><span>Security deposit (hold)</span><span>$500</span></div></div></div></aside></div></div>'+footer();
+  }
+
+  // ---------- CHECKOUT ----------
+  function quote(){
+    var b=B(S.boat),boatP=S.len==='half'?b.h:b.f,gear=0,boatTime=boatP,ex=0,lines=[];
+    X.forEach(function(x){var q=S.q[x[0]]||0;if(!q)return;var v=q*x[2];ex+=v;if(x[5]==='gear')gear+=v;else boatTime+=v;lines.push([x[1]+(q>1?' × '+q:''),v])});
+    var hrs=(S.len==='half'?4:8)+(S.q.hour||0),cap=S.cap&&b.cap?50*hrs:0,fee=r2((boatP+ex+cap)*0.10);
+    var st=r2(Math.min(boatTime*0.03,1500)+gear*0.0475),co=r2(gear*0.02),tr=r2(gear*0.015);
+    var exempt=S.org&&(S.orgType==='federal'||S.orgType==='state');
+    if(exempt){st=co=tr=0}
+    var tax=r2(st+co+tr);
+    return{boat:boatP,lines:lines,ex:ex,cap:cap,hrs:hrs,fee:fee,st:st,co:co,tr:tr,tax:tax,total:r2(boatP+ex+cap+fee+tax),exempt:exempt};
+  }
+  function summary(q){
+    var b=B(S.boat);
+    return '<aside class="sumcard"><div style="display:flex;gap:12px;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:12px"><span class="art" style="width:76px;margin:0;border-radius:10px;flex:none">'+scene(b)+'</span><span><b style="font:700 17px var(--disp)">'+b.t+'</b><br><span class="muted" style="font-size:14px">'+fdate(S.date)+' · '+S.time+' · '+(S.len==='half'?'Half':'Full')+' day</span></span></div>'
+     +'<div class="sum"><div><span>Boat · '+(S.len==='half'?'Half':'Full')+' day ('+(S.len==='half'?4:8)+' hrs)</span><span>'+$(q.boat)+'</span></div>'+q.lines.map(function(l){return '<div><span>'+l[0]+'</span><span>'+$(l[1])+'</span></div>'}).join('')
+     +(q.cap?'<div><span>Captain · '+q.hrs+' hrs × $50</span><span>'+$(q.cap)+'</span></div>':'')+'<div><span>Lundro service fee</span><span>'+$(q.fee)+'</span></div><hr>'
+     +'<div><b>NC sales tax</b><b>'+(q.exempt?'Exempt':$(q.tax))+'</b></div><div class="m" style="color:var(--muted)"><span>State</span><span>'+$(q.st)+'</span></div><div style="color:var(--muted)"><span>County (Mecklenburg)</span><span>'+$(q.co)+'</span></div><div style="color:var(--muted)"><span>Transit</span><span>'+$(q.tr)+'</span></div>'
+     +'<p class="m" style="margin:2px 0">Boat time taxed at 3% state rate. Rented gear like tubes and coolers taxed at 8.25% (Mecklenburg). Tax on captain and service fee pending NCDOR guidance.</p><hr>'
+     +'<div class="t" style="display:flex;justify-content:space-between"><span>Total</span><span>'+$(q.total)+'</span></div><div class="m" style="color:var(--muted)"><span>Security deposit (hold, not charged)</span><span>$500.00</span></div></div></aside>';
+  }
+  function validDetails(){var f=S.f,d=f.phone.replace(/\D/g,'');var b=B(S.boat);var self=!(S.cap&&b.cap);return f.name.trim().length>1&&/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email)&&d.length===10&&(!self||(f.age&&(f.pre88||f.card.trim().length>3)))}
+  function checkout(){
+    var b=B(S.boat),q=quote(),t=S.tried,f=S.f,names=['Trip','Extras','Captain','Details','Organization','Payment'];
+    var st='<div class="steps" role="list" aria-label="Checkout steps">'+names.map(function(n,i){return '<div role="listitem" data-n="'+(i+1)+'" class="'+(i+1<=S.step?'on':'')+'" '+(i+1===S.step?'aria-current="step"':'')+'>'+(i+1)+'. <span>'+n+'</span></div>'}).join('')+'</div>';
+    var body='';
+    var times=S.len==='half'?['9:00 AM','1:30 PM']:['9:00 AM'];if(times.indexOf(S.time)<0)S.time=times[0];
+    if(S.step===1)body='<div class="card"><h2>When are you going?</h2><div class="frow"><label>Date<input class="inp" type="date" id="cdate" value="'+S.date+'"></label><label>Start time<select class="inp" id="ctime">'+times.map(function(x){return '<option'+(x===S.time?' selected':'')+'>'+x+'</option>'}).join('')+'</select></label></div><div style="margin-top:18px;font-size:13px;font-weight:700">Trip length</div><div class="frow" style="margin-top:6px"><button class="rad" data-len="half" aria-pressed="'+(S.len==='half')+'"><i></i><span><b>Half day</b><small>4 hours · '+$0(b.h)+'</small></span></button><button class="rad" data-len="full" aria-pressed="'+(S.len==='full')+'"><i></i><span><b>Full day</b><small>8 hours · '+$0(b.f)+'</small></span></button></div></div>';
+    if(S.step===2)body='<div class="card"><h2>Add extras</h2>'+X.map(function(x){var n=S.q[x[0]]||0;return '<div class="xrow"><span><b>'+x[1]+'</b><small>'+$0(x[2])+' '+x[3]+' · '+x[6]+' · '+x[4]+' available</small></span><span class="stp"><button data-dec="'+x[0]+'" '+(n<=0?'disabled':'')+' aria-label="Remove '+x[1]+'">−</button><output style="min-width:20px;text-align:center">'+n+'</output><button data-inc="'+x[0]+'" '+(n>=x[4]?'disabled':'')+' aria-label="Add '+x[1]+'">+</button></span></div>'}).join('')+'</div>';
+    if(S.step===3)body='<div class="card"><h2>Who’s driving?</h2><div class="stack"><button class="rad" data-cap="1" aria-pressed="'+(S.cap&&b.cap)+'" '+(b.cap?'':'disabled')+'><i></i><span><b>Add a captain · $50 / hour</b><small>USCG-licensed captain for your full trip ('+q.hrs+' hrs). No boater education card needed.</small></span></button><button class="rad" data-cap="0" aria-pressed="'+(!(S.cap&&b.cap))+'" '+(b.self?'':'disabled')+'><i></i><span><b>Drive it yourself</b><small>Driver must be 25 or older. Born on or after Jan 1, 1988? You need an NC boater education card.</small></span></button></div>'+(!b.cap?'<p class="muted" style="font-size:14px">This boat is self-drive only.</p>':'')+(!b.self?'<p class="muted" style="font-size:14px">This boat requires a captain.</p>':'')+'</div>';
+    if(S.step===4){var self=!(S.cap&&b.cap);var d=f.phone.replace(/\D/g,'');body='<div class="card"><h2>Your details</h2>'+(t&&!validDetails()?'<div class="note" role="alert" style="margin-bottom:14px">Fix the highlighted fields to continue.</div>':'')+'<div class="frow"><label>Full name<input class="inp" id="fn" value="'+f.name+'" autocomplete="name" '+(t&&f.name.trim().length<2?'aria-invalid="true" style="border-color:#B42318"':'')+'></label><label>Email<input class="inp" id="fe" type="email" value="'+f.email+'" autocomplete="email" '+(t&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email)?'aria-invalid="true" style="border-color:#B42318"':'')+'></label><label>Mobile phone<input class="inp" id="fp" type="tel" value="'+f.phone+'" autocomplete="tel" '+(t&&d.length!==10?'aria-invalid="true" style="border-color:#B42318"':'')+'></label></div>'
+      +(self?'<div class="stack" style="margin-top:18px"><label style="display:flex;gap:10px;align-items:center;font-weight:600"><input type="checkbox" id="fa" '+(f.age?'checked':'')+'> I am 25 or older and will be the driver.</label><label style="display:flex;gap:10px;align-items:center;font-weight:600"><input type="checkbox" id="f88" '+(f.pre88?'checked':'')+'> I was born before 1988 (no boater card needed).</label>'+(!f.pre88?'<label class="frow" style="display:grid;gap:5px;font-size:13px;font-weight:700">NC boater education card number<input class="inp" id="fc" value="'+f.card+'" '+(t&&f.card.trim().length<4?'aria-invalid="true" style="border-color:#B42318"':'')+'></label>':'')+(t&&!f.age?'<p class="err">Confirm the driver is 25 or older.</p>':'')+'</div>':'<p class="muted" style="font-size:14px;margin-top:16px">Your captain drives, so no boater education card is needed.</p>')+'</div>'}
+    if(S.step===5)body='<div class="card"><h2>Booking for an organization?</h2><label style="display:flex;gap:10px;align-items:center;font-weight:600;margin-bottom:12px"><input type="checkbox" id="org" '+(S.org?'checked':'')+'> Yes, this is an organization booking</label>'+(S.org?'<div class="stack">'+[['federal','U.S. federal agency','No NC sales tax'],['state','NC state agency','No NC sales tax with Form E-595E'],['nonprofit','Nonprofit, church or school','Tax applies; refund can be claimed later']].map(function(o){return '<button class="rad" data-org="'+o[0]+'" aria-pressed="'+(S.orgType===o[0])+'"><i></i><span><b>'+o[1]+'</b><small>'+o[2]+'</small></span></button>'}).join('')+'</div>'+(S.orgType==='state'?'<div class="note" style="margin-top:12px">Exempt, pending Lundro tax review of your E-595E certificate. If it can’t be verified, we’ll charge the tax before your trip.</div>':'')+(S.orgType==='federal'?'<div class="note" style="margin-top:12px">Exempt: U.S. federal agency. Pay with a U.S. Government credit card.</div>':''):'<p class="muted" style="font-size:14px;margin:0">Skip this step if you’re booking for yourself.</p>')+'</div>';
+    if(S.step===6)body='<div class="card"><h2>Payment</h2><p class="muted" style="margin-top:-6px;font-size:14px">Demo only. No card is charged.</p><div class="frow"><label style="grid-column:1/-1">Card number<input class="inp" value="4242 4242 4242 4242" readonly></label><label>Expiry<input class="inp" value="12 / 29" readonly></label><label>CVC<input class="inp" value="123" readonly></label><label>ZIP<input class="inp" value="28031" readonly></label></div><p class="muted" style="font-size:13px">Visa, Mastercard, Amex and Discover accepted. A $500 security deposit is held, not charged.</p><label style="display:flex;gap:10px;align-items:flex-start;font-weight:600"><input type="checkbox" id="terms" '+(S.terms?'checked':'')+' style="margin-top:5px"> <span>I agree to the rental terms, the Moderate cancellation policy and the NC sales tax shown.</span></label>'+(S.tried&&!S.terms?'<p class="err" role="alert">Accept the terms to pay.</p>':'')+'</div>';
+    var nav='<div class="nav2">'+(S.step>1?'<button class="btn o" data-back="1">Back</button>':'<span></span>')+(S.step<6?'<button class="btn" data-next="1" style="min-width:170px">Continue</button>':'<button class="btn" data-pay="1" style="min-width:210px">Pay '+$(q.total)+(S.org&&S.orgType==='state'?' · tax review':'')+'</button>')+'</div>';
+    return '<header class="cohd"><div class="c"><button class="logo" data-go="boat" aria-label="Back to boat" style="font-size:20px">‹</button><button class="logo" data-go="home" aria-label="Lundro home">'+logo(32)+'Lundro</button><span style="margin-left:auto;font-size:14px" class="muted">🔒 Secure checkout</span></div></header><div class="c" style="padding-top:20px"><h1 style="font-size:clamp(28px,4vw,38px)">Book your trip</h1>'+st+'<div class="cogrid"><div>'+body+nav+'</div>'+summary(q)+'</div></div>';
+  }
+
+  // ---------- CONFIRMATION ----------
+  function confirm(){
+    var b=B(S.boat),q=quote(),req=!b.inst,review=S.org&&S.orgType==='state';
+    var end=S.time==='9:00 AM'?(S.len==='half'?'1:00 PM':'5:00 PM'):'5:30 PM';
+    var title=req?'Request sent to Cove & Co.':review?'Booked · tax exemption in review':'You’re booked!';
+    var sub=req?'The owner has 24 hours to accept. You won’t be charged unless they do.':review?'Your trip is reserved. We are checking your E-595E with NCDOR, usually within 1 business day.':'Get ready for Lake Norman. Everything you need for pickup is below.';
+    var items=['Driver license or ID for check-in','Sunscreen, hats and water','Life jacket for any child under 13 (owner has 4)','Cash or card for fuel used, billed at the marina'];
+    return '<header class="hd"><div class="c"><button class="logo" data-go="home">'+logo()+'Lundro</button><nav><button data-toast="My trips opens in the full app.">My trips</button></nav></div></header><div class="c" style="max-width:860px"><div class="ok'+(req?' rq':'')+'" role="status"><span class="ck">'+(req?'✉':'✓')+'</span><div><h1 style="font-size:28px">'+title+'</h1><p style="margin:4px 0">'+sub+'</p><small>Booking '+S.codeN+' · Confirmation sent to '+(S.f.email||'you@example.com')+'</small></div></div>'
+     +'<div class="cgrid"><div><div class="card"><h3>Your trip</h3><div class="kv"><span>Boat</span><b>'+b.t+'</b><span>When</span><b>'+fdateY(S.date)+' · '+S.time+' – '+end+'</b><span>Guests</span><b>'+Math.min(S.guests,b.g)+'</b><span>Captain</span><b>'+(S.cap&&b.cap?'Mike R. (USCG licensed)':'Self-drive')+'</b><span>Extras</span><b>'+(q.lines.map(function(l){return l[0]}).join(', ')||'None')+'</b></div><div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap"><button class="btn o sm" data-toast="Added to your calendar (demo).">Add to calendar</button><button class="btn o sm" data-toast="Directions open in Maps (demo).">Get directions</button></div></div>'
+     +(req?'':'<div class="card"><h3>Pickup details</h3><b>Harbor Point Marina, Slip B14</b><p style="margin:2px 0 6px">20210 Harbor Point Ln, '+b.area+', NC 28031</p><p class="muted" style="font-size:14px;margin:0">Park in the gravel lot by the bait shop; spaces marked “Rental guests”. Walk down dock B. Arrive 15 minutes early for the safety briefing.</p></div>')
+     +'<div class="card"><h3>Your host</h3><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span class="cc" style="width:44px;height:44px;font-size:13px">C&amp;C</span><span style="flex:1;min-width:180px"><b>Cove &amp; Co. Boat Rentals</b><br><span class="muted" style="font-size:13px">(704) 555-0142 · bookings@coveandco.example</span></span><button class="btn o sm" data-toast="Messaging opens in the full app.">Message host</button></div></div>'
+     +'<div class="card"><h3>Before you go</h3>'+items.map(function(t,i){return '<label class="ck2"><input type="checkbox" data-ck="'+i+'"> <span>'+t+'</span></label>'}).join('')+'</div></div>'
+     +'<div><div class="card"><h3>Receipt</h3><div class="sum" style="font-size:14px"><div><span>Boat · '+(S.len==='half'?'Half':'Full')+' day</span><span>'+$(q.boat)+'</span></div>'+q.lines.map(function(l){return '<div><span>'+l[0]+'</span><span>'+$(l[1])+'</span></div>'}).join('')+(q.cap?'<div><span>Captain · '+q.hrs+' hrs × $50</span><span>'+$(q.cap)+'</span></div>':'')+'<div><span>Lundro service fee</span><span>'+$(q.fee)+'</span></div><hr><div><b>NC sales tax</b><b>'+(review?'Exempt (in review)':$(q.tax))+'</b></div><div style="color:var(--muted)"><span>State (3% boat · 4.75% gear)</span><span>'+$(q.st)+'</span></div><div style="color:var(--muted)"><span>County (Mecklenburg 2%)</span><span>'+$(q.co)+'</span></div><div style="color:var(--muted)"><span>Transit (1.5%)</span><span>'+$(q.tr)+'</span></div><hr><div class="t" style="display:flex;justify-content:space-between;font-size:18px"><b>'+(req?'Total if accepted':'Total paid')+'</b><b>'+$(q.total)+'</b></div><div style="color:var(--muted)"><span>Security deposit hold</span><span>$500.00</span></div></div><button class="btn o" style="width:100%;margin-top:12px" data-toast="Receipt PDF downloads in the full app.">Download receipt (PDF)</button></div>'
+     +'<div class="card"><h3>Need to cancel?</h3><p class="muted" style="font-size:14px;margin:0 0 8px">Moderate policy: full refund, tax included, until 5 days before your trip. 50% after that.</p><button class="link" data-toast="Cancellation is handled in the full app.">Cancel booking</button></div></div></div>'
+     +'<p style="text-align:center;margin-block:10px 0"><button class="btn" data-go="home">Back to Lundro home</button></p></div>';
+  }
+
+  var VIEWS={home:home,lake:lake,search:search,boat:boatPage,checkout:checkout,confirm:confirm};
+  function render(keepScroll){var y=window.scrollY;root.innerHTML=VIEWS[S.v]();if(keepScroll)window.scrollTo(0,y);else window.scrollTo(0,0)}
+  function go(v){S.v=v;S.openMap=false;render()}
+  var tt;function toast(m){var t=$$.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true},2200)}
+
+  root.addEventListener('submit',function(e){
+    e.preventDefault();var id=e.target.id;
+    if(id==='hsearch'||id==='lsearch'||id==='ssearch'){S.sel='';go('search')}
+    if(id==='notify'){toast('Thanks! We’ll email you when more lakes open.');e.target.reset()}
+  });
+  root.addEventListener('change',function(e){
+    var t=e.target,id=t.id;
+    if(id==='hdate'||id==='sdate'||id==='bdate'||id==='cdate'){S.date=t.value||S.date;if(S.v==='search')render(true)}
+    else if(id==='lg'){S.guests=+t.value}
+    else if(id==='sort'){S.sf.sort=t.value;render(true)}
+    else if(id==='ctime'){S.time=t.value}
+    else if(id==='fn'){S.f.name=t.value}else if(id==='fe'){S.f.email=t.value}else if(id==='fp'){S.f.phone=t.value}else if(id==='fc'){S.f.card=t.value}
+    else if(id==='fa'){S.f.age=t.checked}else if(id==='f88'){S.f.pre88=t.checked;render(true)}
+    else if(id==='org'){S.org=t.checked;render(true)}else if(id==='terms'){S.terms=t.checked}
+  });
+  root.addEventListener('toggle',function(e){if(e.target.dataset&&e.target.dataset.faq!==undefined&&e.target.open){S.faq=e.target.dataset.faq;root.querySelectorAll('details').forEach(function(d){if(d!==e.target)d.open=false})}},true);
+  root.addEventListener('click',function(e){
+    var t=e.target.closest('button');if(!t)return;var d=t.dataset;
+    if(d.go){go(d.go)}
+    else if(d.toast){toast(d.toast)}
+    else if(d.boat){S.boat=d.boat;S.sel=d.boat;S.step=1;go('boat')}
+    else if(d.save){S.saved[d.save]=!S.saved[d.save];toast(S.saved[d.save]?'Saved to your list.':'Removed from your list.');render(true)}
+    else if(d.g){S.guests=Math.max(1,Math.min(14,S.guests+(+d.g)));render(true)}
+    else if(d.len){S.len=d.len;if(S.len==='full')S.time='9:00 AM';render(true)}
+    else if(d.time){S.time=d.time;render(true)}
+    else if(d.sel){S.sel=d.sel;render(true)}
+    else if(d.area||d.areaLink){S.sf.area=d.area||B(S.boat).area;S.sf.types=[];S.v='search';render()}
+    else if(d.type){S.sf.types=[d.type];S.sf.area='all';S.v='search';render()}
+    else if(d.fc){S.sf.capf=S.sf.capf===d.fc?'any':d.fc;render(true)}
+    else if(d.frate){S.sf.rating=S.sf.rating?0:4.5;render(true)}
+    else if(d.ftube){S.sf.tube=!S.sf.tube;render(true)}
+    else if(d.ftype){var a=S.sf.types,i=a.indexOf(d.ftype);if(i<0)a.push(d.ftype);else a.splice(i,1);render(true)}
+    else if(d.clear){S.sf={area:'all',types:[],capf:'any',rating:0,tube:false,sort:'rec',view:'list'};render(true)}
+    else if(d.map){S.openMap=!S.openMap;render()}
+    else if(d.lb!==undefined){toast('Photo viewer opens in the full app.')}
+    else if(t.id==='reserve'){S.step=1;go('checkout')}
+    else if(d.inc){var x=X.filter(function(z){return z[0]===d.inc})[0];S.q[x[0]]=Math.min(x[4],(S.q[x[0]]||0)+1);render(true)}
+    else if(d.dec){S.q[d.dec]=Math.max(0,(S.q[d.dec]||0)-1);render(true)}
+    else if(d.cap!==undefined){S.cap=d.cap==='1';render(true)}
+    else if(d.org){S.orgType=d.org;render(true)}
+    else if(d.back){S.step=Math.max(1,S.step-1);S.tried=false;render()}
+    else if(d.next){
+      if(S.step===4&&!validDetails()){S.tried=true;render(true);return}
+      S.step++;S.tried=false;render()}
+    else if(d.pay){
+      if(!S.terms){S.tried=true;render(true);return}
+      S.codeN='LND-'+(1000+Math.floor(Math.random()*9000))+'-'+(1000+Math.floor(Math.random()*9000));go('confirm')}
+  });
+  render();
+})(rs);
+
+  // owner and admin app
+  (function($$){
+  var root=$$.getElementById('root');
   function $(n){var s=Math.abs(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');return (n<0?'−':'')+'$'+s}
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
   var IC={
@@ -247,7 +723,7 @@ tr:last-child td{border-bottom:0}
     exp:[{id:'e1',who:"Cove & Co. · 22' MasterCraft XT22",doc:'Insurance certificate',when:'Expires Jul 1 · in 21 days'},{id:'e2',who:"Lake Life Rentals · 25' Sun Tracker",doc:'Captain license (USCG OUPV)',when:'Expires Jun 24 · in 14 days'}]
   };
   var BOATCOL={"24' Bennington Pontoon":'t',"22' MasterCraft XT22":'p',"26' Harris Grand Mariner":'n'};
-  var tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true},2400)}
+  var tt;function toast(m){var t=$$.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true},2400)}
   function reqPending(){return S.reqs.filter(function(r){return r.st==='Request'})}
   function payout(r){return r2(r.price*0.85)}
   function r2(n){return Math.round(n*100)/100}
@@ -263,7 +739,7 @@ tr:last-child td{border-bottom:0}
   function shell(content){
     return '<div class="shell"><aside class="side"><div class="brand">'+LOGO+'Lundro</div><div class="who"><span class="cc">C&amp;C</span><span><b>Cove &amp; Co.</b><br><span class="muted">Jordan Hale · Owner</span></span></div><nav class="nav" aria-label="Owner">'
      +NAV.map(function(n){var key=n.toLowerCase();return '<button data-page="'+key+'" '+(S.page===key?'aria-current="page"':'')+'><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+IC[n]+'"/></svg>'+n+badge(n)+'</button>'}).join('')
-     +'</nav><p style="margin:16px 12px"><button class="link" style="text-decoration:none" data-toast="The public site is in the renter prototype.">View public site ↗</button></p></aside><main class="main">'+content+'</main></div>';
+     +'</nav><p style="margin:16px 12px"><button class="link" style="text-decoration:none" data-xlink="renter">View public site ↗</button></p></aside><main class="main">'+content+'</main></div>';
   }
 
   function pOverview(){
@@ -484,22 +960,20 @@ tr:last-child td{border-bottom:0}
     var y=window.scrollY;
     var html=S.flow==='ob'?pOnboard():S.flow==='adm'?pAdmin():shell(PAGES[S.page]());
     root.innerHTML=html;
-    document.querySelectorAll('.sw button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.flow===S.flow)});
+    if(window.__onOwnerFlow)window.__onOwnerFlow(S.flow);
     window.scrollTo(0,keep?y:0);
   }
   function setFlow(f){S.flow=f;render()}
   function accept(id){
     var r=S.reqs.filter(function(x){return x.id===id})[0];if(!r)return;r.st='Confirmed';toast('Accepted. '+r.name+' has been notified.');S.bkSel=id;render(true)}
   function decline(id){var r=S.reqs.filter(function(x){return x.id===id})[0];if(!r)return;r.st='Declined';toast('Declined. '+r.name+' has been notified.');render(true)}
-
-  document.querySelector('.sw').addEventListener('click',function(e){var b=e.target.closest('button');if(b)setFlow(b.dataset.flow)});
   root.addEventListener('input',function(e){
     var t=e.target;
     if(t.id==='draft')S.draft=t.value;else if(t.id==='rtxt')S.replyTxt=t.value;else if(t.id==='amsg')S.aMsg=t.value;
     else if(t.dataset.of)S.ob.f[t.dataset.of]=t.value;
     else if(t.dataset.sf)S.setF[t.dataset.sf]=t.value;
-    else if(t.id==='bkq'){S.bkQ=t.value;var p=t.selectionStart;render(true);var n=document.getElementById('bkq');n.focus();n.setSelectionRange(p,p)}
-    else if(t.id==='cq'){S.custQ=t.value;var p2=t.selectionStart;render(true);var n2=document.getElementById('cq');n2.focus();n2.setSelectionRange(p2,p2)}
+    else if(t.id==='bkq'){S.bkQ=t.value;var p=t.selectionStart;render(true);var n=$$.getElementById('bkq');n.focus();n.setSelectionRange(p,p)}
+    else if(t.id==='cq'){S.custQ=t.value;var p2=t.selectionStart;render(true);var n2=$$.getElementById('cq');n2.focus();n2.setSelectionRange(p2,p2)}
   });
   root.addEventListener('change',function(e){
     var t=e.target,d=t.dataset;
@@ -527,7 +1001,7 @@ tr:last-child td{border-bottom:0}
     if(d.toast){toast(d.toast);return}
     if(d.ev){var p=d.ev.split('|'),parts=p[1].split(' · ');var bn={'Bennington':"24' Bennington Pontoon",'MasterCraft':"22' MasterCraft XT22",'Harris':"26' Harris Grand Mariner"}[p[2]];var rq=S.reqs.filter(function(r){return r.d===+p[0]&&r.boat===bn&&r.st==='Request'}).length;S.calSel={d:+p[0],t:parts[0],name:parts[1],boat:bn,st:rq?'Request':parts[0].indexOf('Sam')>=0?'Cancelled':'Confirmed'};if(p[1].indexOf('Sam N.')>=0)S.calSel.st='Cancelled';render(true);return}
     if(d.block!==undefined){S.blockOpen=d.block==='1';render(true);return}
-    if(d.doblock){var bb=document.getElementById('bkBoat').value,dd=+document.getElementById('bkDay').value;if(dd>=1&&dd<=30){S.blocks.push({d:dd,boat:bb});S.blockOpen=false;toast('Blocked June '+dd+' for '+bb+'.');render(true)}return}
+    if(d.doblock){var bb=$$.getElementById('bkBoat').value,dd=+$$.getElementById('bkDay').value;if(dd>=1&&dd<=30){S.blocks.push({d:dd,boat:bb});S.blockOpen=false;toast('Blocked June '+dd+' for '+bb+'.');render(true)}return}
     if(d.cm){S.calMonth=((S.calMonth+ +d.cm)%3+3)%3;render(true);return}
     if(d.bktab){S.bkTab=d.bktab;S.bkSel='';render(true);return}
     if(d.bk){S.bkSel=d.bk;render(true);return}
@@ -537,10 +1011,10 @@ tr:last-child td{border-bottom:0}
     if(d.dup){var s=boatSt(d.dup);S.boats.push({id:'cp'+S.boats.length,n:s.n+' (copy)',st:'Draft',meta:'Copied from '+s.n+' · Last edited today',pal:s.pal,note:['grey','Draft: review the details and photos, then submit.']});toast('Duplicated as a draft.');render(true);return}
     if(d.exsel){S.exSel=+d.exsel;render(true);return}
     if(d.addex){S.extras.push(['New extra',10,'per booking',1,'Service (pending NCDOR guidance)','Custom',0]);S.exSel=S.extras.length-1;toast('Custom extra added. Set its price and boats.');render(true);return}
-    if(d.saveex){var pv=document.getElementById('exPrice').value.replace(/[^\d.]/g,'');if(+pv>0)S.extras[S.exSel][1]=+pv;toast('Extra saved.');render(true);return}
+    if(d.saveex){var pv=$$.getElementById('exPrice').value.replace(/[^\d.]/g,'');if(+pv>0)S.extras[S.exSel][1]=+pv;toast('Extra saved.');render(true);return}
     if(d.cust){S.custSel=+d.cust;render(true);return}
     if(d.thr){S.thrSel=+d.thr;S.thr[S.thrSel].un=false;render(true);return}
-    if(d.quick){S.draft=d.quick;render(true);var ta=document.getElementById('draft');if(ta)ta.focus();return}
+    if(d.quick){S.draft=d.quick;render(true);var ta=$$.getElementById('draft');if(ta)ta.focus();return}
     if(d.send){var tx=(S.draft||'').trim();if(!tx)return;var th=S.thr[S.thrSel];th.m.push([tx,'You · Just now',1]);th.pre='You: '+tx.slice(0,26)+'…';S.draft='';render(true);return}
     if(d.rvtab){S.revTab=d.rvtab;render(true);return}
     if(d.reply){S.replyOpen=+d.reply;S.replyTxt='';render(true);return}
@@ -571,6 +1045,10 @@ tr:last-child td{border-bottom:0}
     if(d.tax){var p2=d.tax.split('|');S.tax=S.tax.filter(function(x){return x.id!==p2[1]});toast(p2[0]==='ok'?'Exemption approved.':'Tax will be charged before the trip.');render(true);return}
     if(d.exp){var p3=d.exp.split('|');S.exp=S.exp.filter(function(x){return x.id!==p3[1]});toast(p3[0]==='remind'?'Reminder sent.':'Boat paused until a new document is approved.');render(true);return}
   });
+  window.__ownerSetFlow=function(f){setFlow(f)};
   render();
+})(os);
+
+  mark('renter');
 })();
 </script>
