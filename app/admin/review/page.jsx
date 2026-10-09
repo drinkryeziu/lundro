@@ -71,7 +71,7 @@ export default function Page() {
     <>
       <title>Lundro admin review · Lundro</title>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-<div style={{"minHeight": "100%", "background": "#EEF2F4", "fontFamily": "'Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.5"}}>
+<div style={{"minHeight": "100%", "background": "#EEF2F4", "fontFamily": "'Fellix','Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.5"}}>
 <header style={{"background": "#0F2A3D", "color": "#fff"}}>
 <div style={{"maxWidth": "1360px", "margin": "0 auto", "padding": "0 24px", "display": "flex", "alignItems": "center", "gap": "14px", "minHeight": "64px", "flexWrap": "wrap"}}>
 <Link href={"/"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#fff"}} aria-label={"Lundro home"}>

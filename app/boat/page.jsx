@@ -61,7 +61,7 @@ class Component extends DCLogic {
 }
 
 const DEFAULT_PROPS = {};
-const CSS = "\n.btn{min-height:48px;padding:0 22px;font-size:16px}\n.btn-s{background:#fff;color:#0F2A3D;border:2px solid #0F2A3D}\n.btn-s:hover{background:#EEF4F7;color:#0F2A3D}\n.btn-sm{min-height:44px;padding:0 16px;font-size:15px}\n.nav-a{color:#0F2A3D;text-decoration:none;font-weight:600;padding:12px 14px;border-radius:999px}\n.inp{width:100%;min-height:48px;border:1px solid #7B8F9B;border-radius:12px;padding:0 14px;background:#fff;font-size:16px;color:#0F2A3D}\ntextarea.inp{padding:12px 14px;min-height:110px}\n.lbl{display:block;font-size:14px;font-weight:700;color:#3D5160;margin-bottom:6px}\n.wrap{max-width:1200px;margin:0 auto;padding:0 24px}\n.blk{padding:32px 0;border-bottom:1px solid #DCE5EA}\n.blk h2{margin:0 0 16px;font-family:'Bricolage Grotesque',sans-serif;font-size:24px;letter-spacing:-0.02em}\n.row{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #EEF2F4}\n.badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;border-radius:999px;padding:5px 11px}\n.mbar{display:none}\n@media (max-width:860px){.hide-sm{display:none!important}.wrap{padding:0 16px}.mbar{display:flex}.gal{grid-template-columns:1fr!important;grid-template-rows:auto!important}.gal .small{display:none}}\n";
+const CSS = "\n.btn{min-height:48px;padding:0 22px;font-size:16px}\n.btn-s{background:#fff;color:#0F2A3D;border:2px solid #0F2A3D}\n.btn-s:hover{background:#EEF4F7;color:#0F2A3D}\n.btn-sm{min-height:44px;padding:0 16px;font-size:15px}\n.nav-a{color:#0F2A3D;text-decoration:none;font-weight:600;padding:12px 14px;border-radius:999px}\n.inp{width:100%;min-height:48px;border:1px solid #7B8F9B;border-radius:12px;padding:0 14px;background:#fff;font-size:16px;color:#0F2A3D}\ntextarea.inp{padding:12px 14px;min-height:110px}\n.lbl{display:block;font-size:14px;font-weight:700;color:#3D5160;margin-bottom:6px}\n.wrap{max-width:1200px;margin:0 auto;padding:0 24px}\n.blk{padding:32px 0;border-bottom:1px solid #DCE5EA}\n.blk h2{margin:0 0 16px;font-family:'Fellix','Bricolage Grotesque',sans-serif;font-size:24px;letter-spacing:-0.02em}\n.row{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #EEF2F4}\n.badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;border-radius:999px;padding:5px 11px}\n.mbar{display:none}\n@media (max-width:860px){.hide-sm{display:none!important}.wrap{padding:0 16px}.mbar{display:flex}.gal{grid-template-columns:1fr!important;grid-template-rows:auto!important}.gal .small{display:none}}\n";
 
 export default function Page() {
   const [, force] = useReducer((x) => x + 1, 0);
@@ -78,7 +78,7 @@ export default function Page() {
     <>
       <title>24' Bennington Pontoon on Lake Norman · Lundro</title>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-<div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "'Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.5"}}>
+<div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "'Fellix','Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.5"}}>
 <header style={{"background": "#FFFFFF", "borderBottom": "1px solid #DCE5EA"}}>
 <div className={"wrap"} style={{"display": "flex", "alignItems": "center", "gap": "12px", "minHeight": "72px", "flexWrap": "wrap"}}>
 <Link href={"/"} aria-label={"Lundro home"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#0F2A3D"}}>
@@ -345,7 +345,7 @@ export default function Page() {
 <path d={"M300 0 C340 50 330 90 380 110 C430 130 470 120 500 150 C460 170 420 165 400 190 C410 230 430 260 420 280 H240 C260 250 270 220 250 200 C220 190 190 200 170 180 C210 165 250 170 270 150 C290 100 280 50 300 0 Z"} fill={"#B9DCEB"} />
 <path d={"M600 0 C590 100 610 200 600 280"} stroke={"#fff"} strokeWidth={"8"} fill={"none"} />
 <circle cx={"430"} cy={"160"} r={"70"} fill={"#0A6C7A"} opacity={"0.18"} stroke={"#0A6C7A"} strokeWidth={"2"} />
-<text x={"520"} y={"120"} fill={"#3D5160"} fontFamily={"Figtree, sans-serif"} fontSize={"16"} fontWeight={"600"}>
+<text x={"520"} y={"120"} fill={"#3D5160"} fontFamily={"Fellix, Figtree, sans-serif"} fontSize={"16"} fontWeight={"600"}>
 {"Cornelius"}
 </text>
 </svg>

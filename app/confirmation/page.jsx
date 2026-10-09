@@ -39,7 +39,7 @@ class Component extends DCLogic {
 }
 
 const DEFAULT_PROPS = {"variant":"confirmed"};
-const CSS = "\nbutton,input{font-family:inherit;font-size:inherit;color:inherit}\n.btn{min-height:48px;padding:0 22px;font-size:16px}\n.card{background:#fff;border:1px solid #DCE5EA;border-radius:20px;padding:24px}\n.card h2{margin:0 0 14px;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;letter-spacing:-0.02em}\n.ln{display:flex;justify-content:space-between;gap:12px;padding:5px 0}\n.kv{display:grid;grid-template-columns:140px 1fr;gap:6px 16px}\n@media (max-width:600px){.kv{grid-template-columns:1fr}}\n";
+const CSS = "\nbutton,input{font-family:inherit;font-size:inherit;color:inherit}\n.btn{min-height:48px;padding:0 22px;font-size:16px}\n.card{background:#fff;border:1px solid #DCE5EA;border-radius:20px;padding:24px}\n.card h2{margin:0 0 14px;font-family:'Fellix','Bricolage Grotesque',sans-serif;font-size:22px;letter-spacing:-0.02em}\n.ln{display:flex;justify-content:space-between;gap:12px;padding:5px 0}\n.kv{display:grid;grid-template-columns:140px 1fr;gap:6px 16px}\n@media (max-width:600px){.kv{grid-template-columns:1fr}}\n";
 
 export default function Page() {
   const [, force] = useReducer((x) => x + 1, 0);
@@ -58,7 +58,7 @@ export default function Page() {
     <>
       <title>Booking confirmed · Lundro</title>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-<div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "'Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.5"}}>
+<div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "'Fellix','Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.5"}}>
 <header style={{"background": "#FFFFFF", "borderBottom": "1px solid #DCE5EA"}}>
 <div style={{"maxWidth": "1100px", "margin": "0 auto", "padding": "0 24px", "display": "flex", "alignItems": "center", "minHeight": "72px"}}>
 <Link href={"/"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#0F2A3D"}} aria-label={"Lundro home"}>

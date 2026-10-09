@@ -19,6 +19,8 @@ Clickable design prototypes (open in a browser): [prototypes/](prototypes/).
 - **Locally:** download `prototypes/lundro-prototype.html` and open it in a browser, or run `npm run dev` and visit http://localhost:3000/prototype
 - **Landing page:** [`index.html`](index.html) links to the prototype and the platform map
 
+Font: the whole app uses Fellix. Add the licensed files to `public/fonts/` (see [public/fonts/README.md](public/fonts/README.md)).
+
 ## Routes
 `/` home, `/lake-norman`, `/search`, `/boat`, `/checkout`, `/confirmation`, `/owner/signup`,
 `/owner` (+ calendar, bookings, boats, extras, customers, messages, earnings, reviews,

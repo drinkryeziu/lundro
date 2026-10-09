@@ -23,9 +23,9 @@ export default function Login() {
 
   const inp = { width: '100%', minHeight: 48, border: '1px solid #7B8F9B', borderRadius: 12, padding: '0 14px', fontSize: 16, boxSizing: 'border-box' };
   return (
-    <main style={{ maxWidth: 420, margin: '0 auto', padding: '48px 16px', fontFamily: "'Figtree', system-ui, sans-serif", color: '#0F2A3D' }}>
+    <main style={{ maxWidth: 420, margin: '0 auto', padding: '48px 16px', fontFamily: "'Fellix','Figtree', system-ui, sans-serif", color: '#0F2A3D' }}>
       <Link href="/" style={{ color: '#0A6C7A', fontWeight: 700 }}>← Lundro</Link>
-      <h1 style={{ fontFamily: "'Bricolage Grotesque', serif" }}>{mode === 'login' ? 'Log in' : 'Create account'}</h1>
+      <h1 style={{ fontFamily: "'Fellix','Bricolage Grotesque', serif" }}>{mode === 'login' ? 'Log in' : 'Create account'}</h1>
       <form onSubmit={submit} style={{ display: 'grid', gap: 14 }}>
         {mode === 'register' && (<label>Name<input style={inp} value={f.name} onChange={set('name')} autoComplete="name" required /></label>)}
         <label>Email<input style={inp} type="email" value={f.email} onChange={set('email')} autoComplete="email" required /></label>

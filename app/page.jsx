@@ -50,7 +50,7 @@ export default function Page() {
     <>
       <title>Lundro home · Lundro</title>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-<div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "'Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.5"}}>
+<div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "'Fellix','Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.5"}}>
 <header style={{"background": "#FFFFFF", "borderBottom": "1px solid #DCE5EA"}}>
 <div className={"wrap"} style={{"display": "flex", "alignItems": "center", "gap": "12px", "minHeight": "72px", "flexWrap": "wrap"}}>
 <Link href={"/"} aria-label={"Lundro home"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#0F2A3D"}}>

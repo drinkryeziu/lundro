@@ -3,11 +3,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* Fellix (licensed): add the .woff2 files to /fonts. See public/fonts/README.md */
+@font-face{font-family:'Fellix';font-style:normal;font-weight:400;font-display:swap;src:local('Fellix Regular'),local('Fellix-Regular'),url('/fonts/Fellix-Regular.woff2') format('woff2')}
+@font-face{font-family:'Fellix';font-style:normal;font-weight:500;font-display:swap;src:local('Fellix Medium'),local('Fellix-Medium'),url('/fonts/Fellix-Medium.woff2') format('woff2')}
+@font-face{font-family:'Fellix';font-style:normal;font-weight:600;font-display:swap;src:local('Fellix SemiBold'),local('Fellix-SemiBold'),url('/fonts/Fellix-SemiBold.woff2') format('woff2')}
+@font-face{font-family:'Fellix';font-style:normal;font-weight:700;font-display:swap;src:local('Fellix Bold'),local('Fellix-Bold'),url('/fonts/Fellix-Bold.woff2') format('woff2')}
+
 /* Layout: one reading column with a sticky section nav; tables and diagrams scroll inside their own boxes. */
 :root{
   --bg:#F6F9FA; --surface:#FFFFFF; --fg:#0F2A3D; --muted:#4B6272; --line:#DCE5EA;
   --accent:#0A6C7A; --accent-soft:#E3F2F4; --sun:#FFC94A; --warn:#C2410C; --warn-soft:#FCE9DF; --ok:#14532D; --ok-soft:#DDF3E4;
-  --disp:'Bricolage Grotesque',Georgia,serif; --body:'Figtree',system-ui,sans-serif; --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --disp:'Fellix','Bricolage Grotesque',Georgia,serif; --body:'Fellix','Figtree',system-ui,sans-serif; --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#0B1A24; --surface:#112733; --fg:#E6EFF3; --muted:#9DB3C0; --line:#22404F;
