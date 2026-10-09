@@ -1031,7 +1031,7 @@ tr:last-child td{border-bottom:0}
 
   // ------------- state -------------
   var S={
-    flow:'own',page:'overview',files:{},vopen:null,insTab:'Lakes',insLake:'all',editId:null,edit:null,
+    flow:'own',page:'overview',files:{},vopen:null,insTab:'Lakes',insLake:'all',insQ:'',insMore:false,editId:null,edit:null,
     ob:{step:1,acct:'company',f:{name:'Jordan Hale',email:'jordan@coveandco.example',phone:'(704) 555-0142',addr:'412 Catawba Ave, Cornelius, NC 28031',biz:'Cove & Co. Boat Rentals',legal:'Cove and Co Boat Rentals LLC',sos:'2318804',boat:"24' Tahoe LTZ Pontoon",hin:'TAH41022C727',cap:'12',half:'350',full:'600',photos:3,tier:'moderate',pay:'idle'},safe:{ext:true,throw:false,sound:true,aid:true},times:{'9:00 AM':true,'1:30 PM':true},tried:false,done:false,boats:[],editing:true},
     reqs:[
       {id:'r1',name:'Marcus L.',guests:12,boat:"26' Harris Grand Mariner",date:'Sat, Jun 19',d:19,wd:'Sat',len:'Full day',time:'9:00 AM',drive:'Captain',price:1525,hrs:'18 hrs',code:'LND-0619-4800',st:'Request',lines:[['Boat · Full day · 9:00 AM',1050],['Tube with rope',40],['Floating mat',35],['Captain',400]],tax:37.69,cal:'n'},
@@ -1308,8 +1308,27 @@ tr:last-child td{border-bottom:0}
   };
   var TOPB=[["26' Harris Grand Mariner",'norman',12100],["24' Bennington Pontoon",'norman',9800],["22' MasterCraft XT22",'norman',8400],["25' Bennington QX",'norman',7600],["22' Yamaha SX210",'wylie',6900],["23' Sun Tracker Party Barge",'wylie',6300],["21' Malibu Wakesetter",'norman',5200],["24' Barletta Tritoon",'norman',4700],["Hobie Cat 18 sailboat",'wylie',2300]];
   var REV=0.22, COMM=0.13, FEES=0.09;
+  var MORE='Lake Gaston,NC;Jordan Lake,NC;Falls Lake,NC;High Rock Lake,NC;Badin Lake,NC;Lake Lure,NC;Lake James,NC;Fontana Lake,NC;Lake Hickory,NC;Lake Rhodhiss,NC;Lake Tillery,NC;Lake Mattamuskeet,NC;Kerr Lake,NC;Lake Wateree,SC;Lake Murray,SC;Lake Keowee,SC;Lake Hartwell,SC;Lake Jocassee,SC;Lake Marion,SC;Lake Moultrie,SC;Lake Greenwood,SC;Lake Thurmond,SC;Lake Lanier,GA;Lake Allatoona,GA;Lake Oconee,GA;Lake Sinclair,GA;Lake Burton,GA;Lake Rabun,GA;Carters Lake,GA;West Point Lake,GA;Lake Seminole,GA;Smith Mountain Lake,VA;Lake Anna,VA;Claytor Lake,VA;Kerr Reservoir,VA;Philpott Lake,VA;Douglas Lake,TN;Norris Lake,TN;Dale Hollow Lake,TN;Watauga Lake,TN;Percy Priest Lake,TN;Center Hill Lake,TN;Cherokee Lake,TN;Lake Cumberland,KY;Kentucky Lake,KY;Lake Barkley,KY;Herrington Lake,KY;Lake Guntersville,AL;Lake Martin,AL;Smith Lake,AL;Lake Wedowee,AL;Pickwick Lake,AL;Lake Okeechobee,FL;Lake Tohopekaliga,FL;Lake Eustis,FL;Lake Apopka,FL;Lake Travis,TX;Lake Austin,TX;Lake LBJ,TX;Lake Conroe,TX;Lake Texoma,TX;Lake Lewisville,TX;Lake Ray Hubbard,TX;Possum Kingdom Lake,TX;Canyon Lake,TX;Lake Ouachita,AR;Beaver Lake,AR;Bull Shoals Lake,AR;Lake of the Ozarks,MO;Table Rock Lake,MO;Truman Lake,MO;Lake Havasu,AZ;Lake Pleasant,AZ;Lake Powell,AZ;Lake Mead,NV;Lake Tahoe,CA;Lake Berryessa,CA;Shasta Lake,CA;Lake Isabella,CA;Lake Chelan,WA;Lake Coeur d\'Alene,ID;Flathead Lake,MT;Lake Pend Oreille,ID;Lake Geneva,WI;Lake Winnebago,WI;Lake Minnetonka,MN;Mille Lacs Lake,MN;Lake Michigan Shores,MI;Torch Lake,MI;Lake St. Clair,MI;Grand Lake,OK;Lake Eufaula,OK;Lake Hefner,OK;Lake Erie Islands,OH;Indian Lake,OH;Lake Champlain,VT;Lake George,NY;Lake Winnipesaukee,NH;Sebago Lake,ME;Candlewood Lake,CT;Lake Hopatcong,NJ;Raystown Lake,PA;Deep Creek Lake,MD;Lake Lanier Islands,GA;Lake Chatuge,NC'.split(';').map(function(x){var q=x.split(',');return {n:q[0],st:q[1]}});
+  var SCOL=['#0A6C7A','#E08A1E','#6C4BB8','#2E8B57','#C0392B','#2F6DB5','#B7791F','#8A5A44'];
+  (function(){
+    var seed=7;function rnd(){seed=(seed*1103515245+12345)%2147483648;return seed/2147483648}
+    var base=LD.norman.gmv,bu=LD.norman.util,south={SC:1,GA:1,FL:1,TX:1,AZ:1,AL:1,CA:1,NV:1};
+    MORE.forEach(function(m,i){
+      var f=0.12+rnd()*0.95,w=south[m.st]?0.35:0,listed=Math.max(2,Math.round(f*16)),active=Math.max(1,Math.round(listed*(0.7+rnd()*0.25)));
+      var gm=base.map(function(v,k){var winter=v===0?(w*(2500+rnd()*2500)):v;return Math.round(winter*f*(0.85+rnd()*0.3)/100)*100});
+      var ut=bu.map(function(v,k){var x=v===0?Math.round(w*22):v;return Math.max(0,Math.min(96,Math.round(x*(0.7+rnd()*0.6))))});
+      LD['l'+i]={name:m.n,st:m.st,color:'#8AA0AD',listed:listed,active:active,rented:Math.round(active*(0.2+rnd()*0.3)),gmv:gm,util:ut};
+    });
+    LD.norman.st='NC';LD.wylie.st='NC/SC';
+    var boats=['Pontoon','Bowrider','Deck boat','Ski boat','Tritoon','Fishing boat','Party barge','Sailboat'];
+    Object.keys(LD).forEach(function(k){if(k==='norman'||k==='wylie')return;var d=LD[k],g=sum(d.gmv);
+      TOPB.push([(18+Math.round(rnd()*10))+"' "+boats[Math.floor(rnd()*boats.length)],k,Math.round(g*(0.14+rnd()*0.12)/100)*100]);
+      TOPB.push([(18+Math.round(rnd()*10))+"' "+boats[Math.floor(rnd()*boats.length)],k,Math.round(g*(0.08+rnd()*0.08)/100)*100])});
+    TOPB.sort(function(a,b){return b[2]-a[2]});
+  })();
   function nice(m){if(m<=0)return 1;var p=Math.pow(10,Math.floor(Math.log10(m))),n=m/p,k=n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10;return k*p}
-  function lakesSel(){return S.insLake==='all'?['norman','wylie']:[S.insLake]}
+  function lakesSel(){return S.insLake==='all'?Object.keys(LD):[S.insLake]}
+  function groupSer(L,key,topN){var ks=L.slice().sort(function(a,b){return sum(LD[b].gmv)-sum(LD[a].gmv)});var top=ks.slice(0,topN),rest=ks.slice(topN),out=top.map(function(k,i){return {name:LD[k].name,color:k==='norman'?'#0A6C7A':k==='wylie'?'#E08A1E':SCOL[(i+2)%SCOL.length],vals:LD[k][key]}});if(rest.length){out.push({name:'Other lakes ('+rest.length+')',color:'#B9C7CF',vals:MON.map(function(_,m){var t=sum(rest.map(function(k){return LD[k][key][m]}));return key==='util'?Math.round(t/rest.length):t})})}return out}
   function sum(a){return a.reduce(function(x,y){return x+y},0)}
   function axis(W,H,l,t,b,max,fmt){var g='';for(var i=0;i<=4;i++){var v=max/4*i,y=H-b-(H-t-b)*(v/max);g+='<line x1="'+l+'" x2="'+(W-8)+'" y1="'+y+'" y2="'+y+'" stroke="#E3EBEF"/><text x="'+(l-8)+'" y="'+(y+4)+'" font-size="11" text-anchor="end" fill="#4B6272">'+fmt(v)+'</text>'}return g}
   function stackSvg(series,fmt){
@@ -1335,19 +1354,20 @@ tr:last-child td{border-bottom:0}
     var gmv=sum(L.map(function(k){return sum(LD[k].gmv)})),rev=Math.round(gmv*REV),jun=Math.round(sum(L.map(function(k){return LD[k].gmv[11]}))*REV),bookings=Math.round(gmv/520);
     var kp='<div class="kpis"><div class="kpi"><small>Active boats</small><b>'+active+'</b><span>of '+listed+' listed · '+(listed-active)+' paused or in review</span></div><div class="kpi"><small>Boats rented today</small><b>'+rented+'</b><span>'+Math.round(rented/active*100)+'% of active boats on the water</span></div><div class="kpi"><small>Money earned, season</small><b>'+$(rev).replace('.00','')+'</b><span>Lundro revenue · '+$(jun).replace('.00','')+' in June</span></div><div class="kpi"><small>Booked by renters</small><b>'+$(gmv).replace('.00','')+'</b><span>'+bookings+' bookings, before tax</span></div></div>';
     var tabs=['Lakes','Earnings','Utilization','Top boats'];
-    var chips=[['all','All lakes'],['norman','Lake Norman'],['wylie','Lake Wylie']].map(function(c){return '<button class="chip" data-inslake="'+c[0]+'" aria-pressed="'+(S.insLake===c[0])+'">'+c[1]+'</button>'}).join('');
+    var chips=[['all','All '+Object.keys(LD).length+' lakes'],['norman','Lake Norman'],['wylie','Lake Wylie']].map(function(c){return '<button class="chip" data-inslake="'+c[0]+'" aria-pressed="'+(S.insLake===c[0])+'">'+c[1]+'</button>'}).join('')+'<select class="inp" id="inssel" aria-label="Pick any lake" style="width:auto;min-width:180px"><option value="">More lakes…</option>'+Object.keys(LD).filter(function(k){return k!=='norman'&&k!=='wylie'}).sort(function(a,b){return LD[a].name<LD[b].name?-1:1}).map(function(k){return '<option value="'+k+'"'+(S.insLake===k?' selected':'')+'>'+esc(LD[k].name)+', '+LD[k].st+'</option>'}).join('')+'</select>';
     var body='';
     if(tab==='Lakes'){
-      var ser=L.map(function(k){return {name:LD[k].name,color:LD[k].color,vals:LD[k].gmv}});
+      var q=S.insQ.trim().toLowerCase(),all=L.filter(function(k){return !q||(LD[k].name+' '+LD[k].st).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return sum(LD[b].gmv)-sum(LD[a].gmv)}),more=all.length>12&&!q,rows=(S.insMore||q)?all:all.slice(0,12);
+      var ser=L.length>8?groupSer(L,'gmv',7):L.map(function(k){return {name:LD[k].name,color:LD[k].color==='#8AA0AD'?SCOL[0]:LD[k].color,vals:LD[k].gmv}});
       body='<div class="chartbox"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2>Bookings value by lake</h2><span class="tipline muted" id="instip" aria-live="polite">Hover or tab to a bar for its value</span></div><div class="legend2">'+ser.map(function(x){return '<span><i style="background:'+x.color+'"></i>'+x.name+'</span>'}).join('')+'</div>'+stackSvg(ser,function(v){return $(Math.round(v)).replace('.00','')})+'<p class="muted" style="font-size:13px;margin:8px 0 0">Jul 2026 – Jun 2027. What renters paid for boats, before tax. No trips Nov–Feb.</p></div>'
-       +'<div class="chartbox tw" style="margin-top:16px"><h2 style="margin-bottom:8px">Lake comparison</h2><table><thead><tr><th>Lake</th><th>Listed</th><th>Active</th><th>Rented today</th><th style="text-align:right">Season bookings value</th><th style="text-align:right">Lundro revenue</th></tr></thead><tbody>'+L.map(function(k){var d=LD[k],g=sum(d.gmv);return '<tr><td><b><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:'+d.color+';margin-right:8px"></i>'+d.name+'</b></td><td>'+d.listed+'</td><td>'+d.active+'</td><td>'+d.rented+'</td><td style="text-align:right">'+$(g)+'</td><td style="text-align:right"><b>'+$(Math.round(g*REV))+'</b></td></tr>'}).join('')+'</tbody></table></div>';
+       +'<div class="chartbox tw" style="margin-top:16px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px"><h2>Lake comparison <span class="muted" style="font-size:15px;font-weight:400">('+L.length+' lake'+(L.length===1?'':'s')+')</span></h2>'+(L.length>8?'<input class="inp" id="insq" type="search" placeholder="Search lakes or state" aria-label="Search lakes" value="'+esc(S.insQ)+'" style="max-width:260px">':'')+'</div><table><thead><tr><th>Lake</th><th>State</th><th>Listed</th><th>Active</th><th>Rented today</th><th style="text-align:right">Season bookings value</th><th style="text-align:right">Lundro revenue</th></tr></thead><tbody>'+rows.map(function(k){var d=LD[k],g=sum(d.gmv);return '<tr><td><b><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:'+d.color+';margin-right:8px"></i>'+esc(d.name)+'</b></td><td>'+d.st+'</td><td>'+d.listed+'</td><td>'+d.active+'</td><td>'+d.rented+'</td><td style="text-align:right">'+$(g)+'</td><td style="text-align:right"><b>'+$(Math.round(g*REV))+'</b></td></tr>'}).join('')+'</tbody></table>'+(rows.length?'':'<p class="muted" style="padding:12px 0">No lakes match your search.</p>')+(more?'<button class="btn o sm" data-insmore style="margin-top:10px">'+(S.insMore?'Show top 12 only':'Show all '+all.length+' lakes')+'</button>':'')+'</div>';
     }
     if(tab==='Earnings'){
       var sc=[{name:'Commission (15% of boat price)',color:'#0A6C7A',vals:MON.map(function(_,i){return Math.round(sum(L.map(function(k){return LD[k].gmv[i]}))*COMM)})},{name:'Service fees (10% paid by renters)',color:'#FFC94A',vals:MON.map(function(_,i){return Math.round(sum(L.map(function(k){return LD[k].gmv[i]}))*FEES)})}];
       body='<div class="chartbox"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2>Lundro earnings by month</h2><span class="tipline muted" id="instip" aria-live="polite">Hover or tab to a bar for its value</span></div><div class="legend2">'+sc.map(function(x){return '<span><i style="background:'+x.color+'"></i>'+x.name+'</span>'}).join('')+'</div>'+stackSvg(sc,function(v){return $(Math.round(v)).replace('.00','')})+'<p class="muted" style="font-size:13px;margin:8px 0 0">Season earnings '+$(sum(sc[0].vals)+sum(sc[1].vals))+' · commission '+$(sum(sc[0].vals))+' · service fees '+$(sum(sc[1].vals))+'. NC sales tax is collected and remitted, so it is not counted as earnings.</p></div>';
     }
     if(tab==='Utilization'){
-      var us=L.map(function(k){return {name:LD[k].name,color:LD[k].color,vals:LD[k].util}});
+      var us=L.length>5?groupSer(L,'util',4):L.map(function(k){return {name:LD[k].name,color:LD[k].color,vals:LD[k].util}});
       body='<div class="chartbox"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2>Boat utilization</h2><span class="tipline muted" id="instip" aria-live="polite">Hover or tab to a point for its value</span></div><div class="legend2">'+us.map(function(x){return '<span><i style="background:'+x.color+'"></i>'+x.name+'</span>'}).join('')+'</div>'+lineSvg(us)+'<p class="muted" style="font-size:13px;margin:8px 0 0">Share of available boat-days that were booked. Low months show where to run offers or recruit owners.</p></div>';
     }
     if(tab==='Top boats'){
@@ -1477,11 +1497,13 @@ tr:last-child td{border-bottom:0}
     else if(t.dataset.ef&&S.edit){S.edit[t.dataset.ef]=t.value;}
     else if(t.dataset.sf)S.setF[t.dataset.sf]=t.value;
     else if(t.id==='bkq'){S.bkQ=t.value;var p=t.selectionStart;render(true);var n=$$.getElementById('bkq');n.focus();n.setSelectionRange(p,p)}
+    else if(t.id==='insq'){S.insQ=t.value;var p3=t.selectionStart;render(true);var n3=$$.getElementById('insq');n3.focus();n3.setSelectionRange(p3,p3)}
     else if(t.id==='cq'){S.custQ=t.value;var p2=t.selectionStart;render(true);var n2=$$.getElementById('cq');n2.focus();n2.setSelectionRange(p2,p2)}
   });
   root.addEventListener('change',function(e){
     var t=e.target,d=t.dataset;
     if(d.upk){var uk=d.upk;upTake(uk,t.files);t.value='';return}
+    if(t.id==='inssel'){if(t.value){S.insLake=t.value;S.insQ='';render(true)}return}
     if(t.id==='cs'){S.custSort=t.value;render(true)}
     else if(t.id==='txf'){S.txF=t.value;render(true)}
     else if(t.id==='rvb'){S.revBoat=t.value;render(true)}
@@ -1501,7 +1523,7 @@ tr:last-child td{border-bottom:0}
   root.addEventListener('mouseover',function(e){var b=e.target.closest('[data-bar]');if(b){var p=b.dataset.bar.split('|');S.barTip=p[0]+': '+$(+p[1]);var el=root.querySelector('[aria-live="polite"]');if(el)el.textContent=S.barTip}});
   root.addEventListener('focusin',function(e){var b=e.target.closest('[data-bar]');if(b){var p=b.dataset.bar.split('|');S.barTip=p[0]+': '+$(+p[1]);var el=root.querySelector('[aria-live="polite"]');if(el)el.textContent=S.barTip}});
   root.addEventListener('click',function(e){
-    var t=e.target.closest('[data-rvmod],[data-uppick],[data-uprm],[data-upsample],[data-exall],[data-exnone],[data-addnewex],[data-seennewex],[data-editboat],[data-esave],[data-ecancel],[data-etime],[data-eop],[data-etier],[data-eaddphoto],[data-ermphoto],[data-savboat],[data-cancelboat],[data-skipboats],[data-addanother],[data-rmboat],[data-instab],[data-inslake],[data-flow],[data-page],[data-accept],[data-decline],[data-msgto],[data-ev],[data-block],[data-doblock],[data-cm],[data-bktab],[data-bk],[data-addboat],[data-boatf],[data-pause],[data-dup],[data-exsel],[data-addex],[data-saveex],[data-cust],[data-thr],[data-quick],[data-send],[data-bar],[data-rvtab],[data-reply],[data-postreply],[data-ver],[data-settab],[data-savesettings],[data-toast],[data-acct],[data-obnext],[data-obback],[data-obsubmit],[data-addphoto],[data-time],[data-tier],[data-pay],[data-atab],[data-asel],[data-aact],[data-tax],[data-exp]');
+    var t=e.target.closest('[data-rvmod],[data-uppick],[data-uprm],[data-upsample],[data-exall],[data-exnone],[data-addnewex],[data-seennewex],[data-editboat],[data-esave],[data-ecancel],[data-etime],[data-eop],[data-etier],[data-eaddphoto],[data-ermphoto],[data-savboat],[data-cancelboat],[data-skipboats],[data-addanother],[data-rmboat],[data-instab],[data-inslake],[data-insmore],[data-flow],[data-page],[data-accept],[data-decline],[data-msgto],[data-ev],[data-block],[data-doblock],[data-cm],[data-bktab],[data-bk],[data-addboat],[data-boatf],[data-pause],[data-dup],[data-exsel],[data-addex],[data-saveex],[data-cust],[data-thr],[data-quick],[data-send],[data-bar],[data-rvtab],[data-reply],[data-postreply],[data-ver],[data-settab],[data-savesettings],[data-toast],[data-acct],[data-obnext],[data-obback],[data-obsubmit],[data-addphoto],[data-time],[data-tier],[data-pay],[data-atab],[data-asel],[data-aact],[data-tax],[data-exp]');
     if(!t)return;var d=t.dataset;
     if(d.editboat){var eb=boatSt(d.editboat);S.editId=d.editboat;S.edit=boatData(eb);
       var bf=eb.files||{};
@@ -1540,7 +1562,8 @@ tr:last-child td{border-bottom:0}
       else if(d.upsample==='id'){if(!(S.files.ob_id||[]).length)UP.sample(S.files,'ob_id',1,'Drivers-license.pdf');if(S.ob.acct==='company'&&!(S.files.ob_reg||[]).length)UP.sample(S.files,'ob_reg',1,'Articles-of-organization.pdf')}
       render(true);return}
     if(d.instab){S.insTab=d.instab;render(true);return}
-    if(d.inslake){S.insLake=d.inslake;render(true);return}
+    if(d.inslake){S.insLake=d.inslake;S.insQ='';S.insMore=false;render(true);return}
+    if(d.insmore!==undefined){S.insMore=!S.insMore;render(true);return}
     if(d.flow){setFlow(d.flow);return}
     if(d.accept){accept(d.accept);return}
     if(d.decline){decline(d.decline);return}
