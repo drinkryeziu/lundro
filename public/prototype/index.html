@@ -42,6 +42,14 @@ h2{font-size:clamp(24px,3.4vw,32px);line-height:1.15}
 .logo{display:flex;align-items:center;gap:8px;font:700 24px var(--disp);background:none;border:0;padding:0}
 .hd nav{margin-left:auto;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .hd nav button{background:none;border:0;font-weight:600;font-size:14px;padding:10px 10px;min-height:44px}
+.auth{max-width:440px;margin:40px auto 0;background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px}
+.auth h1{font-size:34px;margin-bottom:6px}
+.auth label{display:grid;gap:5px;font-size:13px;font-weight:700;margin-top:14px}
+.auth .btn{width:100%;margin-top:18px}
+.auth .or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;margin-top:18px}
+.auth .or::before,.auth .or::after{content:'';flex:1;border-top:1px solid var(--line)}
+.auth .demo{background:#EEF4F7;border-radius:12px;padding:10px 14px;font-size:13px;margin-top:16px;color:var(--muted)}
+.auth .err{background:#FDE8E6;color:#B42318;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:600;margin-top:14px}
 .hd nav .nl{font-weight:600;font-size:14px;padding:0 10px;min-height:44px;display:inline-flex;align-items:center;text-decoration:none}
 .hd nav .pillb{border:1px solid var(--ink);border-radius:999px;padding:0 16px}
 .btn{min-height:48px;padding:0 24px;border-radius:999px;border:2px solid var(--teal);background:var(--teal);color:#fff;font-weight:700}
@@ -430,7 +438,7 @@ tr:last-child td{border-bottom:0}
   var EX={tube:'Tube with rope',wake:'Wakeboard',skis:'Water skis',sup:'Paddleboard',mat:'Floating mat',cooler:'Cooler with ice',speaker:'Bluetooth speaker',fishing:'Fishing gear'};
   var X=[['tube','Tube with rope',40,'per booking',2,'gear','1 to 2 riders, tow rope included'],['sup','Paddleboard',25,'each',2,'gear','Inflatable, with paddle'],['mat','Floating mat',35,'per booking',1,'gear','18 ft lily pad for the swim stop'],['cooler','Cooler with ice',20,'per booking',1,'gear','70 qt, filled with ice at pickup'],['speaker','Bluetooth speaker',15,'per booking',1,'gear','Waterproof, extra to the boat stereo'],['hour','Extra hour',85,'per hour',2,'boat','Add time to your trip']];
 
-  var S={v:'home',boat:'b1',guests:6,date:'2027-06-12',len:'half',time:'9:00 AM',cap:true,q:{tube:1,cooler:1},step:1,tried:false,
+  var S={user:null,lerr:'',lemail:'',users:[{name:'Jordan Hale',email:'owner@lundro.test',pw:'lundro-demo-1',role:'own'},{name:'Riley (Trust & Safety)',email:'admin@lundro.test',pw:'lundro-demo-1',role:'adm'}],v:'home',boat:'b1',guests:6,date:'2027-06-12',len:'half',time:'9:00 AM',cap:true,q:{tube:1,cooler:1},step:1,tried:false,
     f:{name:'',email:'',phone:'',age:false,card:'',pre88:false},org:false,orgType:'nonprofit',terms:false,paid:'',
     sf:{area:'all',types:[],capf:'any',rating:0,tube:false,sort:'rec',view:'list'},sel:'b1',saved:{},faq:'',codeN:'LND-2706-4821',openMap:false};
   var root=$$.getElementById('root');
@@ -451,7 +459,7 @@ tr:last-child td{border-bottom:0}
   function logo(sz){return '<svg width="'+(sz||34)+'" height="'+(sz||34)+'" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"/><circle cx="24" cy="12" r="4" fill="#FFC94A"/><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M9 26c2.5-2 4.5-2 7 0s4.5 2 7 0" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".7"/></svg>'}
   function header(back){
     return '<header class="hd"><div class="c"><button class="logo" data-go="home" aria-label="Lundro home">'+logo()+'Lundro</button><nav aria-label="Main">'
-     +(back?'<button data-go="search">Back to results</button>':'<button data-go="lake">Lake Norman</button>')+'<a class="nl" href="#" data-xlink="ob">List your boat</a><a class="nl pillb" href="#" data-xlink="own">Log in</a></nav></div></header>';
+     +(back?'<button data-go="search">Back to results</button>':'<button data-go="lake">Lake Norman</button>')+'<a class="nl" href="#" data-xlink="ob">List your boat</a>'+(S.user?'<span class="nl">Hi, '+S.user.name.split(' ')[0]+'</span><button class="nl pillb" data-logout="1">Log out</button>':'<button class="nl pillb" data-go="login">Log in</button>')+'</nav></div></header>';
   }
   function footer(){
     return '<footer class="ft"><div class="c"><div><b style="font:700 18px var(--disp)">Lundro</b>Boat rentals on North Carolina lakes.</div><div><b>Renters</b><button data-go="lake">Boat rentals on Lake Norman</button><button data-go="search">Search boats</button></div><div><b>Owners</b><a href="#" data-xlink="ob">List your boat</a><a href="#" data-xlink="own">Owner dashboard</a></div><div><b>Lundro</b><a href="#" data-xlink="adm">Admin console</a><button data-toast="Help center coming soon.">Help center</button></div></div></footer>';
@@ -588,6 +596,19 @@ tr:last-child td{border-bottom:0}
     return '<header class="cohd"><div class="c"><button class="logo" data-go="boat" aria-label="Back to boat" style="font-size:20px">‹</button><button class="logo" data-go="home" aria-label="Lundro home">'+logo(32)+'Lundro</button><span style="margin-left:auto;font-size:14px" class="muted">🔒 Secure checkout</span></div></header><div class="c" style="padding-top:20px"><h1 style="font-size:clamp(28px,4vw,38px)">Book your trip</h1>'+st+'<div class="cogrid"><div>'+body+nav+'</div>'+summary(q)+'</div></div>';
   }
 
+  // ---------- LOGIN / CREATE ACCOUNT ----------
+  function authPage(mode){
+    var reg=mode==='register';
+    return header()+'<div class="c"><form class="auth" id="'+(reg?'rform':'lform')+'" novalidate><h1>'+(reg?'Create your account':'Log in')+'</h1><p class="muted" style="margin:0">'+(reg?'Book boats and manage your trips.':'Welcome back to Lundro.')+'</p>'
+      +(S.lerr?'<div class="err" role="alert">'+S.lerr+'</div>':'')
+      +(reg?'<label>Full name<input class="inp" id="rn" autocomplete="name"></label>':'')
+      +'<label>Email<input class="inp" id="'+(reg?'re':'le')+'" type="email" autocomplete="email" value="'+S.lemail+'"></label>'
+      +'<label>Password'+(reg?' (8+ characters)':'')+'<input class="inp" id="'+(reg?'rp':'lp')+'" type="password" autocomplete="'+(reg?'new-password':'current-password')+'"></label>'
+      +'<button class="btn" type="submit">'+(reg?'Create account':'Log in')+'</button>'
+      +(reg?'<div class="or">Already have an account?</div><button type="button" class="btn o" data-go="login" style="margin-top:12px">Log in</button>'
+        :(S.lerr&&S.lnone?'<button type="button" class="btn y" data-go="register" style="margin-top:12px">Create an account</button>':'')+''+(S.lnone?'':'<div class="or">New to Lundro?</div><button type="button" class="btn o" data-go="register" style="margin-top:12px">Create account</button>')+'<button type="button" class="link" data-toast="Password reset email sent (demo)." style="margin-top:14px;display:block;margin-inline:auto">Forgot password?</button><div class="demo"><b>Demo accounts</b> (password <b>lundro-demo-1</b>)<br>owner@lundro.test opens the owner dashboard<br>admin@lundro.test opens the admin queue</div>')
+      +'</form></div>'+footer();
+  }
   // ---------- CONFIRMATION ----------
   function confirm(){
     var b=B(S.boat),q=quote(),req=!b.inst,review=S.org&&S.orgType==='state';
@@ -605,13 +626,31 @@ tr:last-child td{border-bottom:0}
      +'<p style="text-align:center;margin-block:10px 0"><button class="btn" data-go="home">Back to Lundro home</button></p></div>';
   }
 
-  var VIEWS={home:home,lake:lake,search:search,boat:boatPage,checkout:checkout,confirm:confirm};
+  var VIEWS={login:function(){return authPage('login')},register:function(){return authPage('register')},home:home,lake:lake,search:search,boat:boatPage,checkout:checkout,confirm:confirm};
   function render(keepScroll){var y=window.scrollY;root.innerHTML=VIEWS[S.v]();if(keepScroll)window.scrollTo(0,y);else window.scrollTo(0,0)}
-  function go(v){S.v=v;S.openMap=false;render()}
+  function go(v){if(v==='login'||v==='register'){S.lerr='';S.lnone=false}S.v=v;S.openMap=false;render()}
   var tt;function toast(m){var t=$$.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true},2200)}
 
   root.addEventListener('submit',function(e){
     e.preventDefault();var id=e.target.id;
+    if(id==='lform'){
+      var em=($$.getElementById('le').value||'').trim().toLowerCase(),pw=$$.getElementById('lp').value||'';
+      S.lemail=em;
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)||!pw){S.lerr='Enter your email and password.';S.lnone=false;render(true);return}
+      var u=S.users.filter(function(x){return x.email===em})[0];
+      if(!u){S.lerr='We couldn\'t find an account with that email.';S.lnone=true;render(true);return}
+      if(u.pw!==pw){S.lerr='Incorrect password. Try again or reset it.';S.lnone=false;render(true);return}
+      S.lerr='';S.lemail='';S.user=u;
+      if(u.role==='own'||u.role==='adm'){toast('Welcome back, '+u.name.split(' ')[0]+'.');show(u.role)}
+      else{toast('Welcome back, '+u.name.split(' ')[0]+'.');S.v='home';render()}
+      return}
+    if(id==='rform'){
+      var rn=($$.getElementById('rn').value||'').trim(),re=($$.getElementById('re').value||'').trim().toLowerCase(),rp=$$.getElementById('rp').value||'';
+      S.lemail=re;
+      if(rn.length<2||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(re)||rp.length<8){S.lerr='Enter your name, a valid email and a password of 8+ characters.';S.lnone=false;render(true);return}
+      if(S.users.some(function(x){return x.email===re})){S.lerr='An account with that email already exists. Log in instead.';S.lnone=false;render(true);return}
+      var nu={name:rn,email:re,pw:rp,role:'ren'};S.users.push(nu);S.user=nu;S.lerr='';S.lemail='';
+      toast('Account created. Welcome, '+rn.split(' ')[0]+'!');S.v='home';render();return}
     if(id==='hsearch'||id==='lsearch'||id==='ssearch'){S.sel='';go('search')}
     if(id==='notify'){toast('Thanks! We’ll email you when more lakes open.');e.target.reset()}
   });
@@ -628,6 +667,7 @@ tr:last-child td{border-bottom:0}
   root.addEventListener('toggle',function(e){if(e.target.dataset&&e.target.dataset.faq!==undefined&&e.target.open){S.faq=e.target.dataset.faq;root.querySelectorAll('details').forEach(function(d){if(d!==e.target)d.open=false})}},true);
   root.addEventListener('click',function(e){
     var t=e.target.closest('button');if(!t)return;var d=t.dataset;
+    if(d.logout){S.user=null;toast('You are logged out.');S.v='home';render();return}
     if(d.go){go(d.go)}
     else if(d.toast){toast(d.toast)}
     else if(d.boat){S.boat=d.boat;S.sel=d.boat;S.step=1;go('boat')}
