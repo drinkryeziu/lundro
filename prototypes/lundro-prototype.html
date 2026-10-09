@@ -773,7 +773,7 @@ tr:last-child td{border-bottom:0}
 
   // ------------- state -------------
   var S={
-    flow:'own',page:'overview',insTab:'Lakes',insLake:'all',
+    flow:'own',page:'overview',insTab:'Lakes',insLake:'all',editId:null,edit:null,
     ob:{step:1,acct:'company',f:{name:'Jordan Hale',email:'jordan@coveandco.example',phone:'(704) 555-0142',addr:'412 Catawba Ave, Cornelius, NC 28031',biz:'Cove & Co. Boat Rentals',legal:'Cove and Co Boat Rentals LLC',sos:'2318804',boat:"24' Tahoe LTZ Pontoon",hin:'TAH41022C727',cap:'12',half:'350',full:'600',photos:3,tier:'moderate',pay:'idle'},safe:{ext:true,throw:false,sound:true,aid:true},times:{'9:00 AM':true,'1:30 PM':true},tried:false,done:false,boats:[],editing:true},
     reqs:[
       {id:'r1',name:'Marcus L.',guests:12,boat:"26' Harris Grand Mariner",date:'Sat, Jun 19',d:19,wd:'Sat',len:'Full day',time:'9:00 AM',drive:'Captain',price:1525,hrs:'18 hrs',code:'LND-0619-4800',st:'Request',lines:[['Boat · Full day · 9:00 AM',1050],['Tube with rope',40],['Floating mat',35],['Captain',400]],tax:37.69,cal:'n'},
@@ -912,11 +912,12 @@ tr:last-child td{border-bottom:0}
   }
 
   function pBoats(){
+    if(S.editId)return pBoatEdit();
     var f=S.boatF,list=S.boats.filter(function(b){return f==='All'||b.st===f||(f==='Needs info'&&b.st==='Additional info required')});
     var counts={All:S.boats.length};['Live','Pending review','Paused','Draft'].forEach(function(k){counts[k]=S.boats.filter(function(b){return b.st===k}).length});counts['Needs info']=S.boats.filter(function(b){return b.st==='Additional info required'}).length;
     var pc={'Live':'p-ok','Pending review':'p-amber','Additional info required':'p-red','Paused':'p-violet','Draft':'p-grey'};
     var cards=list.map(function(b){
-      var acts='<button class="btn o sm" data-toast="Boat editor opens in the full app.">Edit</button>';
+      var acts='<button class="btn o sm" data-editboat="'+b.id+'">Edit</button>';
       if(b.st==='Live')acts+='<button class="btn o sm" data-pause="'+b.id+'">Pause</button><button class="btn o sm" data-dup="'+b.id+'">Duplicate</button><button class="btn o sm" data-toast="Opens the public boat page.">View</button>';
       else if(b.st==='Paused'||b.st==='Additional info required')acts+='<button class="btn sm" data-page="verification">'+(b.st==='Paused'?'Upload insurance':'Add info')+'</button><button class="btn o sm" data-dup="'+b.id+'">Duplicate</button>';
       else acts+='<button class="btn o sm" data-dup="'+b.id+'">Duplicate</button>';
@@ -1060,6 +1061,36 @@ tr:last-child td{border-bottom:0}
      +'<div class="ins-wrap"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap"><div><h1>Platform overview</h1><p class="muted" style="margin:4px 0 0">How the Lundro marketplace is doing across lakes. Sample data.</p></div><div class="chips" style="margin:0">'+chips+'</div></div>'+kp
      +'<div class="tabs" role="tablist" aria-label="Chart views">'+tabs.map(function(t){return '<button role="tab" data-instab="'+t+'" aria-selected="'+(tab===t)+'">'+t+(t==='Utilization'||t==='Top boats'?' <span class="cnt">new</span>':'')+'</button>'}).join('')+'</div>'+body+'</div>';
   }
+
+  // ------------- BOAT EDITOR -------------
+  var ALLTIMES=['8:00 AM','9:00 AM','10:00 AM','1:30 PM','4:00 PM'];
+  var AREAS=['Cornelius','Davidson','Mooresville','Huntersville','Denver','Sherrills Ford','Belmont','Tega Cay','Fort Mill','Clover'];
+  function boatData(b){
+    var m=b.meta||'',pr=m.match(/\$([\d,]+) half \/ \$([\d,]+) full/),area=(m.split(' · ')[0]||'Cornelius').trim();
+    return {name:b.n,area:area,cap:b.cap||'10',half:b.half||(pr?pr[1].replace(/,/g,''):'350'),full:b.full||(pr?pr[2].replace(/,/g,''):'600'),
+      desc:b.desc||'',times:b.times||{'9:00 AM':true,'1:30 PM':true},tier:b.tier||'moderate',op:b.op||'optional',photos:b.photos==null?8:b.photos,
+      safe:b.safe||{ext:true,throw:true,sound:true,aid:true},err:''};
+  }
+  function pBoatEdit(){
+    var b=boatSt(S.editId),e=S.edit;
+    if(!b||!e)return '';
+    var pc={'Live':'p-ok','Pending review':'p-amber','Additional info required':'p-red','Paused':'p-violet','Draft':'p-grey'};
+    var live=b.st==='Live';
+    return '<button class="back" data-ecancel="1" style="background:none;border:0;color:var(--teal);font-weight:700;padding:6px 0;cursor:pointer">← Back to boats</button>'
+     +'<div class="top"><div><h1>Edit boat</h1><div class="muted">'+esc(b.n)+' · <span class="pill '+pc[b.st]+'">'+b.st+'</span></div></div><div style="display:flex;gap:8px"><button class="btn o" data-ecancel="1">Cancel</button><button class="btn" data-esave="1">Save changes</button></div></div>'
+     +(e.err?'<div class="alert a-red" role="alert"><span class="i">!</span><p>'+e.err+'</p></div>':'')
+     +(live?'<div class="callout c-amber" style="margin-bottom:14px">This boat is live. Price changes apply to new bookings only. Changing the name, hull ID or capacity may trigger a quick re-check.</div>':'')
+     +'<div class="grid2" style="grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)"><div>'
+     +'<section class="card" style="margin-bottom:16px"><h2 style="margin-bottom:12px">Details</h2><div class="frow"><label class="f">Boat name<input class="inp" data-ef="name" value="'+esc(e.name)+'"></label><label class="f">Pickup area<select class="inp" data-ef="area">'+AREAS.map(function(a){return '<option'+(a===e.area?' selected':'')+'>'+a+'</option>'}).join('')+'</select></label><label class="f">Max passengers<input class="inp" type="number" min="1" data-ef="cap" value="'+esc(e.cap)+'"></label></div><label class="f" style="margin-top:14px">Description<textarea class="inp" data-ef="desc" placeholder="What makes this boat great for a day on the lake?">'+esc(e.desc)+'</textarea></label></section>'
+     +'<section class="card" style="margin-bottom:16px"><h2 style="margin-bottom:12px">Pricing</h2><div class="frow"><label class="f">Half day price ($)<input class="inp" type="number" min="1" data-ef="half" value="'+esc(e.half)+'"></label><label class="f">Full day price ($)<input class="inp" type="number" min="1" data-ef="full" value="'+esc(e.full)+'"></label></div><p class="muted" style="font-size:13px;margin:10px 0 0">After the 15% Lundro commission you keep about '+$(Math.round((+e.half||0)*0.85*100)/100)+' on a half day and '+$(Math.round((+e.full||0)*0.85*100)/100)+' on a full day.</p></section>'
+     +'<section class="card" style="margin-bottom:16px"><h2 style="margin-bottom:12px">Trip options</h2><div style="font-weight:700;margin-bottom:6px">Start times</div><div style="display:flex;gap:8px;flex-wrap:wrap">'+ALLTIMES.map(function(x){return '<button class="chip" data-etime="'+x+'" aria-pressed="'+!!e.times[x]+'">'+x+'</button>'}).join('')+'</div>'
+     +'<div style="font-weight:700;margin:16px 0 6px">Who drives</div><div class="frow" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">'+[['optional','Captain or self-drive','Renters choose'],['required','Captain required','Renters can’t self-drive'],['self','Self-drive only','No captain offered']].map(function(o){return '<button class="rad" data-eop="'+o[0]+'" aria-pressed="'+(e.op===o[0])+'"><i></i><span><b>'+o[1]+'</b><small>'+o[2]+'</small></span></button>'}).join('')+'</div>'
+     +'<div style="font-weight:700;margin:16px 0 6px">Cancellation policy</div><div class="frow" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">'+[['flexible','Flexible','Full refund up to 24 hours before'],['moderate','Moderate','Full refund up to 5 days before'],['strict','Strict','Full refund up to 14 days before']].map(function(o){return '<button class="rad" data-etier="'+o[0]+'" aria-pressed="'+(e.tier===o[0])+'"><i></i><span><b>'+o[1]+'</b><small>'+o[2]+'</small></span></button>'}).join('')+'</div></section>'
+     +'</div><div>'
+     +'<section class="card" style="margin-bottom:16px"><h2 style="margin-bottom:10px">Photos ('+e.photos+')</h2><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'+Array.from({length:e.photos}).map(function(_,i){return '<span style="width:64px;height:48px;border-radius:8px;overflow:hidden;display:block">'+scene(['a','b','c'][i%3])+'</span>'}).join('')+'</div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn o sm" data-eaddphoto="1">+ Add photo</button><button class="btn o sm" data-ermphoto="1"'+(e.photos<=0?' disabled':'')+'>Remove last</button></div>'+(e.photos<5?'<p class="err">Boats need at least 5 photos to go live.</p>':'')+'</section>'
+     +'<section class="card"><h2 style="margin-bottom:6px">Safety equipment</h2>'+[['ext','Fire extinguisher'],['throw','Throwable flotation device'],['sound','Sound device (horn or whistle)'],['aid','First aid kit']].map(function(x){return '<label class="cb"><input type="checkbox" data-esafe="'+x[0]+'" '+(e.safe[x[0]]?'checked':'')+'> '+x[1]+'</label>'}).join('')+'</section></div></div>'
+     +'<div style="display:flex;gap:10px;margin-top:18px"><button class="btn" data-esave="1">Save changes</button><button class="btn o" data-ecancel="1">Cancel</button></div>';
+  }
   var PAGES={overview:pOverview,calendar:pCalendar,bookings:pBookings,boats:pBoats,extras:pExtras,customers:pCustomers,messages:pMessages,earnings:pEarnings,reviews:pReviews,verification:pVerification,settings:pSettings};
 
   // ------------- ONBOARDING -------------
@@ -1135,6 +1166,7 @@ tr:last-child td{border-bottom:0}
     var t=e.target;
     if(t.id==='draft')S.draft=t.value;else if(t.id==='rtxt')S.replyTxt=t.value;else if(t.id==='amsg')S.aMsg=t.value;
     else if(t.dataset.of)S.ob.f[t.dataset.of]=t.value;
+    else if(t.dataset.ef&&S.edit){S.edit[t.dataset.ef]=t.value;}
     else if(t.dataset.sf)S.setF[t.dataset.sf]=t.value;
     else if(t.id==='bkq'){S.bkQ=t.value;var p=t.selectionStart;render(true);var n=$$.getElementById('bkq');n.focus();n.setSelectionRange(p,p)}
     else if(t.id==='cq'){S.custQ=t.value;var p2=t.selectionStart;render(true);var n2=$$.getElementById('cq');n2.focus();n2.setSelectionRange(p2,p2)}
@@ -1149,6 +1181,8 @@ tr:last-child td{border-bottom:0}
     else if(d.exo!==undefined){S.exOver[+d.exo]=t.value}
     else if(d.nf){S.notif[d.nf]=t.checked}
     else if(d.safe){S.ob.safe[d.safe]=t.checked;render(true)}
+    else if(d.esafe&&S.edit){S.edit.safe[d.esafe]=t.checked}
+    else if(d.ef&&S.edit){S.edit[d.ef]=t.value}
     else if(d.achk){S.aChk[d.achk]=t.checked;render(true)}
   });
   function showTip(e){var b=e.target.closest&&e.target.closest('[data-tip]');if(b){var el=$$.getElementById('instip');if(el)el.textContent=b.dataset.tip}}
@@ -1156,15 +1190,35 @@ tr:last-child td{border-bottom:0}
   root.addEventListener('mouseover',function(e){var b=e.target.closest('[data-bar]');if(b){var p=b.dataset.bar.split('|');S.barTip=p[0]+': '+$(+p[1]);var el=root.querySelector('[aria-live="polite"]');if(el)el.textContent=S.barTip}});
   root.addEventListener('focusin',function(e){var b=e.target.closest('[data-bar]');if(b){var p=b.dataset.bar.split('|');S.barTip=p[0]+': '+$(+p[1]);var el=root.querySelector('[aria-live="polite"]');if(el)el.textContent=S.barTip}});
   root.addEventListener('click',function(e){
-    var t=e.target.closest('[data-savboat],[data-cancelboat],[data-skipboats],[data-addanother],[data-rmboat],[data-instab],[data-inslake],[data-flow],[data-page],[data-accept],[data-decline],[data-msgto],[data-ev],[data-block],[data-doblock],[data-cm],[data-bktab],[data-bk],[data-addboat],[data-boatf],[data-pause],[data-dup],[data-exsel],[data-addex],[data-saveex],[data-cust],[data-thr],[data-quick],[data-send],[data-bar],[data-rvtab],[data-reply],[data-postreply],[data-ver],[data-settab],[data-savesettings],[data-toast],[data-acct],[data-obnext],[data-obback],[data-obsubmit],[data-addphoto],[data-time],[data-tier],[data-pay],[data-atab],[data-asel],[data-aact],[data-tax],[data-exp]');
+    var t=e.target.closest('[data-editboat],[data-esave],[data-ecancel],[data-etime],[data-eop],[data-etier],[data-eaddphoto],[data-ermphoto],[data-savboat],[data-cancelboat],[data-skipboats],[data-addanother],[data-rmboat],[data-instab],[data-inslake],[data-flow],[data-page],[data-accept],[data-decline],[data-msgto],[data-ev],[data-block],[data-doblock],[data-cm],[data-bktab],[data-bk],[data-addboat],[data-boatf],[data-pause],[data-dup],[data-exsel],[data-addex],[data-saveex],[data-cust],[data-thr],[data-quick],[data-send],[data-bar],[data-rvtab],[data-reply],[data-postreply],[data-ver],[data-settab],[data-savesettings],[data-toast],[data-acct],[data-obnext],[data-obback],[data-obsubmit],[data-addphoto],[data-time],[data-tier],[data-pay],[data-atab],[data-asel],[data-aact],[data-tax],[data-exp]');
     if(!t)return;var d=t.dataset;
+    if(d.editboat){var eb=boatSt(d.editboat);S.editId=d.editboat;S.edit=boatData(eb);render();return}
+    if(d.ecancel){S.editId=null;S.edit=null;render();return}
+    if(d.etime){S.edit.times[d.etime]=!S.edit.times[d.etime];render(true);return}
+    if(d.eop){S.edit.op=d.eop;render(true);return}
+    if(d.etier){S.edit.tier=d.etier;render(true);return}
+    if(d.eaddphoto){S.edit.photos++;render(true);return}
+    if(d.ermphoto){S.edit.photos=Math.max(0,S.edit.photos-1);render(true);return}
+    if(d.esave){
+      var e=S.edit,b=boatSt(S.editId);
+      if(String(e.name).trim().length<2||!(+e.cap>0)||!(+e.half>0)||!(+e.full>0)){e.err='Enter a boat name, a passenger count and prices above $0.';render(true);window.scrollTo(0,0);return}
+      if(!Object.keys(e.times).some(function(k){return e.times[k]})){e.err='Pick at least one start time.';render(true);window.scrollTo(0,0);return}
+      var oldName=b.n;
+      b.n=String(e.name).trim();b.cap=e.cap;b.half=e.half;b.full=e.full;b.desc=e.desc;b.times=e.times;b.tier=e.tier;b.op=e.op;b.photos=e.photos;b.safe=e.safe;
+      var m=b.meta||'';
+      m=m.replace(/^[^·]*/,e.area+' ');
+      if(/\$[\d,]+ half \/ \$[\d,]+ full/.test(m))m=m.replace(/\$[\d,]+ half \/ \$[\d,]+ full/,'$'+Number(e.half)+' half / $'+Number(e.full)+' full');
+      if(b.st==='Draft')m=e.area+' · Last edited just now';
+      b.meta=m;
+      S.queue.forEach(function(q){if(q.id===b.id)q.t=b.n});
+      S.editId=null;S.edit=null;toast((oldName===b.n?b.n:'Boat')+' updated.');render();return}
     if(d.instab){S.insTab=d.instab;render(true);return}
     if(d.inslake){S.insLake=d.inslake;render(true);return}
     if(d.flow){setFlow(d.flow);return}
     if(d.accept){accept(d.accept);return}
     if(d.decline){decline(d.decline);return}
     if(d.msgto){var i=S.thr.map(function(x){return x.n}).indexOf(d.msgto);if(i<0){S.thr.unshift({n:d.msgto,i:d.msgto.split(' ').map(function(w){return w[0]}).join('').slice(0,2),c:'#CBE6EA',t:'Now',sub:'New conversation',un:false,m:[]});i=0}S.thrSel=i;S.thr[i].un=false;S.page='messages';render();return}
-    if(d.page){S.page=d.page;if(d.settab)S.setTab=d.settab;if(d.block==='1')S.blockOpen=true;render();return}
+    if(d.page){S.editId=null;S.edit=null;S.page=d.page;if(d.settab)S.setTab=d.settab;if(d.block==='1')S.blockOpen=true;render();return}
     if(d.settab){S.setTab=d.settab;render(true);return}
     if(d.toast){toast(d.toast);return}
     if(d.ev){var p=d.ev.split('|'),parts=p[1].split(' · ');var bn={'Bennington':"24' Bennington Pontoon",'MasterCraft':"22' MasterCraft XT22",'Harris':"26' Harris Grand Mariner"}[p[2]];var rq=S.reqs.filter(function(r){return r.d===+p[0]&&r.boat===bn&&r.st==='Request'}).length;S.calSel={d:+p[0],t:parts[0],name:parts[1],boat:bn,st:rq?'Request':parts[0].indexOf('Sam')>=0?'Cancelled':'Confirmed'};if(p[1].indexOf('Sam N.')>=0)S.calSel.st='Cancelled';render(true);return}
