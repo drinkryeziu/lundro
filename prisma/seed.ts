@@ -10,6 +10,12 @@ async function main() {
     create: { slug: 'lake-norman', name: 'Lake Norman', county: 'Mecklenburg' },
   });
 
+  await db.lake.upsert({
+    where: { slug: 'lake-wylie' },
+    update: {},
+    create: { slug: 'lake-wylie', name: 'Lake Wylie', state: 'NC', county: 'Gaston' },
+  });
+
   const admin = await db.user.upsert({
     where: { email: 'admin@lundro.test' },
     update: {},
