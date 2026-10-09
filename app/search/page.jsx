@@ -159,15 +159,7 @@ export default function Page() {
 <div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "'Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.45"}}>
 <header style={{"background": "#FFFFFF", "borderBottom": "1px solid #DCE5EA", "padding": "12px 24px", "display": "flex", "flexWrap": "wrap", "alignItems": "center", "gap": "12px 24px"}}>
 <Link href={"/"} aria-label={"Lundro home"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#0F2A3D"}}>
-<svg width={"36"} height={"36"} viewBox={"0 0 36 36"} aria-hidden={"true"}>
-<circle cx={"18"} cy={"18"} r={"18"} fill={"#0A6C7A"} />
-<circle cx={"24"} cy={"12"} r={"4"} fill={"#FFC94A"} />
-<path d={"M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1"} fill={"none"} stroke={"#FFFFFF"} strokeWidth={"2.4"} strokeLinecap={"round"} />
-<path d={"M9 26c2.5-2 4.5-2 7 0s4.5 2 7 0"} fill={"none"} stroke={"#FFFFFF"} strokeWidth={"2.4"} strokeLinecap={"round"} opacity={"0.7"} />
-</svg>
-<span className={"disp hide-sm"} style={{"fontWeight": "700", "fontSize": "26px"}}>
-{"Lundro"}
-</span>
+<img src="/brand/lundro-logo-horizontal.png" alt="Lundro boat rentals" style={{ height: 44, width: "auto", display: "block" }} />
 </Link>
 <form role={"search"} aria-label={"Search boats"} style={{"flex": "1 1 480px", "maxWidth": "760px", "display": "flex", "flexWrap": "wrap", "alignItems": "center", "gap": "4px", "background": "#FFFFFF", "border": "1px solid #7B8F9B", "borderRadius": "28px", "padding": "4px 4px 4px 8px", "boxShadow": "0 2px 10px rgba(15, 42, 61, 0.08)"}}>
 <label style={{"flex": "1.3 1 150px", "display": "flex", "flexDirection": "column", "padding": "4px 12px"}}>

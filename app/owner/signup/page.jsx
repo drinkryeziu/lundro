@@ -124,14 +124,7 @@ export default function Page() {
 <header style={{"background": "#FFFFFF", "borderBottom": "1px solid #DCE5EA"}}>
 <div style={{"maxWidth": "1100px", "margin": "0 auto", "padding": "0 24px", "display": "flex", "alignItems": "center", "gap": "12px", "minHeight": "72px", "flexWrap": "wrap"}}>
 <Link href={"/"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#0F2A3D"}} aria-label={"Lundro home"}>
-<svg width={"34"} height={"34"} viewBox={"0 0 36 36"} aria-hidden={"true"}>
-<circle cx={"18"} cy={"18"} r={"18"} fill={"#0A6C7A"} />
-<circle cx={"24"} cy={"12"} r={"4"} fill={"#FFC94A"} />
-<path d={"M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1"} fill={"none"} stroke={"#FFFFFF"} strokeWidth={"2.4"} strokeLinecap={"round"} />
-</svg>
-<span className={"disp"} style={{"fontWeight": "700", "fontSize": "24px"}}>
-{"Lundro"}
-</span>
+<img src="/brand/lundro-logo-horizontal.png" alt="Lundro boat rentals" style={{ height: 44, width: "auto", display: "block" }} />
 <span className={"muted hide-sm"} style={{"fontSize": "15px", "fontWeight": "600", "marginLeft": "4px"}}>
 {"for owners"}
 </span>

@@ -32,8 +32,7 @@ export default function OwnerDashboardLayout({ children }) {
       {/* Desktop sidebar */}
       <nav aria-label="Dashboard" className="flex flex-[0_0_248px] flex-col gap-1 border-r border-line bg-white px-3 py-4 max-[860px]:hidden">
         <Link href="/" aria-label="Lundro home" className="flex items-center gap-2.5 px-2 pb-3 pt-1 text-navy no-underline">
-          <Logo />
-          <span className="disp text-[22px] font-bold">Lundro</span>
+          <Logo height={52} />
         </Link>
         <div className="mb-2 flex items-center gap-2.5 rounded-[14px] border border-line p-2.5">
           <span aria-hidden="true" className="disp grid size-9 place-items-center rounded-[10px] bg-navy text-sm font-bold text-sun">C&amp;C</span>

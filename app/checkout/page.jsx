@@ -152,14 +152,7 @@ export default function Page() {
 </svg>
 </Link>
 <Link href={"/"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#0F2A3D"}} aria-label={"Lundro home"}>
-<svg width={"32"} height={"32"} viewBox={"0 0 36 36"} aria-hidden={"true"}>
-<circle cx={"18"} cy={"18"} r={"18"} fill={"#0A6C7A"} />
-<circle cx={"24"} cy={"12"} r={"4"} fill={"#FFC94A"} />
-<path d={"M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1"} fill={"none"} stroke={"#FFFFFF"} strokeWidth={"2.4"} strokeLinecap={"round"} />
-</svg>
-<span className={"disp"} style={{"fontWeight": "700", "fontSize": "22px"}}>
-{"Lundro"}
-</span>
+<img src="/brand/lundro-logo-horizontal.png" alt="Lundro boat rentals" style={{ height: 44, width: "auto", display: "block" }} />
 </Link>
 <span className={"muted"} style={{"marginLeft": "auto", "fontSize": "14px", "display": "flex", "alignItems": "center", "gap": "6px"}}>
 <svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"} aria-hidden={"true"}>

@@ -75,14 +75,7 @@ export default function Page() {
 <header style={{"background": "#0F2A3D", "color": "#fff"}}>
 <div style={{"maxWidth": "1360px", "margin": "0 auto", "padding": "0 24px", "display": "flex", "alignItems": "center", "gap": "14px", "minHeight": "64px", "flexWrap": "wrap"}}>
 <Link href={"/"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#fff"}} aria-label={"Lundro home"}>
-<svg width={"30"} height={"30"} viewBox={"0 0 36 36"} aria-hidden={"true"}>
-<circle cx={"18"} cy={"18"} r={"18"} fill={"#0A6C7A"} />
-<circle cx={"24"} cy={"12"} r={"4"} fill={"#FFC94A"} />
-<path d={"M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1"} fill={"none"} stroke={"#FFFFFF"} strokeWidth={"2.4"} strokeLinecap={"round"} />
-</svg>
-<span className={"disp"} style={{"fontWeight": "700", "fontSize": "22px"}}>
-{"Lundro"}
-</span>
+<span style={{ background: "#fff", borderRadius: 10, padding: "4px 12px", display: "inline-flex" }}><img src="/brand/lundro-logo-horizontal.png" alt="Lundro boat rentals" style={{ height: 40, width: "auto", display: "block" }} /></span>
 </Link>
 <span className={"badge"} style={{"background": "#FFC94A", "color": "#0F2A3D"}}>
 {"Admin"}

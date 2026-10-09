@@ -82,15 +82,7 @@ export default function Page() {
 <header style={{"background": "#FFFFFF", "borderBottom": "1px solid #DCE5EA"}}>
 <div className={"wrap"} style={{"display": "flex", "alignItems": "center", "gap": "12px", "minHeight": "72px", "flexWrap": "wrap"}}>
 <Link href={"/"} aria-label={"Lundro home"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#0F2A3D"}}>
-<svg width={"36"} height={"36"} viewBox={"0 0 36 36"} aria-hidden={"true"}>
-<circle cx={"18"} cy={"18"} r={"18"} fill={"#0A6C7A"} />
-<circle cx={"24"} cy={"12"} r={"4"} fill={"#FFC94A"} />
-<path d={"M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1"} fill={"none"} stroke={"#FFFFFF"} strokeWidth={"2.4"} strokeLinecap={"round"} />
-<path d={"M9 26c2.5-2 4.5-2 7 0s4.5 2 7 0"} fill={"none"} stroke={"#FFFFFF"} strokeWidth={"2.4"} strokeLinecap={"round"} opacity={"0.7"} />
-</svg>
-<span className={"disp"} style={{"fontWeight": "700", "fontSize": "26px"}}>
-{"Lundro"}
-</span>
+<img src="/brand/lundro-logo-horizontal.png" alt="Lundro boat rentals" style={{ height: 44, width: "auto", display: "block" }} />
 </Link>
 <nav aria-label={"Main"} style={{"marginLeft": "auto", "display": "flex", "alignItems": "center", "gap": "4px"}}>
 <Link href={"/search"} className={"nav-a hide-sm"}>
