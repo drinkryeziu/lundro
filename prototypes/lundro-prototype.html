@@ -1,21 +1,13 @@
 <title>Lundro Clickable Prototype</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* Fellix (licensed): add the .woff2 files to /fonts. See public/fonts/README.md */
-@font-face{font-family:'Fellix';font-style:normal;font-weight:400;font-display:swap;src:local('Fellix Regular'),local('Fellix-Regular'),url('/fonts/Fellix-Regular.woff2') format('woff2'),url('../public/fonts/Fellix-Regular.woff2') format('woff2')}
-@font-face{font-family:'Fellix';font-style:normal;font-weight:500;font-display:swap;src:local('Fellix Medium'),local('Fellix-Medium'),url('/fonts/Fellix-Medium.woff2') format('woff2'),url('../public/fonts/Fellix-Medium.woff2') format('woff2')}
-@font-face{font-family:'Fellix';font-style:normal;font-weight:600;font-display:swap;src:local('Fellix SemiBold'),local('Fellix-SemiBold'),url('/fonts/Fellix-SemiBold.woff2') format('woff2'),url('../public/fonts/Fellix-SemiBold.woff2') format('woff2')}
-@font-face{font-family:'Fellix';font-style:normal;font-weight:700;font-display:swap;src:local('Fellix Bold'),local('Fellix-Bold'),url('/fonts/Fellix-Bold.woff2') format('woff2'),url('../public/fonts/Fellix-Bold.woff2') format('woff2')}
 
 /* One prototype, two apps: renter site and owner/admin console each render in their own shadow root so their styles never collide. */
 :root{--navy:#0F2A3D;--sun:#FFC94A;color-scheme:light}
 body{margin:0;background:#F4F8F9;color:#0F2A3D}
 [hidden]{display:none!important}
 #renter,#owner{display:block;min-height:100vh}
-.sw{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--navy);color:#fff;border-radius:999px;padding:5px;display:flex;gap:2px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.3);font:600 13px 'Fellix','Figtree',system-ui,sans-serif;max-width:calc(100vw - 16px);overflow-x:auto}
-.sw button{border:0;background:none;color:#fff;border-radius:999px;padding:9px 14px;font:700 13px 'Fellix','Figtree',system-ui,sans-serif;white-space:nowrap;cursor:pointer;min-height:36px}
+.sw{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--navy);color:#fff;border-radius:999px;padding:5px;display:flex;gap:2px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.3);font:600 13px Arial,Helvetica,sans-serif;max-width:calc(100vw - 16px);overflow-x:auto}
+.sw button{border:0;background:none;color:#fff;border-radius:999px;padding:9px 14px;font:700 13px Arial,Helvetica,sans-serif;white-space:nowrap;cursor:pointer;min-height:36px}
 .sw button[aria-pressed="true"]{background:var(--sun);color:var(--navy)}
 .sw .out{margin-left:6px;background:#1c4258;border-left:1px solid #3d566a}
 .sw .out:hover{background:#B42318}
@@ -30,7 +22,7 @@ body{margin:0;background:#F4F8F9;color:#0F2A3D}
 :host{display:block;
   --bg:#F4F8F9; --white:#FFFFFF; --ink:#0F2A3D; --muted:#4B6272; --line:#DCE5EA; --teal:#0A6C7A; --teal-soft:#E3F2F4;
   --navy:#0F2A3D; --sun:#FFC94A; --rust:#C2410C; --ok:#14532D; --ok-bg:#DDF3E4; --amber-bg:#FFF1C4; --sand:#F3EBDD;
-  --disp:'Fellix','Bricolage Grotesque',Georgia,serif; --body:'Fellix','Figtree',system-ui,sans-serif; color-scheme:light;
+  --disp:Arial,Helvetica,sans-serif; --body:Arial,Helvetica,sans-serif; color-scheme:light;
 }
 *{box-sizing:border-box}
 .app{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);padding-inline:0;padding-block:0}
@@ -239,7 +231,7 @@ dl.s{display:grid;grid-template-columns:1fr 1fr;margin:0;font-size:14px}dl.s dt,
 :host{display:block;
   --bg:#F4F8F9; --white:#FFFFFF; --ink:#0F2A3D; --muted:#4B6272; --line:#DCE5EA; --teal:#0A6C7A; --teal-soft:#E3F2F4; --navy:#0F2A3D;
   --sun:#FFC94A; --rust:#9A3412; --peach:#FCD9C4; --ok:#14532D; --ok-bg:#DDF3E4; --amber:#6B4E00; --amber-bg:#FFF4C9; --red:#B42318; --red-bg:#FDE8E6; --violet:#4C1D95; --violet-bg:#EDE4FA;
-  --disp:'Fellix','Bricolage Grotesque',Georgia,serif; --body:'Fellix','Figtree',system-ui,sans-serif; color-scheme:light;
+  --disp:Arial,Helvetica,sans-serif; --body:Arial,Helvetica,sans-serif; color-scheme:light;
 }
 *{box-sizing:border-box}
 .app{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);padding-inline:0;padding-block:0}
@@ -610,7 +602,7 @@ tr:last-child td{border-bottom:0}
      +'<div class="blk"><h2>Captain or self-drive</h2><div class="opts2"><div class="xcard" style="display:block"><b>Add a captain · $50 / hour</b><small>A USCG-licensed captain drives, so no boater education card is needed. Add it at checkout.</small></div><div class="xcard" style="display:block"><b>Drive it yourself</b><small>Driver must be 25 or older. If born on or after Jan 1, 1988, bring your NC boater education card.</small></div></div></div>'
      +'<div class="blk"><h2>Extras you can add</h2><div class="opts2">'+exs+'</div></div>'
      +'<div class="blk"><h2>Specs</h2><dl class="s"><dt>Make and model</dt><dd>'+b.t.replace(/^\d+'\s*/,'')+'</dd><dt>Year</dt><dd>2022</dd><dt>Length</dt><dd>'+(parseInt(b.t)||'—')+' ft</dd><dt>Max passengers (capacity plate)</dt><dd>'+b.g+'</dd><dt>Engine</dt><dd>Yamaha 150 hp outboard</dd></dl></div>'
-     +'<div class="blk"><h2>Where you’ll pick up</h2><svg viewBox="0 0 400 150" style="width:100%;border-radius:16px;display:block" role="img" aria-label="Approximate pickup area"><rect width="400" height="150" fill="#E6EEDF"/><path d="M110 0C130 30 120 60 110 80c-30 6-70 14-90 16 30 10 70 14 94 18-4 14-6 24-6 36h40c-8-30-8-50 6-70 20-8 40-18 60-30 16-8 26-30 28-50Z" fill="#B9DCEB"/><circle cx="150" cy="82" r="38" fill="#7FA9A8" opacity=".55"/><path d="M340 0V150" stroke="#fff" stroke-width="5"/><text x="230" y="62" font-size="12" fill="#4B6272" font-family="Figtree,sans-serif">'+b.area+'</text></svg><p style="font-size:14px;margin:10px 0 0"><b>Marina in '+b.area+', '+LAKES[b.lake].name+'.</b> Approximate area shown. You’ll get the exact address, slip number and parking notes after booking.</p></div>'
+     +'<div class="blk"><h2>Where you’ll pick up</h2><svg viewBox="0 0 400 150" style="width:100%;border-radius:16px;display:block" role="img" aria-label="Approximate pickup area"><rect width="400" height="150" fill="#E6EEDF"/><path d="M110 0C130 30 120 60 110 80c-30 6-70 14-90 16 30 10 70 14 94 18-4 14-6 24-6 36h40c-8-30-8-50 6-70 20-8 40-18 60-30 16-8 26-30 28-50Z" fill="#B9DCEB"/><circle cx="150" cy="82" r="38" fill="#7FA9A8" opacity=".55"/><path d="M340 0V150" stroke="#fff" stroke-width="5"/><text x="230" y="62" font-size="12" fill="#4B6272" font-family="Arial,Helvetica,sans-serif">'+b.area+'</text></svg><p style="font-size:14px;margin:10px 0 0"><b>Marina in '+b.area+', '+LAKES[b.lake].name+'.</b> Approximate area shown. You’ll get the exact address, slip number and parking notes after booking.</p></div>'
      +'<div class="blk"><h2>Policies</h2><div class="pol"><div><b>Cancellation: Moderate</b>Full refund, tax included, up to 5 days before your trip. 50% after that.</div><div><b>Weather</b>If the owner cancels for storms or high wind, you get a full refund or a free reschedule.</div><div><b>Fuel</b>Leaves full. You pay for fuel used, charged after the trip at the marina rate.</div><div><b>Security deposit: $500</b>A hold on your card, released within 3 days after the trip if there’s no damage.</div><div><b>House rules</b>Pets welcome · No smoking · BYOB allowed, no glass</div></div></div>'
      +'<div class="blk"><h2>Safety equipment on board</h2><div class="safe"><span>✓ '+b.g+' adult life jackets</span><span>✓ 4 child life jackets</span><span>✓ Fire extinguisher</span><span>✓ Throwable flotation device</span><span>✓ Horn (sound device)</span><span>✓ First aid kit</span></div></div>'
      +'<div class="blk" id="reviews"><h2><span style="color:#D99A00">★</span> '+(b.r?b.r.toFixed(1)+' · '+b.n+' reviews':'No reviews yet')+'</h2>'+(b.r?'<div class="revs">'+rv+'</div><p><button class="btn o sm" data-toast="All reviews load in the full app.">Show all '+b.n+' reviews</button></p>':'<p class="muted">This boat is new on Lundro. Be the first to review it.</p>')+'</div>'

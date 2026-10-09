@@ -156,7 +156,7 @@ export default function Page() {
     <>
       <title>Lundro search results · Lundro</title>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-<div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "'Fellix','Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.45"}}>
+<div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "Arial,Helvetica,sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.45"}}>
 <header style={{"background": "#FFFFFF", "borderBottom": "1px solid #DCE5EA", "padding": "12px 24px", "display": "flex", "flexWrap": "wrap", "alignItems": "center", "gap": "12px 24px"}}>
 <Link href={"/"} aria-label={"Lundro home"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#0F2A3D"}}>
 <img src="/brand/lundro-logo-horizontal.png" alt="Lundro boat rentals" style={{ height: 44, width: "auto", display: "block" }} />
@@ -447,25 +447,25 @@ export default function Page() {
 <path d={"M0 262 C150 250 250 300 600 290"} fill={"none"} stroke={"#FFFFFF"} strokeWidth={"6"} />
 <path d={"M0 612 C200 618 350 646 600 626"} fill={"none"} stroke={"#FFFFFF"} strokeWidth={"6"} />
 <path d={"M300 40 C320 90 340 120 330 170 C360 190 420 180 450 210 C420 230 370 225 350 250 C365 300 400 320 430 360 C400 375 360 350 345 370 C350 420 380 450 420 470 C440 480 470 470 480 495 C450 510 400 500 375 520 C380 570 400 610 390 660 C385 720 395 780 360 850 C340 820 330 780 320 740 C290 720 240 730 200 715 C230 695 280 690 300 670 C295 620 270 590 230 580 C190 575 160 590 130 570 C165 550 220 555 255 540 C270 500 260 460 230 440 C200 430 170 445 150 420 C180 405 230 410 260 395 C275 350 270 300 250 270 C230 250 200 255 185 235 C215 220 260 230 285 215 C295 160 280 100 300 40 Z"} fill={"#B9DCEB"} stroke={"#9CC9DE"} strokeWidth={"2"} />
-<text x={"292"} y={"470"} fill={"#2C6A84"} fontFamily={"Fellix, Figtree, sans-serif"} fontSize={"17"} fontStyle={"italic"} fontWeight={"600"} transform={"rotate(-80 292 470)"}>
+<text x={"292"} y={"470"} fill={"#2C6A84"} fontFamily={"Arial, Helvetica, sans-serif"} fontSize={"17"} fontStyle={"italic"} fontWeight={"600"} transform={"rotate(-80 292 470)"}>
 {"Lake Norman"}
 </text>
-<text x={"452"} y={"252"} fill={"#3D5160"} fontFamily={"Fellix, Figtree, sans-serif"} fontSize={"15"} fontWeight={"600"}>
+<text x={"452"} y={"252"} fill={"#3D5160"} fontFamily={"Arial, Helvetica, sans-serif"} fontSize={"15"} fontWeight={"600"}>
 {"Mooresville"}
 </text>
-<text x={"440"} y={"440"} fill={"#3D5160"} fontFamily={"Fellix, Figtree, sans-serif"} fontSize={"15"} fontWeight={"600"}>
+<text x={"440"} y={"440"} fill={"#3D5160"} fontFamily={"Arial, Helvetica, sans-serif"} fontSize={"15"} fontWeight={"600"}>
 {"Davidson"}
 </text>
-<text x={"420"} y={"600"} fill={"#3D5160"} fontFamily={"Fellix, Figtree, sans-serif"} fontSize={"15"} fontWeight={"600"}>
+<text x={"420"} y={"600"} fill={"#3D5160"} fontFamily={"Arial, Helvetica, sans-serif"} fontSize={"15"} fontWeight={"600"}>
 {"Cornelius"}
 </text>
-<text x={"420"} y={"790"} fill={"#3D5160"} fontFamily={"Fellix, Figtree, sans-serif"} fontSize={"15"} fontWeight={"600"}>
+<text x={"420"} y={"790"} fill={"#3D5160"} fontFamily={"Arial, Helvetica, sans-serif"} fontSize={"15"} fontWeight={"600"}>
 {"Huntersville"}
 </text>
-<text x={"96"} y={"650"} fill={"#3D5160"} fontFamily={"Fellix, Figtree, sans-serif"} fontSize={"15"} fontWeight={"600"}>
+<text x={"96"} y={"650"} fill={"#3D5160"} fontFamily={"Arial, Helvetica, sans-serif"} fontSize={"15"} fontWeight={"600"}>
 {"Denver"}
 </text>
-<text x={"96"} y={"210"} fill={"#3D5160"} fontFamily={"Fellix, Figtree, sans-serif"} fontSize={"15"} fontWeight={"600"}>
+<text x={"96"} y={"210"} fill={"#3D5160"} fontFamily={"Arial, Helvetica, sans-serif"} fontSize={"15"} fontWeight={"600"}>
 {"Sherrills Ford"}
 </text>
 </svg>

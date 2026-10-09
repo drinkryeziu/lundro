@@ -120,7 +120,7 @@ export default function Page() {
     <>
       <title>List your boat on Lundro · Lundro</title>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-<div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "'Fellix','Figtree', system-ui, sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.5"}}>
+<div style={{"minHeight": "100%", "background": "#F6F9FA", "fontFamily": "Arial,Helvetica,sans-serif", "color": "#0F2A3D", "fontSize": "16px", "lineHeight": "1.5"}}>
 <header style={{"background": "#FFFFFF", "borderBottom": "1px solid #DCE5EA"}}>
 <div style={{"maxWidth": "1100px", "margin": "0 auto", "padding": "0 24px", "display": "flex", "alignItems": "center", "gap": "12px", "minHeight": "72px", "flexWrap": "wrap"}}>
 <Link href={"/"} style={{"display": "flex", "alignItems": "center", "gap": "10px", "textDecoration": "none", "color": "#0F2A3D"}} aria-label={"Lundro home"}>

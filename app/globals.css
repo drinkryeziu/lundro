@@ -3,11 +3,6 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
-/* Fellix (licensed): add the .woff2 files to public/fonts/. See public/fonts/README.md */
-@font-face{font-family:'Fellix';font-style:normal;font-weight:400;font-display:swap;src:local('Fellix Regular'),local('Fellix-Regular'),url('/fonts/Fellix-Regular.woff2') format('woff2')}
-@font-face{font-family:'Fellix';font-style:normal;font-weight:500;font-display:swap;src:local('Fellix Medium'),local('Fellix-Medium'),url('/fonts/Fellix-Medium.woff2') format('woff2')}
-@font-face{font-family:'Fellix';font-style:normal;font-weight:600;font-display:swap;src:local('Fellix SemiBold'),local('Fellix-SemiBold'),url('/fonts/Fellix-SemiBold.woff2') format('woff2')}
-@font-face{font-family:'Fellix';font-style:normal;font-weight:700;font-display:swap;src:local('Fellix Bold'),local('Fellix-Bold'),url('/fonts/Fellix-Bold.woff2') format('woff2')}
 
 @theme {
   --color-navy: #0F2A3D;
@@ -23,8 +18,8 @@
   --color-danger-bg: #FDE2E1;
   --color-danger-ink: #8E1B13;
   --color-error: #B42318;
-  --font-sans: 'Fellix','Figtree', system-ui, sans-serif;
-  --font-display: 'Fellix','Bricolage Grotesque', sans-serif;
+  --font-sans: Arial,Helvetica,sans-serif;
+  --font-display: Arial,Helvetica,sans-serif;
 }
 
 @layer base {
@@ -34,7 +29,7 @@
   a:hover{color:#08525D}
   button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
   :focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
-  .disp{font-family:'Fellix','Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+  .disp{font-family:Arial,Helvetica,sans-serif;letter-spacing:-0.02em}
   .muted{color:#4A5F6E}
 }
 
