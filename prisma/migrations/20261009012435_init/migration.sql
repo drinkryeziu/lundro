@@ -11,7 +11,7 @@ CREATE TYPE "VerificationStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
 CREATE TYPE "DocumentType" AS ENUM ('GOVERNMENT_ID', 'REGISTRATION', 'INSURANCE', 'CAPTAIN_LICENSE', 'BUSINESS_LICENSE');
 
 -- CreateEnum
-CREATE TYPE "BoatType" AS ENUM ('PONTOON', 'BOWRIDER', 'DECK_BOAT', 'WAKE_BOAT', 'FISHING', 'YACHT', 'KAYAK_PADDLE');
+CREATE TYPE "BoatType" AS ENUM ('PONTOON', 'SKI_WAKE', 'CENTER_CONSOLE', 'SAILBOAT', 'JET_SKI');
 
 -- CreateEnum
 CREATE TYPE "BoatStatus" AS ENUM ('DRAFT', 'PENDING_REVIEW', 'ACTIVE', 'PAUSED');
@@ -95,7 +95,12 @@ CREATE TABLE "Boat" (
     "ownerId" TEXT NOT NULL,
     "lakeId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "area" TEXT,
     "type" "BoatType" NOT NULL,
+    "instantBook" BOOLEAN NOT NULL DEFAULT true,
+    "ratingAvg" DOUBLE PRECISION,
+    "reviewCount" INTEGER NOT NULL DEFAULT 0,
+    "listingMeta" JSONB,
     "year" INTEGER,
     "make" TEXT,
     "model" TEXT,

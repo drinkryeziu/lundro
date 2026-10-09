@@ -1,6 +1,6 @@
 'use client';
 // Generated from source/Search.dc.html by tools/convert.mjs. Edit the source or this file; logic is unchanged.
-import { Fragment, useReducer, useRef } from 'react';
+import { Fragment, useEffect, useReducer, useRef } from 'react';
 import Link from 'next/link';
 import { DCLogic } from '@/lib/dc';
 
@@ -37,6 +37,14 @@ class Component extends DCLogic {
       ['b13', "22' Sun Tracker Fishin' Barge", 'Denver', 8, 260, 450, 4.3, 19, 0, 1, 0, 'fishing cooler', 'pontoon', 8.1, 41, 58, 'morning', '#0F2A3D'],
       ['b14', "25' Bennington QX", 'Cornelius', 12, 650, 1150, 5.0, 7, 1, 0, 1, 'tube sup mat cooler speaker', 'pontoon', 2.9, 58, 67, 'clear', '#0A6C7A']
     ];
+    if (this.remote) {
+      return this.remote.map((r, i) => {
+        const p = P[r.palette] || P.midday;
+        return { id: r.id, title: r.title, area: r.area, guests: r.guests, half: r.half, full: r.full, rating: r.rating, reviews: r.reviews,
+          captain: r.captain, self: r.self, instant: r.instant, extras: r.extras, type: r.type, dist: r.dist, x: r.x, y: r.y,
+          sky: p[0], sun: p[1], hillFar: p[2], hillNear: p[3], water: p[4], accent: r.accent, boatX: 90 + (i * 23) % 80, sunX: i % 2 ? 80 : 320, order: i };
+      });
+    }
     return R.map((r, i) => {
       const p = P[r[16]];
       return { id: r[0], title: r[1], area: r[2], guests: r[3], half: r[4], full: r[5], rating: r[6], reviews: r[7],
@@ -116,7 +124,7 @@ class Component extends DCLogic {
       sort: s.sort, setSort: (e) => this.upd({ sort: e.target.value }),
       loading: s.loading, showEmpty: !s.loading && n === 0, showList: !s.loading && n > 0,
       results, suggest, skeletons: [1, 2, 3, 4],
-      pins, hasSel: !!selB, sel: selB ? { x: selB.x, y: selB.y, title: selB.title, area: selB.area, guests: selB.guests, price: selB.price, per: selB.per } : {},
+      pins, hasSel: !!selB, sel: selB ? { id: selB.id, x: selB.x, y: selB.y, title: selB.title, area: selB.area, guests: selB.guests, price: selB.price, per: selB.per } : {},
       listCls: isMap ? 'off' : '', mapCls: isMap ? 'on' : '',
       listPressed: isMap ? 'false' : 'true', mapPressed: isMap ? 'true' : 'false',
       listBtnBg: isMap ? 'transparent' : '#FFFFFF', listBtnFg: isMap ? '#FFFFFF' : '#0F2A3D',
@@ -138,6 +146,11 @@ export default function Page() {
   const ref = useRef(null);
   if (!ref.current) ref.current = new Component({ ...DEFAULT_PROPS });
   ref.current._update = force;
+  useEffect(() => {
+    fetch('/api/boats').then((r) => (r.ok ? r.json() : null)).then((j) => {
+      if (j?.boats?.length) { ref.current.remote = j.boats; ref.current.setState({}); }
+    }).catch(() => {});
+  }, []);
   const s0 = ref.current.renderVals();
   return (
     <>
@@ -336,7 +349,7 @@ export default function Page() {
 <div style={{"display": "grid", "gridTemplateColumns": "repeat(auto-fill, minmax(280px, 1fr))", "gap": "32px 20px", "marginTop": "24px"}}>
 {(s0?.results || []).map((__it, __k) => { const s1 = { ...s0, "item": __it }; return (<Fragment key={__k}>
 <article style={{"position": "relative"}}>
-<Link href={"/boat"} style={{"display": "flex", "flexDirection": "column", "gap": "12px", "textDecoration": "none", "color": "#0F2A3D"}}>
+<Link href={`/boat?id=${s1?.item?.id}`} style={{"display": "flex", "flexDirection": "column", "gap": "12px", "textDecoration": "none", "color": "#0F2A3D"}}>
 <span style={{"position": "relative", "display": "block", "borderRadius": "18px", "overflow": "hidden", "aspectRatio": "4 / 3"}}>
 <svg viewBox={"0 0 400 300"} preserveAspectRatio={"xMidYMid slice"} aria-hidden={"true"} style={{"position": "absolute", "inset": "0", "width": "100%", "height": "100%", "display": "block"}}>
 <rect width={"400"} height={"300"} fill={s1?.item?.sky} />
@@ -470,7 +483,7 @@ export default function Page() {
 </button>
 </Fragment>); })}
 {s0?.hasSel ? (<>
-<Link href={"/boat"} style={{"position": "absolute", "left": `${s0?.sel?.x ?? ""}%`, "top": `${s0?.sel?.y ?? ""}%`, "transform": "translate(-50%, -100%)", "marginTop": "-26px", "width": "270px", "background": "#fff", "borderRadius": "16px", "boxShadow": "0 8px 28px rgba(15,42,61,.28)", "textDecoration": "none", "color": "#0F2A3D", "padding": "12px 14px", "zIndex": "5", "display": "block"}}>
+<Link href={`/boat?id=${s0?.sel?.id}`} style={{"position": "absolute", "left": `${s0?.sel?.x ?? ""}%`, "top": `${s0?.sel?.y ?? ""}%`, "transform": "translate(-50%, -100%)", "marginTop": "-26px", "width": "270px", "background": "#fff", "borderRadius": "16px", "boxShadow": "0 8px 28px rgba(15,42,61,.28)", "textDecoration": "none", "color": "#0F2A3D", "padding": "12px 14px", "zIndex": "5", "display": "block"}}>
 <span style={{"display": "block", "fontWeight": "700"}}>
 {s0?.sel?.title}
 </span>

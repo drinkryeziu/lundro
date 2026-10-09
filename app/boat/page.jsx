@@ -1,11 +1,11 @@
 'use client';
 // Generated from source/Boat.dc.html by tools/convert.mjs. Edit the source or this file; logic is unchanged.
-import { Fragment, useReducer, useRef } from 'react';
+import { Fragment, useEffect, useReducer, useRef } from 'react';
 import Link from 'next/link';
 import { DCLogic } from '@/lib/dc';
 
 class Component extends DCLogic {
-  constructor(p) { super(p); this.state = { len: 'half', time: '9:00 AM', saved: false, lb: false, ph: 0, msg: false, sent: false }; }
+  constructor(p) { super(p); this.state = { bid: 'b1', bd: null, len: 'half', time: '9:00 AM', saved: false, lb: false, ph: 0, msg: false, sent: false }; }
   renderVals() {
     const s = this.state;
     const pals = [
@@ -18,7 +18,8 @@ class Component extends DCLogic {
     const gallery = pals.map((p, i) => Object.assign({}, p, { n: i + 1, cls: i === 0 ? '' : 'small', row: i === 0 ? 'span 2' : 'auto', open: () => this.setState({ lb: true, ph: i }) }));
     const times = s.len === 'half' ? ['9:00 AM', '1:30 PM'] : ['9:00 AM'];
     const time = times.indexOf(s.time) >= 0 ? s.time : times[0];
-    const price = s.len === 'half' ? 350 : 600;
+    const hp = s.bd?.half ?? 350, fp = s.bd?.full ?? 600;
+    const price = s.len === 'half' ? hp : fp;
     const ic = {
       tube: 'M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm0 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',
       board: 'M7 20L17 4M9 20h-3M18 4h-3',
@@ -28,6 +29,7 @@ class Component extends DCLogic {
       mat: 'M3 10h18v5H3zM6 10v5M18 10v5'
     };
     return {
+      bid: s.bid, bd: s.bd,
       gallery, openFirst: () => this.setState({ lb: true, ph: 0 }),
       lightbox: s.lb, lb: pals[s.ph % 5], photoN: s.ph + 1,
       closeLb: () => this.setState({ lb: false }),
@@ -35,7 +37,7 @@ class Component extends DCLogic {
       savedPressed: s.saved ? 'true' : 'false', heartFill: s.saved ? '#C2410C' : 'none', saveLabel: s.saved ? 'Saved' : 'Save',
       toggleSave: () => this.setState({ saved: !s.saved }),
       price, lenLabel: s.len === 'half' ? 'half day' : 'full day', hours: s.len === 'half' ? '4 hrs' : '8 hrs', timeLabel: time,
-      lens: [['half', 'Half day', '4 hrs', 350], ['full', 'Full day', '8 hrs', 600]].map(([v, l, h, p]) => ({ label: l, hours: h, price: p, checked: s.len === v, border: s.len === v ? '2px solid #0A6C7A' : '1px solid #C9D6DD', bg: s.len === v ? '#E3F2F4' : '#fff', pick: () => this.setState({ len: v }) })),
+      lens: [['half', 'Half day', '4 hrs', hp], ['full', 'Full day', '8 hrs', fp]].map(([v, l, h, p]) => ({ label: l, hours: h, price: p, checked: s.len === v, border: s.len === v ? '2px solid #0A6C7A' : '1px solid #C9D6DD', bg: s.len === v ? '#E3F2F4' : '#fff', pick: () => this.setState({ len: v }) })),
       times: times.map(t => ({ label: t, pressed: t === time ? 'true' : 'false', border: t === time ? '2px solid #0F2A3D' : '1px solid #7B8F9B', bg: t === time ? '#0F2A3D' : '#fff', fg: t === time ? '#fff' : '#0F2A3D', pick: () => this.setState({ time: t }) })),
       extras: [
         { name: 'Tube with rope', desc: '1 to 2 riders, tow rope included', price: 40, per: 'per booking', icon: ic.tube },
@@ -66,6 +68,11 @@ export default function Page() {
   const ref = useRef(null);
   if (!ref.current) ref.current = new Component({ ...DEFAULT_PROPS });
   ref.current._update = force;
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('id') || 'b1';
+    ref.current.setState({ bid: id });
+    fetch('/api/boats/' + id).then((r) => (r.ok ? r.json() : null)).then((j) => { if (j) ref.current.setState({ bd: j.boat }); }).catch(() => {});
+  }, []);
   const s0 = ref.current.renderVals();
   return (
     <>
@@ -114,13 +121,13 @@ export default function Page() {
 </span>
 {" "}
 <span aria-current={"page"}>
-{"24' Bennington Pontoon"}
+{s0?.bd?.title ?? "24' Bennington Pontoon"}
 </span>
 </nav>
 <div style={{"display": "flex", "flexWrap": "wrap", "justifyContent": "space-between", "alignItems": "flex-end", "gap": "12px", "marginTop": "12px"}}>
 <div>
 <h1 className={"disp"} style={{"margin": "0", "fontSize": "38px", "lineHeight": "1.1"}}>
-{"24' Bennington Pontoon"}
+{s0?.bd?.title ?? "24' Bennington Pontoon"}
 </h1>
 <p style={{"margin": "8px 0 0", "display": "flex", "flexWrap": "wrap", "alignItems": "center", "gap": "8px 14px", "fontSize": "15px"}}>
 <span style={{"display": "inline-flex", "alignItems": "center", "gap": "4px", "fontWeight": "700"}}>
@@ -558,7 +565,7 @@ export default function Page() {
 </option>
 </select>
 </div>
-<Link href={"/checkout"} className={"btn btn-p"} style={{"width": "100%", "marginTop": "20px", "minHeight": "54px", "fontSize": "17px"}}>
+<Link href={`/checkout?boat=${s0?.bid}`} className={"btn btn-p"} style={{"width": "100%", "marginTop": "20px", "minHeight": "54px", "fontSize": "17px"}}>
 {"Reserve"}
 </Link>
 <p className={"muted"} style={{"margin": "10px 0 0", "textAlign": "center", "fontSize": "14px"}}>
@@ -599,7 +606,7 @@ export default function Page() {
 {"Sat, Jun 12 · "}{s0?.timeLabel}
 </span>
 </span>
-<Link href={"/checkout"} className={"btn btn-p"}>
+<Link href={`/checkout?boat=${s0?.bid}`} className={"btn btn-p"}>
 {"Reserve"}
 </Link>
 </div>

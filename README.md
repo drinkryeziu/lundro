@@ -9,7 +9,7 @@ Boat rental marketplace for NC lakes, starting with Lake Norman. 19 screens: ren
 
 See also: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md), [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Database: see [docs/DATABASE.md](docs/DATABASE.md) (Postgres + Prisma).
+API and auth: [docs/API.md](docs/API.md). Database: see [docs/DATABASE.md](docs/DATABASE.md) (Postgres + Prisma).
 
 ## Routes
 `/` home, `/lake-norman`, `/search`, `/boat`, `/checkout`, `/confirmation`, `/owner/signup`,
@@ -24,4 +24,4 @@ verification, settings), `/admin/review`.
 - `design-source/` is the original canvas files, kept for reference only. The pages in `app/` are now the source of truth.
 
 ## Not done yet
-Screen bodies still use the design's inline styles and per-page CSS (only the shared pieces use Tailwind), and page logic is still plain JS in each page.
+Payments (Stripe), email, uploads, and wiring the owner dashboard/admin screens to the API. Screen bodies still use the design's inline styles and per-page CSS (only the shared pieces use Tailwind), and page logic is still plain JS in each page.

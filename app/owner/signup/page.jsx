@@ -89,7 +89,18 @@ class Component extends DCLogic {
       review, payClause: payDoneish ? '' : ' and your payouts are set up',
       canBack: idx > 0, showNext: s.step !== 3 && s.step !== 5,
       back: () => go(flow[idx - 1]), next: () => go(flow[idx + 1]),
-      submit: () => this.setState({ submitted: true }),
+      password: s.pw || '', setPw: ev => this.setState({ pw: ev.target.value }), submitError: s.submitError || '',
+      submit: async () => {
+        try {
+          const r = await fetch('/api/owner/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+            name: f.name, email: f.email, phone: f.phone, password: s.pw, type: s.acct, companyName: s.acct === 'company' ? f.name : undefined, address: f.addr,
+            boat: { name: 'Boat ' + f.hin, halfPrice: f.halfPrice, fullPrice: f.fullPrice, startTimes: Object.keys(s.times).filter(t => s.times[t]),
+              safetyGear: Object.keys(s.safe).filter(k => s.safe[k]) } }) });
+          const j = await r.json();
+          if (!r.ok) throw new Error(j.error || 'Signup failed');
+          this.setState({ submitted: true, submitError: '' });
+        } catch (err) { this.setState({ submitError: err.message }); }
+      },
       payLine: payDoneish ? '◷ Identity check by Stripe' : '! Set up payouts so your boat can go live',
       addAnother: () => this.setState({ submitted: false, step: 3, sub: 0, subMax: 0, photos: 0, photoTried: false })
     };
@@ -205,6 +216,12 @@ export default function Page() {
 {"Email"}
 </label>
 <input id={"o-email"} type={"email"} className={"inp"} value={s0?.f?.email} onChange={s0?.set?.email} />
+</div>
+<div>
+<label htmlFor={"o-pw"} className={"lbl"}>
+{"Password (8+ characters)"}
+</label>
+<input id={"o-pw"} type={"password"} autoComplete={"new-password"} className={"inp"} value={s0?.password} onChange={s0?.setPw} />
 </div>
 <div>
 <label htmlFor={"o-phone"} className={"lbl"}>
@@ -980,6 +997,7 @@ export default function Page() {
 <button type={"button"} className={"btn btn-p"} onClick={s0?.submit} style={{"minWidth": "200px"}}>
 {"Submit for review"}
 </button>
+{s0?.submitError ? (<p role={"alert"} style={{"color": "#B42318", "fontWeight": "600"}}>{s0.submitError}</p>) : null}
 </>) : null}
 </div>
 </>) : null}

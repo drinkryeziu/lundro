@@ -1,6 +1,6 @@
 'use client';
 // Generated from source/Checkout.dc.html by tools/convert.mjs. Edit the source or this file; logic is unchanged.
-import { Fragment, useReducer, useRef } from 'react';
+import { Fragment, useEffect, useReducer, useRef } from 'react';
 import Link from 'next/link';
 import { DCLogic } from '@/lib/dc';
 import { computeQuote, formatMoney, CAPTAIN_RATE_PER_HOUR } from '@/lib/pricing';
@@ -10,7 +10,8 @@ class Component extends DCLogic {
     super(p);
     this.state = { step: 1, maxStep: 1, len: 'half', time: '9:00 AM', q: { tube: 1, sup: 0, mat: 0, cooler: 1, speaker: 0, hour: 0 }, captain: true,
       f: { name: '', email: '', phone: '', age: false, card: '', pre88: false, orgName: '', terms: false }, tried4: false, tried6: false,
-      org: false, orgType: 'state', cert: 'saved', uploaded: false };
+      org: false, orgType: 'state', cert: 'saved', uploaded: false,
+      boatId: 'b1', boatData: null, date: new Date(Date.now() + 7 * 864e5).toISOString().slice(0, 10), paying: false, payError: '' };
   }
   renderVals() {
     const s = this.state, f = s.f;
@@ -25,7 +26,8 @@ class Component extends DCLogic {
       ['hour', 'Extra hour', 85, 'per hour', 2, 'boat', 'Adds boat time']
     ];
     const baseHours = s.len === 'half' ? 4 : 8;
-    const boat = s.len === 'half' ? 350 : 600;
+    const half = s.boatData?.half ?? 350, full = s.boatData?.full ?? 600;
+    const boat = s.len === 'half' ? half : full;
     const lines = [];
     const extras = X.map(([k, name, price, per, max, cat, desc]) => {
       const qty = s.q[k] || 0, line = qty * price;
@@ -84,8 +86,23 @@ class Component extends DCLogic {
       tryPay: () => this.setState({ tried6: true }),
       showErrSummary: s.tried4 && !valid4,
       time: times.indexOf(s.time) >= 0 ? s.time : times[0], times,
+      date: s.date, setDate: ev => this.setState({ date: ev.target.value }), minDate: new Date().toISOString().slice(0, 10),
+      paying: s.paying, payError: s.payError,
+      pay: async () => {
+        if (s.paying) return;
+        this.setState({ paying: true, payError: '' });
+        try {
+          const r = await fetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+            boatId: s.boatId, length: s.len, date: s.date, startTime: s.time, guests: Math.min(4, s.boatData?.guests ?? 4),
+            captain: s.captain, extras: s.q, orgType: s.org ? s.orgType : null,
+            contact: { name: f.name, email: f.email, phone: f.phone } }) });
+          const j = await r.json();
+          if (!r.ok) throw new Error(j.error || 'Booking failed');
+          window.location.href = '/confirmation?code=' + j.code;
+        } catch (err) { this.setState({ paying: false, payError: err.message }); }
+      },
       setTime: ev => this.setState({ time: ev.target.value }),
-      lens: [['half', 'Half day', '4 hours · $350'], ['full', 'Full day', '8 hours · $600']].map(([v, l, sub]) => Object.assign({ label: l, sub, checked: s.len === v, pick: () => this.setState({ len: v }) }, sel(s.len === v))),
+      lens: [['half', 'Half day', '4 hours · ' + money(half)], ['full', 'Full day', '8 hours · ' + money(full)]].map(([v, l, sub]) => Object.assign({ label: l, sub, checked: s.len === v, pick: () => this.setState({ len: v }) }, sel(s.len === v))),
       lenLabel: s.len === 'half' ? 'Half day' : 'Full day', baseHours, tripHours,
       extras, extrasFmt: money(extrasTotal), lines,
       captain: s.captain, selfDrive: !s.captain, capOn: sel(s.captain), capOff: sel(!s.captain),
@@ -115,6 +132,12 @@ export default function Page() {
   const ref = useRef(null);
   if (!ref.current) ref.current = new Component({ ...DEFAULT_PROPS });
   ref.current._update = force;
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const id = q.get('boat') || 'b1';
+    ref.current.setState({ boatId: id });
+    fetch('/api/boats/' + id).then((r) => (r.ok ? r.json() : null)).then((j) => { if (j) ref.current.setState({ boatData: j.boat }); }).catch(() => {});
+  }, []);
   const s0 = ref.current.renderVals();
   return (
     <>
@@ -176,6 +199,12 @@ export default function Page() {
 {"Date"}
 </label>
 <input id={"c-date"} type={"date"} className={"inp"} value={"2027-06-12"} />
+</div>
+<div>
+<label htmlFor={"c-date"} className={"lbl"}>
+{"Trip date"}
+</label>
+<input id={"c-date"} type={"date"} className={"inp"} value={s0?.date} min={s0?.minDate} onChange={s0?.setDate} />
 </div>
 <div>
 <label htmlFor={"c-time"} className={"lbl"}>
@@ -569,9 +598,10 @@ export default function Page() {
 </button>
 </>) : null}
 {s0?.payReady ? (<>
-<Link href={"/confirmation"} className={"btn btn-p"} style={{"minWidth": "220px"}}>
-{s0?.payCta}
-</Link>
+<button type={"button"} className={"btn btn-p"} onClick={s0?.pay} disabled={s0?.paying} style={{"minWidth": "220px"}}>
+{s0?.paying ? 'Booking…' : s0?.payCta}
+</button>
+{s0?.payError ? (<p role={"alert"} style={{"color": "#B42318", "fontWeight": "600", "margin": "8px 0 0"}}>{s0.payError}</p>) : null}
 </>) : null}
 {s0?.payBlocked ? (<>
 <button type={"button"} className={"btn btn-p"} onClick={s0?.tryPay} style={{"minWidth": "220px"}}>

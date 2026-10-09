@@ -35,12 +35,10 @@ enum DocumentType {
 
 enum BoatType {
   PONTOON
-  BOWRIDER
-  DECK_BOAT
-  WAKE_BOAT
-  FISHING
-  YACHT
-  KAYAK_PADDLE
+  SKI_WAKE
+  CENTER_CONSOLE
+  SAILBOAT
+  JET_SKI
 }
 
 enum BoatStatus {
@@ -157,7 +155,12 @@ model Boat {
   lakeId       String
   lake         Lake       @relation(fields: [lakeId], references: [id])
   name         String
+  area         String?
   type         BoatType
+  instantBook  Boolean    @default(true)
+  ratingAvg    Float?
+  reviewCount  Int        @default(0)
+  listingMeta  Json?
   year         Int?
   make         String?
   model        String?

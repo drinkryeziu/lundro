@@ -1,6 +1,6 @@
 'use client';
 // Generated from source/Confirmation.dc.html by tools/convert.mjs. Edit the source or this file; logic is unchanged.
-import { Fragment, useReducer, useRef } from 'react';
+import { Fragment, useEffect, useReducer, useRef } from 'react';
 import Link from 'next/link';
 import { DCLogic } from '@/lib/dc';
 import { computeQuote, formatMoney } from '@/lib/pricing';
@@ -8,21 +8,27 @@ import { computeQuote, formatMoney } from '@/lib/pricing';
 class Component extends DCLogic {
   constructor(p) { super(p); this.state = { cal: false, done: {} }; }
   renderVals() {
-    const v = this.props.variant ?? 'confirmed';
+    const bk = this.bk;
+    const v = bk ? (bk.status === 'PENDING' ? 'request' : 'confirmed') : (this.props.variant ?? 'confirmed');
     const s = this.state;
     const V = {
       confirmed: { title: "You're booked!", sub: 'Get ready for Lake Norman. Everything you need for pickup is below.', heroBg: '#DDF3E4', iconBg: '#14532D', iconPath: 'M5 12l5 5 9-10' },
       taxReview: { title: 'Booked · tax exemption in review', sub: 'Your trip is reserved. We are checking your E-595E with NCDOR, usually within 1 business day. If it can’t be verified, we’ll charge the tax shown before your trip and email you first.', heroBg: '#FFF1C7', iconBg: '#7A5A00', iconPath: 'M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z' },
       request: { title: 'Request sent to Cove & Co.', sub: 'The owner has 24 hours to accept. You won’t be charged unless they do.', heroBg: '#E3F2F4', iconBg: '#0A6C7A', iconPath: 'M4 6h16v12H4zM4 7l8 6 8-6' }
     }[v];
-    const exempt = v === 'taxReview';
+    const exempt = !bk && v === 'taxReview';
     // Half day, captain for 4 hrs, tube + cooler, 10% service fee.
     const q = computeQuote({
       boatPrice: 350, captainHours: 4, serviceFeePct: 10, taxExempt: exempt,
       extras: [{ price: 40, qty: 1, category: 'gear' }, { price: 20, qty: 1, category: 'gear' }]
     });
+    if (bk) {
+      q.tax = { state: bk.price.taxState, county: bk.price.taxCounty, transit: bk.price.taxTransit, total: bk.price.taxState + bk.price.taxCounty + bk.price.taxTransit };
+      q.total = bk.price.total;
+    }
     const items = ['Driver license or ID for check-in', 'Sunscreen, hats and water', 'Life jacket for any child under 13 (owner has 4)', 'Cash or card for fuel used, billed at the marina'];
     return Object.assign({}, V, {
+      boatName: bk?.boat, bookingCode: bk?.code,
       showAddress: v !== 'request', hideAddress: v === 'request',
       calLabel: s.cal ? '✓ Added to calendar' : 'Add to calendar', addCal: () => this.setState({ cal: true }),
       checklist: items.map((label, i) => ({ label, done: !!s.done[i], deco: s.done[i] ? 'line-through' : 'none', toggle: () => this.setState({ done: Object.assign({}, s.done, { [i]: !s.done[i] }) }) })),
@@ -40,6 +46,13 @@ export default function Page() {
   const ref = useRef(null);
   if (!ref.current) ref.current = new Component({ ...DEFAULT_PROPS });
   ref.current._update = force;
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get('code');
+    if (!code) return;
+    fetch('/api/bookings/' + encodeURIComponent(code)).then((r) => (r.ok ? r.json() : null)).then((j) => {
+      if (j) { ref.current.bk = j; ref.current.setState({}); }
+    }).catch(() => {});
+  }, []);
   const s0 = ref.current.renderVals();
   return (
     <>
@@ -93,7 +106,7 @@ export default function Page() {
 {"Boat"}
 </span>
 <strong>
-{"24' Bennington Pontoon"}
+{s0?.boatName ?? "24' Bennington Pontoon"}
 </strong>
 <span className={"muted"}>
 {"When"}
