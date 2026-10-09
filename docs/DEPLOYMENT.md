@@ -2,6 +2,8 @@
 
 Lundro is a Next.js 15 app (all current routes are statically prerendered). Node 22+.
 
+Database: see [SUPABASE.md](SUPABASE.md) (also needs `DIRECT_URL`).
+
 ## Vercel (recommended, live in ~2 minutes)
 1. Import the GitHub repo at https://vercel.com/new.
 2. Framework preset: Next.js (auto-detected, `vercel.json` included). No env vars needed.
