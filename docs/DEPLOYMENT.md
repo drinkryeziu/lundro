@@ -18,3 +18,6 @@ Database: see [SUPABASE.md](SUPABASE.md) (also needs `DIRECT_URL`).
 
 ## CI
 `.github/workflows/ci.yml` runs tests, typecheck and build on every push / PR.
+
+## Prototype on the live site
+The clickable prototype is served by the Next app at `/prototype` (file: `public/prototype/index.html`, copy of `prototypes/lundro-prototype.html`). Platform map: `/prototype/platform-map.html`. Update both copies together.
