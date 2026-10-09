@@ -11,11 +11,13 @@ body{margin:0;background:#F4F8F9;color:#0F2A3D}
 .sw{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--navy);color:#fff;border-radius:999px;padding:5px;display:flex;gap:2px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.3);font:600 13px 'Figtree',system-ui,sans-serif;max-width:calc(100vw - 16px);overflow-x:auto}
 .sw button{border:0;background:none;color:#fff;border-radius:999px;padding:9px 14px;font:700 13px 'Figtree',system-ui,sans-serif;white-space:nowrap;cursor:pointer;min-height:36px}
 .sw button[aria-pressed="true"]{background:var(--sun);color:var(--navy)}
+.sw .out{margin-left:6px;background:#1c4258;border-left:1px solid #3d566a}
+.sw .out:hover{background:#B42318}
 .sw button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 </style>
 <div id="renter"></div>
 <div id="owner" hidden></div>
-<div class="sw" role="group" aria-label="Prototype views"><button data-v="renter">Renter site</button><button data-v="ob">Owner signup</button><button data-v="own">Owner dashboard</button><button data-v="adm">Admin</button></div>
+<div class="sw" role="group" aria-label="Prototype views"><button data-v="renter">Renter site</button><button data-v="ob">Owner signup</button><button data-v="own">Owner dashboard</button><button data-v="adm">Admin</button><button id="acctOut" class="out" hidden></button></div>
 
 <template id="t-renter"><style>
 /* Layout: faithful to the Lundro design PDF. Single light brand look: navy ink, teal actions, sun-yellow accents. */
@@ -402,14 +404,17 @@ tr:last-child td{border-bottom:0}
   var cur='renter';
   function mark(v){document.querySelectorAll('.sw button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.v===v)})}
   window.__onOwnerFlow=function(f){if(cur!=='renter'){cur=f;mark(f)}};
+  window.__setAuth=function(u){var b=document.getElementById('acctOut');if(!u){b.hidden=true;return}b.hidden=false;b.textContent='Log out · '+u.name.split(' ')[0];b.setAttribute('aria-label','Log out '+u.name)};
+  document.getElementById('acctOut').addEventListener('click',function(){if(window.__logout)window.__logout();show('renter')});
   function show(v){
     cur=v;mark(v);
     document.getElementById('renter').hidden=v!=='renter';
     document.getElementById('owner').hidden=v==='renter';
+    if(v==='renter'&&window.__renterRender)window.__renterRender();
     if(v!=='renter'&&window.__ownerSetFlow)window.__ownerSetFlow(v);
     else window.scrollTo(0,0);
   }
-  document.querySelector('.sw').addEventListener('click',function(e){var b=e.target.closest('button');if(b)show(b.dataset.v)});
+  document.querySelector('.sw').addEventListener('click',function(e){var b=e.target.closest('button');if(b&&b.dataset.v)show(b.dataset.v)});
   [rs,os].forEach(function(sh){sh.addEventListener('click',function(e){
     var t=e.composedPath().filter(function(n){return n.dataset&&n.dataset.xlink})[0];
     if(t){e.preventDefault();show(t.dataset.xlink)}
@@ -640,7 +645,7 @@ tr:last-child td{border-bottom:0}
       var u=S.users.filter(function(x){return x.email===em})[0];
       if(!u){S.lerr='We couldn\'t find an account with that email.';S.lnone=true;render(true);return}
       if(u.pw!==pw){S.lerr='Incorrect password. Try again or reset it.';S.lnone=false;render(true);return}
-      S.lerr='';S.lemail='';S.user=u;
+      S.lerr='';S.lemail='';S.user=u;window.__setAuth&&window.__setAuth(u);
       if(u.role==='own'||u.role==='adm'){toast('Welcome back, '+u.name.split(' ')[0]+'.');show(u.role)}
       else{toast('Welcome back, '+u.name.split(' ')[0]+'.');S.v='home';render()}
       return}
@@ -649,7 +654,7 @@ tr:last-child td{border-bottom:0}
       S.lemail=re;
       if(rn.length<2||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(re)||rp.length<8){S.lerr='Enter your name, a valid email and a password of 8+ characters.';S.lnone=false;render(true);return}
       if(S.users.some(function(x){return x.email===re})){S.lerr='An account with that email already exists. Log in instead.';S.lnone=false;render(true);return}
-      var nu={name:rn,email:re,pw:rp,role:'ren'};S.users.push(nu);S.user=nu;S.lerr='';S.lemail='';
+      var nu={name:rn,email:re,pw:rp,role:'ren'};S.users.push(nu);S.user=nu;window.__setAuth&&window.__setAuth(nu);S.lerr='';S.lemail='';
       toast('Account created. Welcome, '+rn.split(' ')[0]+'!');S.v='home';render();return}
     if(id==='hsearch'||id==='lsearch'||id==='ssearch'){S.sel='';go('search')}
     if(id==='notify'){toast('Thanks! We’ll email you when more lakes open.');e.target.reset()}
@@ -667,7 +672,7 @@ tr:last-child td{border-bottom:0}
   root.addEventListener('toggle',function(e){if(e.target.dataset&&e.target.dataset.faq!==undefined&&e.target.open){S.faq=e.target.dataset.faq;root.querySelectorAll('details').forEach(function(d){if(d!==e.target)d.open=false})}},true);
   root.addEventListener('click',function(e){
     var t=e.target.closest('button');if(!t)return;var d=t.dataset;
-    if(d.logout){S.user=null;toast('You are logged out.');S.v='home';render();return}
+    if(d.logout){window.__logout();return}
     if(d.go){go(d.go)}
     else if(d.toast){toast(d.toast)}
     else if(d.boat){S.boat=d.boat;S.sel=d.boat;S.step=1;go('boat')}
@@ -698,6 +703,8 @@ tr:last-child td{border-bottom:0}
       if(!S.terms){S.tried=true;render(true);return}
       S.codeN='LND-'+(1000+Math.floor(Math.random()*9000))+'-'+(1000+Math.floor(Math.random()*9000));go('confirm')}
   });
+  window.__renterRender=function(){var y=window.scrollY;render();window.scrollTo(0,y)};
+  window.__logout=function(){S.user=null;window.__setAuth&&window.__setAuth(null);toast('You are logged out.');S.v='home';render()};
   render();
 })(rs);
 
