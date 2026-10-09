@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lundro Clickable Prototypes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0F2A3D;--muted:#4B6272;--line:#DCE5EA;--teal:#0A6C7A;--bg:#F4F8F9;--sun:#FFC94A}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 'Figtree',system-ui,sans-serif}
+  header{background:#CFE8F5;padding:48px 20px 56px}
+  .w{max-width:960px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px;font:700 26px 'Bricolage Grotesque',Georgia,serif}
+  h1{font:700 clamp(32px,6vw,52px)/1.05 'Bricolage Grotesque',Georgia,serif;margin:24px 0 10px;max-width:640px}
+  p.lead{max-width:560px;font-size:18px;margin:0}
+  main{padding:32px 20px 64px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  a.card{display:block;background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;text-decoration:none;color:inherit}
+  a.card:hover,a.card:focus-visible{border-color:var(--teal);outline:none;box-shadow:0 6px 20px rgba(15,42,61,.1)}
+  a.card h2{font:700 22px 'Bricolage Grotesque',Georgia,serif;margin:0 0 6px}
+  a.card p{margin:0 0 14px;color:var(--muted);font-size:15px}
+  a.card span{font-weight:700;color:var(--teal)}
+  h3{font:700 20px 'Bricolage Grotesque',Georgia,serif;margin:36px 0 10px}
+  ul{margin:0;padding-left:20px;color:var(--muted)}
+  footer{padding:24px 20px 48px;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<header><div class="w">
+  <div class="brand"><svg width="38" height="38" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"/><circle cx="24" cy="12" r="4" fill="#FFC94A"/><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M9 26c2.5-2 4.5-2 7 0s4.5 2 7 0" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".7"/></svg>Lundro</div>
+  <h1>Clickable prototypes</h1>
+  <p class="lead">Boat rentals on Lake Norman, NC. Open a prototype to click through the renter, owner and admin experience with sample data.</p>
+</div></header>
+<main><div class="w">
+  <div class="grid">
+    <a class="card" href="prototypes/renter.html"><h2>Renter</h2><p>Home, Lake Norman page, search with map, boat page, 6-step checkout and confirmation.</p><span>Open prototype →</span></a>
+    <a class="card" href="prototypes/owner-admin.html"><h2>Owner and admin</h2><p>Owner signup, 11-screen owner dashboard and the admin review queue.</p><span>Open prototype →</span></a>
+    <a class="card" href="prototypes/platform-map.html"><h2>Platform map</h2><p>Architecture, screens, data model, API and roadmap on one page.</p><span>Open overview →</span></a>
+  </div>
+  <h3>Also in this repository</h3>
+  <ul>
+    <li><a href="design-source/">design-source/</a>: the original design files for all 19 screens</li>
+    <li><a href="docs/">docs/</a>: architecture, API, database, Supabase and deployment guides</li>
+    <li><code>app/</code>: the Next.js app built from the design</li>
+  </ul>
+</div></main>
+<footer><div class="w">The prototypes use sample data and run in any browser with no build step. The Log in and List your boat buttons in the renter prototype link to the owner and admin prototype.</div></footer>
+</body>
+</html>

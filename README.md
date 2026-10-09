@@ -13,6 +13,8 @@ API and auth: [docs/API.md](docs/API.md). Database: see [docs/DATABASE.md](docs/
 
 Clickable design prototypes (open in a browser): [prototypes/](prototypes/).
 
+Prototype index: open `index.html` (or enable GitHub Pages to serve it).
+
 ## Routes
 `/` home, `/lake-norman`, `/search`, `/boat`, `/checkout`, `/confirmation`, `/owner/signup`,
 `/owner` (+ calendar, bookings, boats, extras, customers, messages, earnings, reviews,
