@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Booking confirmed</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F9FA}
+*{box-sizing:border-box}
+a{color:#0A6C7A}a:hover{color:#08525D}
+button,input{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+.disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+.btn-p{background:#0A6C7A;color:#fff}.btn-p:hover{background:#08525D;color:#fff}
+.btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}.btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+.muted{color:#4A5F6E}
+.card{background:#fff;border:1px solid #DCE5EA;border-radius:20px;padding:24px}
+.card h2{margin:0 0 14px;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;letter-spacing:-0.02em}
+.ln{display:flex;justify-content:space-between;gap:12px;padding:5px 0}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:6px 16px}
+@media (max-width:600px){.kv{grid-template-columns:1fr}}
+</style>
+</helmet>
+<div style="min-height: 100%; background: #F6F9FA; font-family: 'Figtree', system-ui, sans-serif; color: #0F2A3D; font-size: 16px; line-height: 1.5">
+<header style="background: #FFFFFF; border-bottom: 1px solid #DCE5EA">
+<div style="max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; min-height: 72px">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F2A3D" aria-label="Lundro home"><svg width="34" height="34" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"></circle><circle cx="24" cy="12" r="4" fill="#FFC94A"></circle><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg><span class="disp" style="font-weight: 700; font-size: 24px">Lundro</span></a>
+<a href="Main.dc.html" style="margin-left: auto; font-weight: 600; padding: 12px">My trips</a>
+</div>
+</header>
+
+<main style="max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px">
+<section style="background: {{heroBg}}; border-radius: 24px; padding: 28px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center">
+<span aria-hidden="true" style="flex: none; width: 64px; height: 64px; border-radius: 50%; background: {{iconBg}}; color: #fff; display: grid; place-items: center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{iconPath}}"></path></svg></span>
+<div style="flex: 1 1 300px">
+<h1 class="disp" role="status" style="margin: 0; font-size: 34px">{{title}}</h1>
+<p style="margin: 6px 0 0; font-size: 17px">{{sub}}</p>
+<p class="muted" style="margin: 6px 0 0; font-size: 14px">Booking LND-2706-4821 · Confirmation sent to taylor.r@example.com</p>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; margin-top: 24px; align-items: flex-start">
+<div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<section class="card" aria-labelledby="trip-h">
+<h2 id="trip-h">Your trip</h2>
+<div class="kv">
+<span class="muted">Boat</span><strong>24' Bennington Pontoon</strong>
+<span class="muted">When</span><strong>Sat, Jun 12, 2027 · 9:00 AM – 1:00 PM</strong>
+<span class="muted">Guests</span><strong>8</strong>
+<span class="muted">Captain</span><strong>Mike R. (USCG licensed)</strong>
+<span class="muted">Extras</span><strong>Tube with rope, Cooler with ice</strong>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px">
+<button type="button" class="btn btn-g" onClick="{{addCal}}">{{calLabel}}</button>
+<button type="button" class="btn btn-g">Get directions</button>
+</div>
+</section>
+
+<section class="card" aria-labelledby="pick-h">
+<h2 id="pick-h">Pickup details</h2>
+<sc-if value="{{showAddress}}" hint-placeholder-val="{{true}}">
+<p style="margin: 0; font-weight: 700; font-size: 18px">Harbor Point Marina, Slip B14</p>
+<p style="margin: 2px 0 0">20210 Harbor Point Ln, Cornelius, NC 28031</p>
+<p class="muted" style="margin: 10px 0 0; font-size: 15px">Park in the gravel lot by the bait shop; spaces marked "Rental guests". Walk down dock B. Arrive 15 minutes early for the safety briefing.</p>
+</sc-if>
+<sc-if value="{{hideAddress}}" hint-placeholder-val="{{false}}">
+<p class="muted" style="margin: 0">The exact address and owner contact appear here once the booking is confirmed.</p>
+</sc-if>
+</section>
+
+<section class="card" aria-labelledby="host-h">
+<h2 id="host-h">Your host</h2>
+<div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap">
+<span aria-hidden="true" class="disp" style="width: 52px; height: 52px; border-radius: 14px; background: #0F2A3D; color: #FFC94A; display: grid; place-items: center; font-weight: 700">C&amp;C</span>
+<div style="flex: 1 1 220px"><strong style="display: block">Cove &amp; Co. Boat Rentals</strong>
+<sc-if value="{{showAddress}}" hint-placeholder-val="{{true}}"><span class="muted" style="font-size: 15px">(704) 555-0142 · bookings@coveandco.example</span></sc-if>
+<sc-if value="{{hideAddress}}" hint-placeholder-val="{{false}}"><span class="muted" style="font-size: 15px">Contact details shared after confirmation</span></sc-if>
+</div>
+<button type="button" class="btn btn-g">Message host</button>
+</div>
+</section>
+
+<section class="card" aria-labelledby="bring-h">
+<h2 id="bring-h">Before you go</h2>
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{checklist}}" as="c" hint-placeholder-count="4">
+<li><label style="display: flex; gap: 12px; align-items: center; min-height: 48px; cursor: pointer"><input type="checkbox" checked="{{c.done}}" onChange="{{c.toggle}}" style="width: 22px; height: 22px; accent-color: #0A6C7A"><span style="text-decoration: {{c.deco}}">{{c.label}}</span></label></li>
+</sc-for>
+</ul>
+</section>
+</div>
+
+<aside style="flex: 1 1 340px; min-width: 0">
+<section class="card" aria-labelledby="rcpt-h">
+<h2 id="rcpt-h">Receipt</h2>
+<div style="font-size: 15px">
+<div class="ln"><span>Boat · Half day (4 hrs)</span><span>$350.00</span></div>
+<div class="ln"><span>Tube with rope</span><span>$40.00</span></div>
+<div class="ln"><span>Cooler with ice</span><span>$20.00</span></div>
+<div class="ln"><span>Captain · 4 hrs × $50</span><span>$200.00</span></div>
+<div class="ln"><span>Lundro service fee</span><span>$61.00</span></div>
+<div style="border-top: 1px solid #DCE5EA; margin-top: 8px; padding-top: 8px">
+<div class="ln"><strong>NC sales tax</strong><strong>{{taxTotal}}</strong></div>
+<div class="ln muted"><span>State (3% boat · 4.75% gear)</span><span>{{taxState}}</span></div>
+<div class="ln muted"><span>County (Mecklenburg 2%)</span><span>{{taxCounty}}</span></div>
+<div class="ln muted"><span>Transit (1.5%)</span><span>{{taxTransit}}</span></div>
+</div>
+<div class="ln" style="border-top: 1px solid #DCE5EA; margin-top: 8px; padding-top: 12px; font-size: 19px"><strong>{{paidLabel}}</strong><strong>{{total}}</strong></div>
+<div class="ln muted"><span>Security deposit hold</span><span>$500.00</span></div>
+</div>
+<p class="muted" style="margin: 12px 0 0; font-size: 13px">Tax rates saved at time of booking (Jun 2027). Lundro collects and remits NC sales tax as a marketplace facilitator.</p>
+<button type="button" class="btn btn-g" style="width: 100%; margin-top: 14px">Download receipt (PDF)</button>
+</section>
+<section class="card" style="margin-top: 20px">
+<h2 style="font-size: 18px">Need to cancel?</h2>
+<p class="muted" style="margin: 0; font-size: 15px">Moderate policy: full refund, tax included, until Mon, Jun 7. 50% after that.</p>
+<a href="#" style="display: inline-block; margin-top: 10px; font-weight: 700; padding: 8px 0">Cancel booking</a>
+</section>
+</aside>
+</div>
+<p style="margin: 32px 0 0; text-align: center"><a href="Main.dc.html" class="btn btn-p">Back to Lundro home</a></p>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"variant":{"editor":"enum","options":["confirmed","taxReview","request"],"default":"confirmed"},"$preview":{"width":1440,"height":1900}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { cal: false, done: {} }; }
+  renderVals() {
+    const v = this.props.variant ?? 'confirmed';
+    const s = this.state;
+    const V = {
+      confirmed: { title: "You're booked!", sub: 'Get ready for Lake Norman. Everything you need for pickup is below.', heroBg: '#DDF3E4', iconBg: '#14532D', iconPath: 'M5 12l5 5 9-10' },
+      taxReview: { title: 'Booked · tax exemption in review', sub: 'Your trip is reserved. We are checking your E-595E with NCDOR, usually within 1 business day. If it can’t be verified, we’ll charge the tax shown before your trip and email you first.', heroBg: '#FFF1C7', iconBg: '#7A5A00', iconPath: 'M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z' },
+      request: { title: 'Request sent to Cove & Co.', sub: 'The owner has 24 hours to accept. You won’t be charged unless they do.', heroBg: '#E3F2F4', iconBg: '#0A6C7A', iconPath: 'M4 6h16v12H4zM4 7l8 6 8-6' }
+    }[v];
+    const exempt = v === 'taxReview';
+    const items = ['Driver license or ID for check-in', 'Sunscreen, hats and water', 'Life jacket for any child under 13 (owner has 4)', 'Cash or card for fuel used, billed at the marina'];
+    return Object.assign({}, V, {
+      showAddress: v !== 'request', hideAddress: v === 'request',
+      calLabel: s.cal ? '✓ Added to calendar' : 'Add to calendar', addCal: () => this.setState({ cal: true }),
+      checklist: items.map((label, i) => ({ label, done: !!s.done[i], deco: s.done[i] ? 'line-through' : 'none', toggle: () => this.setState({ done: Object.assign({}, s.done, { [i]: !s.done[i] }) }) })),
+      taxState: exempt ? '$0.00' : '$13.35', taxCounty: exempt ? '$0.00' : '$1.20', taxTransit: exempt ? '$0.00' : '$0.90', taxTotal: exempt ? 'Exempt (in review)' : '$15.45',
+      total: exempt ? '$671.00' : '$686.45', paidLabel: v === 'request' ? 'Total if accepted' : 'Total paid'
+    });
+  }
+}
+</script>
+</body>
+</html>

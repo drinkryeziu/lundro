@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lundro search results</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F9FA}
+*{box-sizing:border-box}
+a{color:#0A6C7A}a:hover{color:#08525D}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+.disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+.btn-p{background:#0A6C7A;color:#fff}.btn-p:hover{background:#08525D;color:#fff}
+.btn-s{background:#fff;color:#0F2A3D;border:2px solid #0F2A3D}.btn-s:hover{background:#EEF4F7}
+.btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}.btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+.btn-sm{min-height:44px;padding:0 16px;font-size:15px}
+.pill{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap}
+.inp{width:100%;min-height:48px;border:1px solid #7B8F9B;border-radius:12px;padding:0 14px;background:#fff;font-size:16px;color:#0F2A3D}
+.muted{color:#4A5F6E}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;border-radius:8px;padding:4px 9px}
+.sec{padding:22px 0;border-bottom:1px solid #DCE5EA}
+.sec h3,.sec legend{margin:0 0 12px;font-size:18px;font-weight:700;padding:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.opt{display:flex;align-items:center;gap:10px;min-height:48px;font-size:15px;cursor:pointer}
+.opt input{width:20px;height:20px;accent-color:#0A6C7A;margin:0;flex:none}
+.map{flex:1 1 520px;min-width:0;position:sticky;top:0;height:880px;background:#E7EFE3;overflow:hidden;border-left:1px solid #DCE5EA}
+.mtoggle{display:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.sk{background:#E1E9EE;border-radius:8px;animation:pulse 1.4s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.sk{animation:none}}
+@media (max-width:900px){.map{display:none;position:relative;height:640px;flex-basis:100%;border-left:0}.map.on{display:block}.list.off{display:none}.mtoggle{display:flex}.hide-sm{display:none!important}}
+</style>
+</helmet>
+<div style="min-height: 100%; background: #F6F9FA; font-family: 'Figtree', system-ui, sans-serif; color: #0F2A3D; font-size: 16px; line-height: 1.45">
+
+<header style="background: #FFFFFF; border-bottom: 1px solid #DCE5EA; padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px">
+<a href="Main.dc.html" aria-label="Lundro home" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F2A3D">
+<svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"></circle><circle cx="24" cy="12" r="4" fill="#FFC94A"></circle><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path><path d="M9 26c2.5-2 4.5-2 7 0s4.5 2 7 0" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.7"></path></svg>
+<span class="disp hide-sm" style="font-weight: 700; font-size: 26px">Lundro</span>
+</a>
+<form role="search" aria-label="Search boats" style="flex: 1 1 480px; max-width: 760px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; background: #FFFFFF; border: 1px solid #7B8F9B; border-radius: 28px; padding: 4px 4px 4px 8px; box-shadow: 0 2px 10px rgba(15, 42, 61, 0.08)">
+<label style="flex: 1.3 1 150px; display: flex; flex-direction: column; padding: 4px 12px"><span style="font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #3D5160">Lake</span><select aria-label="Lake" style="border: 0; background: transparent; font-weight: 600; font-size: 16px; padding: 0; min-height: 26px"><option>Lake Norman, NC</option></select></label>
+<label style="flex: 1 1 140px; display: flex; flex-direction: column; padding: 4px 12px; border-left: 1px solid #DCE5EA"><span style="font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #3D5160">Date</span><input type="date" value="2027-06-12" style="border: 0; background: transparent; font-weight: 600; font-size: 16px; padding: 0; min-height: 26px"></label>
+<div style="flex: 1 1 150px; display: flex; align-items: center; justify-content: space-between; gap: 4px; padding: 0 4px 0 12px; border-left: 1px solid #DCE5EA">
+<span style="display: flex; flex-direction: column"><span style="font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #3D5160">Guests</span><span aria-live="polite" style="font-weight: 600">{{guests}} guests</span></span>
+<span style="display: flex"><button type="button" aria-label="Fewer guests" onClick="{{decG}}" style="width: 40px; height: 40px; border: 1px solid #C9D6DD; border-radius: 50%; background: #fff; cursor: pointer">−</button><button type="button" aria-label="More guests" onClick="{{incG}}" style="width: 40px; height: 40px; border: 1px solid #C9D6DD; border-radius: 50%; background: #fff; cursor: pointer; margin-left: 4px">+</button></span>
+</div>
+</form>
+<nav aria-label="Account" style="margin-left: auto; display: flex; gap: 6px; align-items: center">
+<a href="OwnerSignup.dc.html" class="hide-sm" style="font-weight: 600; color: #0F2A3D; text-decoration: none; padding: 12px">List your boat</a>
+<a href="Dash-Overview.dc.html" class="btn btn-g btn-sm">Log in</a>
+</nav>
+</header>
+
+<div role="toolbar" aria-label="Quick filters" style="background: #FFFFFF; border-bottom: 1px solid #DCE5EA; padding: 10px 24px; display: flex; gap: 8px; overflow-x: auto">
+<button type="button" class="pill" onClick="{{openPanel}}" style="border: 2px solid #0F2A3D; background: #fff; font-weight: 700; flex: none">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"></path><circle cx="16" cy="7" r="2"></circle><circle cx="10" cy="17" r="2"></circle></svg>
+Filters<sc-if value="{{hasActive}}" hint-placeholder-val="{{false}}"><span style="background: #0F2A3D; color: #fff; font-size: 12px; border-radius: 999px; min-width: 22px; height: 22px; display: inline-grid; place-items: center">{{activeCount}}</span></sc-if>
+</button>
+<sc-for list="{{quick}}" as="q" hint-placeholder-count="5">
+<button type="button" class="pill" aria-pressed="{{q.pressed}}" onClick="{{q.toggle}}" style="flex: none; border: {{q.border}}; background: {{q.bg}}; color: {{q.fg}}">{{q.label}}</button>
+</sc-for>
+<span style="flex: 1 0 8px"></span>
+<div role="group" aria-label="Show prices for" style="flex: none; display: flex; background: #E8EFF2; border-radius: 999px; padding: 4px">
+<button type="button" aria-pressed="{{halfPressed}}" onClick="{{setHalf}}" style="border: 0; background: {{halfBg}}; font-weight: 700; font-size: 14px; padding: 0 14px; min-height: 36px; border-radius: 999px; cursor: pointer">Half day</button>
+<button type="button" aria-pressed="{{fullPressed}}" onClick="{{setFull}}" style="border: 0; background: {{fullBg}}; font-weight: 700; font-size: 14px; padding: 0 14px; min-height: 36px; border-radius: 999px; cursor: pointer">Full day</button>
+</div>
+</div>
+
+<main style="display: flex; flex-wrap: wrap; align-items: flex-start">
+<section class="list {{listCls}}" aria-labelledby="res-h" style="flex: 1 1 720px; min-width: 0; padding: 24px 24px 120px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+<div>
+<h1 id="res-h" class="disp" aria-live="polite" style="margin: 0; font-size: 30px; font-weight: 700">{{countLabel}} on Lake Norman</h1>
+<p class="muted" style="margin: 4px 0 0">Available Sat, Jun 12 · fit {{guests}} or more guests · {{lengthLabel}} prices</p>
+</div>
+<div style="display: flex; align-items: center; gap: 8px">
+<label for="sort" style="font-weight: 600; color: #3D5160">Sort</label>
+<select id="sort" class="inp" onChange="{{setSort}}" value="{{sort}}" style="width: auto; font-weight: 600">
+<option value="rec">Recommended</option><option value="plo">Price: low to high</option><option value="phi">Price: high to low</option><option value="rating">Rating</option><option value="dist">Distance</option>
+</select>
+</div>
+</div>
+
+<sc-if value="{{hasActive}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px">
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="2">
+<span style="display: inline-flex; align-items: center; background: #E3F2F4; color: #0B4F59; font-size: 14px; font-weight: 600; border-radius: 999px; padding: 0 2px 0 14px; min-height: 40px">{{c.label}}<button type="button" aria-label="Remove filter {{c.label}}" onClick="{{c.remove}}" style="border: 0; background: transparent; color: #0B4F59; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></span>
+</sc-for>
+<button type="button" onClick="{{clearAll}}" style="border: 0; background: transparent; color: #0A6C7A; font-weight: 700; padding: 8px; cursor: pointer; text-decoration: underline">Clear all</button>
+</div>
+</sc-if>
+
+<sc-if value="{{loading}}" hint-placeholder-val="{{false}}">
+<div role="status" aria-label="Loading boats" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px 20px; margin-top: 24px">
+<sc-for list="{{skeletons}}" as="s" hint-placeholder-count="4"><div style="display: flex; flex-direction: column; gap: 10px"><div class="sk" style="aspect-ratio: 4 / 3; border-radius: 18px"></div><div class="sk" style="height: 20px; width: 70%"></div><div class="sk" style="height: 14px; width: 45%"></div><div class="sk" style="height: 18px; width: 50%"></div></div></sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{showEmpty}}" hint-placeholder-val="{{false}}">
+<div style="margin-top: 32px; background: #FFFFFF; border: 1px solid #DCE5EA; border-radius: 22px; padding: 32px; text-align: center; max-width: 560px; margin-left: auto; margin-right: auto">
+<svg width="96" height="72" viewBox="0 0 120 88" aria-hidden="true"><ellipse cx="60" cy="74" rx="54" ry="10" fill="#D7ECF4"></ellipse><path d="M60 8 L60 62" stroke="#0F2A3D" stroke-width="2.5"></path><rect x="44" y="40" width="32" height="26" rx="13" fill="#FFFFFF" stroke="#0F2A3D" stroke-width="2.5"></rect><rect x="44" y="49" width="32" height="8" fill="#E8613C"></rect><circle cx="60" cy="10" r="5" fill="#FFC94A" stroke="#0F2A3D" stroke-width="2.5"></circle></svg>
+<h2 class="disp" style="margin: 12px 0 0; font-size: 24px">No boats match every filter</h2>
+<p class="muted" style="margin: 6px 0 0">Loosen one of these to see more boats:</p>
+<ul style="list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-direction: column; gap: 8px; text-align: left">
+<sc-for list="{{suggest}}" as="t" hint-placeholder-count="3">
+<li><button type="button" onClick="{{t.apply}}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #C9D6DD; background: #fff; border-radius: 14px; padding: 12px 16px; min-height: 56px; cursor: pointer; text-align: left"><span><span style="display: block; font-weight: 700">{{t.label}}</span><span style="display: block; font-size: 14px; font-weight: 600; color: #0B4F59">Show {{t.n}} boats</span></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></li>
+</sc-for>
+</ul>
+<button type="button" class="btn btn-s" onClick="{{clearAll}}" style="margin-top: 18px">Clear all filters</button>
+</div>
+</sc-if>
+
+<sc-if value="{{showList}}" hint-placeholder-val="{{true}}">
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px 20px; margin-top: 24px">
+<sc-for list="{{results}}" as="item" hint-placeholder-count="6">
+<article style="position: relative">
+<a href="Boat.dc.html" style="display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: #0F2A3D">
+<span style="position: relative; display: block; border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3">
+<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block"><rect width="400" height="300" fill="{{item.sky}}"></rect><circle cx="{{item.sunX}}" cy="62" r="24" fill="{{item.sun}}"></circle><path d="M0 150 Q50 118 110 136 T230 126 T330 132 T400 124 V176 H0 Z" fill="{{item.hillFar}}"></path><path d="M0 168 Q90 146 180 162 T400 156 V186 H0 Z" fill="{{item.hillNear}}"></path><rect y="182" width="400" height="118" fill="{{item.water}}"></rect><rect x="40" y="210" width="70" height="3" rx="1.5" fill="#FFFFFF" opacity="0.35"></rect><rect x="290" y="236" width="80" height="3" rx="1.5" fill="#FFFFFF" opacity="0.3"></rect><g transform="translate({{item.boatX}} 0)"><rect x="6" y="242" width="148" height="6" rx="3" fill="#000000" opacity="0.1"></rect><rect x="0" y="232" width="160" height="8" rx="4" fill="#B8C4CC"></rect><rect x="4" y="212" width="152" height="20" rx="4" fill="#FFFFFF"></rect><rect x="4" y="221" width="152" height="3" fill="{{item.accent}}"></rect><rect x="38" y="186" width="2.5" height="26" fill="#5B6B77"></rect><rect x="118" y="186" width="2.5" height="26" fill="#5B6B77"></rect><path d="M30 187 H128 Q124 177 79 177 Q34 177 30 187 Z" fill="{{item.accent}}"></path></g></svg>
+<span aria-hidden="true" style="position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #fff"></span><span style="width: 6px; height: 6px; margin-top: 1px; border-radius: 50%; background: rgba(255,255,255,.65)"></span><span style="width: 6px; height: 6px; margin-top: 1px; border-radius: 50%; background: rgba(255,255,255,.65)"></span><span style="width: 6px; height: 6px; margin-top: 1px; border-radius: 50%; background: rgba(255,255,255,.65)"></span></span>
+</span>
+<span style="display: flex; flex-direction: column; gap: 2px">
+<span style="display: flex; justify-content: space-between; gap: 10px; align-items: flex-start">
+<span class="disp" style="font-size: 19px; font-weight: 600; line-height: 1.25">{{item.title}}</span>
+<sc-if value="{{item.hasRating}}" hint-placeholder-val="{{true}}"><span style="display: inline-flex; align-items: center; gap: 4px; font-weight: 700; font-size: 15px; white-space: nowrap"><svg width="15" height="15" viewBox="0 0 24 24" fill="#E39B0B" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"></path></svg>{{item.rating}} <span class="muted" style="font-weight: 500">({{item.reviews}})</span></span></sc-if>
+<sc-if value="{{item.isNew}}" hint-placeholder-val="{{false}}"><span style="background: #FFEDE3; color: #9A3412; font-size: 13px; font-weight: 700; border-radius: 999px; padding: 3px 10px">New</span></sc-if>
+</span>
+<span class="muted" style="font-size: 15px">Lake Norman · {{item.area}}</span>
+<span class="muted" style="font-size: 15px">Up to {{item.guests}} guests</span>
+<span style="margin-top: 4px">From <strong style="font-size: 18px">${{item.price}}</strong> <span class="muted">/ {{item.per}}</span></span>
+<span style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px">
+<sc-if value="{{item.captain}}" hint-placeholder-val="{{true}}"><span class="tag" style="background: #E3F2F4; color: #0B4F59">Captain available</span></sc-if>
+<sc-if value="{{item.self}}" hint-placeholder-val="{{true}}"><span class="tag" style="background: #F3EEE3; color: #5E4513">Self-drive</span></sc-if>
+<sc-if value="{{item.instant}}" hint-placeholder-val="{{false}}"><span class="tag" style="background: #FFF1C7; color: #5C4300"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"></path></svg>Instant book</span></sc-if>
+</span>
+</span>
+</a>
+<button type="button" aria-label="Save {{item.title}}" style="position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.94); display: grid; place-items: center; cursor: pointer; box-shadow: 0 1px 4px rgba(15,42,61,.18)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg></button>
+</article>
+</sc-for>
+</div>
+</sc-if>
+</section>
+
+<aside class="map {{mapCls}}" aria-label="Map of results">
+<svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
+<rect width="600" height="900" fill="#E7EFE3"></rect>
+<rect x="40" y="380" width="110" height="80" rx="24" fill="#D5E6CC"></rect><rect x="450" y="660" width="120" height="90" rx="24" fill="#D5E6CC"></rect>
+<path d="M525 0 C512 200 532 400 516 600 S502 800 512 900" fill="none" stroke="#FFFFFF" stroke-width="8"></path>
+<path d="M0 262 C150 250 250 300 600 290" fill="none" stroke="#FFFFFF" stroke-width="6"></path>
+<path d="M0 612 C200 618 350 646 600 626" fill="none" stroke="#FFFFFF" stroke-width="6"></path>
+<path d="M300 40 C320 90 340 120 330 170 C360 190 420 180 450 210 C420 230 370 225 350 250 C365 300 400 320 430 360 C400 375 360 350 345 370 C350 420 380 450 420 470 C440 480 470 470 480 495 C450 510 400 500 375 520 C380 570 400 610 390 660 C385 720 395 780 360 850 C340 820 330 780 320 740 C290 720 240 730 200 715 C230 695 280 690 300 670 C295 620 270 590 230 580 C190 575 160 590 130 570 C165 550 220 555 255 540 C270 500 260 460 230 440 C200 430 170 445 150 420 C180 405 230 410 260 395 C275 350 270 300 250 270 C230 250 200 255 185 235 C215 220 260 230 285 215 C295 160 280 100 300 40 Z" fill="#B9DCEB" stroke="#9CC9DE" stroke-width="2"></path>
+<text x="292" y="470" fill="#2C6A84" font-family="Figtree, sans-serif" font-size="17" font-style="italic" font-weight="600" transform="rotate(-80 292 470)">Lake Norman</text>
+<text x="452" y="252" fill="#3D5160" font-family="Figtree, sans-serif" font-size="15" font-weight="600">Mooresville</text>
+<text x="440" y="440" fill="#3D5160" font-family="Figtree, sans-serif" font-size="15" font-weight="600">Davidson</text>
+<text x="420" y="600" fill="#3D5160" font-family="Figtree, sans-serif" font-size="15" font-weight="600">Cornelius</text>
+<text x="420" y="790" fill="#3D5160" font-family="Figtree, sans-serif" font-size="15" font-weight="600">Huntersville</text>
+<text x="96" y="650" fill="#3D5160" font-family="Figtree, sans-serif" font-size="15" font-weight="600">Denver</text>
+<text x="96" y="210" fill="#3D5160" font-family="Figtree, sans-serif" font-size="15" font-weight="600">Sherrills Ford</text>
+</svg>
+<sc-for list="{{pins}}" as="p" hint-placeholder-count="8">
+<button type="button" aria-label="{{p.label}}" onClick="{{p.pick}}" style="position: absolute; left: {{p.x}}%; top: {{p.y}}%; transform: translate(-50%, -50%); border: 2px solid #FFFFFF; background: {{p.bg}}; color: {{p.fg}}; font-weight: 700; font-size: 14px; padding: 0 12px; min-height: 36px; border-radius: 999px; box-shadow: 0 2px 8px rgba(15,42,61,.28); cursor: pointer; z-index: {{p.z}}">${{p.price}}</button>
+</sc-for>
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{false}}">
+<a href="Boat.dc.html" style="position: absolute; left: {{sel.x}}%; top: {{sel.y}}%; transform: translate(-50%, -100%); margin-top: -26px; width: 270px; background: #fff; border-radius: 16px; box-shadow: 0 8px 28px rgba(15,42,61,.28); text-decoration: none; color: #0F2A3D; padding: 12px 14px; z-index: 5; display: block">
+<span style="display: block; font-weight: 700">{{sel.title}}</span>
+<span class="muted" style="display: block; font-size: 13px">{{sel.area}} · Up to {{sel.guests}} guests</span>
+<span style="display: block; font-size: 14px; margin-top: 4px">From <strong>${{sel.price}}</strong> / {{sel.per}} · <span style="color: #0A6C7A; font-weight: 700">View boat</span></span>
+</a>
+</sc-if>
+<p style="position: absolute; left: 16px; bottom: 16px; right: 16px; margin: 0; max-width: 360px; background: rgba(255,255,255,.95); border-radius: 12px; padding: 10px 14px; font-size: 13px; color: #3D5160">Pins show each boat's pickup marina. The exact address is shared after booking.</p>
+</aside>
+</main>
+
+<div class="mtoggle" role="group" aria-label="View results as" style="position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: #0F2A3D; border-radius: 999px; padding: 4px; box-shadow: 0 6px 20px rgba(15,42,61,.35); z-index: 20">
+<button type="button" aria-pressed="{{listPressed}}" onClick="{{showListView}}" style="border: 0; background: {{listBtnBg}}; color: {{listBtnFg}}; font-weight: 700; padding: 0 20px; min-height: 44px; border-radius: 999px; cursor: pointer">List</button>
+<button type="button" aria-pressed="{{mapPressed}}" onClick="{{showMapView}}" style="border: 0; background: {{mapBtnBg}}; color: {{mapBtnFg}}; font-weight: 700; padding: 0 20px; min-height: 44px; border-radius: 999px; cursor: pointer">Map</button>
+</div>
+
+<sc-if value="{{panel}}" hint-placeholder-val="{{false}}">
+<div style="position: fixed; inset: 0; background: rgba(15,42,61,.55); z-index: 30; display: flex; align-items: flex-end; justify-content: center">
+<div role="dialog" aria-modal="true" aria-labelledby="flt-h" style="background: #fff; width: 100%; max-width: 640px; max-height: 92%; border-radius: 24px 24px 0 0; display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 8px; border-bottom: 1px solid #DCE5EA">
+<button type="button" aria-label="Close filters" onClick="{{closePanel}}" style="width: 44px; height: 44px; border: 0; background: transparent; border-radius: 50%; cursor: pointer; display: grid; place-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+<h2 id="flt-h" class="disp" style="margin: 0; font-size: 20px">Filters</h2><span style="width: 44px"></span>
+</div>
+<div style="overflow-y: auto; padding: 0 24px">
+<div class="sec"><h3>Area</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{areas}}" as="a" hint-placeholder-count="7"><button type="button" aria-pressed="{{a.pressed}}" onClick="{{a.pick}}" class="pill" style="border: {{a.border}}; background: {{a.bg}}; color: {{a.fg}}">{{a.label}}</button></sc-for>
+</div>
+<div style="display: flex; gap: 8px; margin-top: 14px; align-items: flex-end; flex-wrap: wrap">
+<label style="flex: 0 0 110px; font-size: 14px; font-weight: 600; color: #3D5160">Or within<select class="inp" style="margin-top: 6px"><option>10 mi</option><option>25 mi</option><option>50 mi</option></select></label>
+<label style="flex: 1 1 200px; font-size: 14px; font-weight: 600; color: #3D5160">of a city, ZIP or address<input class="inp" type="text" placeholder="e.g. Charlotte or 28031" style="margin-top: 6px"></label>
+</div>
+</div>
+<div class="sec"><h3>{{lengthTitle}} price</h3>
+<p class="muted" style="margin: -6px 0 10px; font-size: 14px">Boat price only, before extras, fees and tax. Switch half or full day from the bar above.</p>
+<label style="display: block; font-weight: 600">Up to <strong>${{priceMaxVal}}</strong>
+<input type="range" min="{{priceFloor}}" max="{{priceCeil}}" step="10" value="{{priceMaxVal}}" onChange="{{setMax}}" onInput="{{setMax}}" style="width: 100%; accent-color: #0A6C7A; height: 32px; margin-top: 6px"></label>
+<div class="muted" style="display: flex; justify-content: space-between; font-size: 13px"><span>${{priceFloor}}</span><span>${{priceCeil}}+</span></div>
+</div>
+<fieldset class="sec"><legend>Rating</legend>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{ratings}}" as="r" hint-placeholder-count="3"><label class="opt" style="border: {{r.border}}; background: {{r.bg}}; border-radius: 12px; padding: 0 16px; flex: 1 1 90px"><input type="radio" name="rating" checked="{{r.checked}}" onChange="{{r.pick}}">{{r.label}}</label></sc-for>
+</div>
+<p class="muted" style="margin: 10px 0 0; font-size: 14px">New boats without reviews still show, marked “New”.</p>
+</fieldset>
+<fieldset class="sec"><legend>Captain or self-drive</legend>
+<sc-for list="{{caps}}" as="r" hint-placeholder-count="3"><label class="opt"><input type="radio" name="cap" checked="{{r.checked}}" onChange="{{r.pick}}"><span>{{r.label}}<span class="muted" style="display: block; font-size: 14px">{{r.sub}}</span></span></label></sc-for>
+</fieldset>
+<fieldset class="sec"><legend>Extras</legend>
+<p class="muted" style="margin: -6px 0 6px; font-size: 14px">Boats must offer every extra you pick.</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px">
+<sc-for list="{{extras}}" as="x" hint-placeholder-count="8"><label class="opt"><input type="checkbox" checked="{{x.checked}}" onChange="{{x.toggle}}">{{x.label}}</label></sc-for>
+</div>
+</fieldset>
+<div class="sec" style="border-bottom: 0"><h3>Boat type</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{types}}" as="t" hint-placeholder-count="5"><button type="button" aria-pressed="{{t.pressed}}" onClick="{{t.toggle}}" class="pill" style="border: {{t.border}}; background: {{t.bg}}; color: {{t.fg}}">{{t.label}}</button></sc-for>
+</div>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 16px; padding: 14px 24px; border-top: 1px solid #DCE5EA">
+<button type="button" onClick="{{clearAll}}" style="border: 0; background: transparent; font-weight: 700; text-decoration: underline; min-height: 48px; cursor: pointer">Clear all</button>
+<button type="button" class="btn btn-p" aria-live="polite" onClick="{{closePanel}}" style="flex: 1; border-radius: 14px; min-height: 54px">Show {{countLabel}}</button>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2000}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { guests: 6, len: 'half', area: 'all', cap: 'any', rating: 0, extras: [], types: [], priceMax: null, sort: 'rec', view: 'list', panel: false, sel: 'b1', loading: false };
+  }
+  upd(patch) {
+    this.setState(Object.assign({}, patch, { loading: true }));
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ loading: false }), 450);
+  }
+  boats() {
+    const P = {
+      midday:  ['#CFE8F5', '#FFE7A3', '#8FB8A0', '#5E9478', '#3E8FB0'],
+      morning: ['#E4F1F7', '#FFF1C4', '#A5C4B0', '#6E9D84', '#5BA3C0'],
+      golden:  ['#FCE3C2', '#FFC94A', '#A3A982', '#6F8065', '#4C8DA8'],
+      clear:   ['#BFE3F4', '#FFF6D6', '#86B39A', '#4F8A6C', '#2F7FA3']
+    };
+    const R = [
+      ['b1', "24' Bennington Pontoon", 'Cornelius', 12, 350, 600, 4.9, 38, 1, 1, 1, 'tube sup mat cooler speaker', 'pontoon', 3.1, 60, 66, 'midday', '#0A6C7A'],
+      ['b2', "22' MasterCraft XT22", 'Mooresville', 14, 525, 950, 4.8, 21, 1, 1, 1, 'tube wake skis speaker cooler', 'ski', 12.4, 70, 23, 'clear', '#C2410C'],
+      ['b3', "25' Sun Tracker Party Barge", 'Davidson', 13, 395, 700, null, 0, 1, 1, 0, 'tube cooler speaker mat', 'pontoon', 6.0, 65, 54, 'morning', '#0F2A3D'],
+      ['b4', "23' Barletta Tritoon", 'Huntersville', 12, 450, 800, 5.0, 12, 1, 0, 1, 'tube cooler speaker sup', 'pontoon', 4.2, 62, 81, 'golden', '#0A6C7A'],
+      ['b5', "21' Malibu Wakesetter", 'Mooresville', 12, 560, 1000, 4.7, 44, 1, 0, 0, 'wake skis tube speaker', 'ski', 9.8, 57, 40, 'clear', '#0F2A3D'],
+      ['b6', "20' Bennington S Pontoon", 'Denver', 10, 295, 520, 4.6, 9, 1, 1, 0, 'tube cooler fishing', 'pontoon', 7.5, 37, 63, 'morning', '#C2410C'],
+      ['b7', "26' Harris Grand Mariner", 'Cornelius', 14, 575, 1050, 4.9, 63, 1, 0, 1, 'tube mat cooler speaker sup', 'pontoon', 2.6, 55, 71, 'golden', '#C2410C'],
+      ['b8', "24' Avalon Catalina", 'Sherrills Ford', 12, 375, 650, null, 0, 1, 1, 0, 'tube cooler', 'pontoon', 14.0, 31, 26, 'midday', '#0F2A3D'],
+      ['b9', "19' Yamaha AR190", 'Cornelius', 8, 340, 600, 4.8, 27, 0, 1, 1, 'tube wake skis', 'ski', 3.5, 66, 61, 'clear', '#C2410C'],
+      ['b10', 'Sea-Doo GTX jet ski', 'Mooresville', 3, 180, 320, 4.5, 16, 0, 1, 1, '', 'jet', 11.0, 66, 30, 'morning', '#0A6C7A'],
+      ['b11', "22' Sea Hunt Ultra 225", 'Huntersville', 9, 410, 720, 4.4, 8, 1, 1, 0, 'fishing cooler tube', 'center', 5.0, 58, 78, 'midday', '#0F2A3D'],
+      ['b12', 'Catalina 25 sailboat', 'Davidson', 6, 300, 520, 4.9, 11, 1, 0, 0, 'cooler', 'sail', 6.4, 61, 49, 'golden', '#0A6C7A'],
+      ['b13', "22' Sun Tracker Fishin' Barge", 'Denver', 8, 260, 450, 4.3, 19, 0, 1, 0, 'fishing cooler', 'pontoon', 8.1, 41, 58, 'morning', '#0F2A3D'],
+      ['b14', "25' Bennington QX", 'Cornelius', 12, 650, 1150, 5.0, 7, 1, 0, 1, 'tube sup mat cooler speaker', 'pontoon', 2.9, 58, 67, 'clear', '#0A6C7A']
+    ];
+    return R.map((r, i) => {
+      const p = P[r[16]];
+      return { id: r[0], title: r[1], area: r[2], guests: r[3], half: r[4], full: r[5], rating: r[6], reviews: r[7],
+        captain: !!r[8], self: !!r[9], instant: !!r[10], extras: r[11] ? r[11].split(' ') : [], type: r[12], dist: r[13], x: r[14], y: r[15],
+        sky: p[0], sun: p[1], hillFar: p[2], hillNear: p[3], water: p[4], accent: r[17], boatX: 90 + (i * 23) % 80, sunX: i % 2 ? 80 : 320, order: i };
+    });
+  }
+  match(b, f) {
+    const price = f.len === 'half' ? b.half : b.full;
+    if (b.guests < f.guests) return false;
+    if (f.area !== 'all' && b.area !== f.area) return false;
+    if (f.cap === 'captain' && !b.captain) return false;
+    if (f.cap === 'self' && !b.self) return false;
+    if (f.rating && b.rating !== null && b.rating < f.rating) return false;
+    if (f.extras.some(x => b.extras.indexOf(x) < 0)) return false;
+    if (f.types.length && f.types.indexOf(b.type) < 0) return false;
+    if (f.priceMax !== null && price > f.priceMax) return false;
+    return true;
+  }
+  renderVals() {
+    const s = this.state;
+    const all = this.boats();
+    const EX = { tube: 'Tube with rope', wake: 'Wakeboard', skis: 'Water skis', sup: 'Paddleboard', mat: 'Floating mat', cooler: 'Cooler with ice', speaker: 'Bluetooth speaker', fishing: 'Fishing gear' };
+    const TY = { pontoon: 'Pontoon', ski: 'Ski / wake', center: 'Center console', sail: 'Sailboat', jet: 'Jet ski' };
+    const floor = s.len === 'half' ? 150 : 300, ceil = s.len === 'half' ? 700 : 1200;
+    const count = f => all.filter(b => this.match(b, f)).length;
+    let res = all.filter(b => this.match(b, s));
+    const pr = b => s.len === 'half' ? b.half : b.full;
+    if (s.sort === 'plo') res = res.slice().sort((a, b) => pr(a) - pr(b));
+    if (s.sort === 'phi') res = res.slice().sort((a, b) => pr(b) - pr(a));
+    if (s.sort === 'rating') res = res.slice().sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    if (s.sort === 'dist') res = res.slice().sort((a, b) => a.dist - b.dist);
+    const results = res.map(b => Object.assign({}, b, { price: pr(b), per: s.len === 'half' ? 'half day' : 'full day', hasRating: b.rating !== null, isNew: b.rating === null, rating: b.rating !== null ? b.rating.toFixed(1) : '' }));
+
+    const chips = [];
+    if (s.area !== 'all') chips.push({ label: s.area, patch: { area: 'all' } });
+    if (s.cap === 'captain') chips.push({ label: 'Captain available', patch: { cap: 'any' } });
+    if (s.cap === 'self') chips.push({ label: 'Self-drive', patch: { cap: 'any' } });
+    if (s.rating) chips.push({ label: s.rating + '+ stars', patch: { rating: 0 } });
+    if (s.priceMax !== null) chips.push({ label: 'Up to $' + s.priceMax, patch: { priceMax: null } });
+    s.extras.forEach(x => chips.push({ label: EX[x], patch: { extras: s.extras.filter(y => y !== x) } }));
+    s.types.forEach(t => chips.push({ label: TY[t], patch: { types: s.types.filter(y => y !== t) } }));
+    const chipsOut = chips.map(c => ({ label: c.label, remove: () => this.upd(c.patch) }));
+    const suggest = chips.map(c => ({ label: 'Remove “' + c.label + '”', n: count(Object.assign({}, s, c.patch)), apply: () => this.upd(c.patch) }))
+      .concat([{ label: 'Lower to ' + Math.max(1, s.guests - 2) + ' guests', n: count(Object.assign({}, s, { guests: Math.max(1, s.guests - 2) })), apply: () => this.upd({ guests: Math.max(1, s.guests - 2) }) }])
+      .filter(t => t.n > 0).sort((a, b) => b.n - a.n).slice(0, 3);
+
+    const on = (a) => a ? { border: '2px solid #0F2A3D', bg: '#0F2A3D', fg: '#FFFFFF', pressed: 'true' } : { border: '1px solid #7B8F9B', bg: '#FFFFFF', fg: '#0F2A3D', pressed: 'false' };
+    const quick = [
+      Object.assign({ label: 'Captain available', toggle: () => this.upd({ cap: s.cap === 'captain' ? 'any' : 'captain' }) }, on(s.cap === 'captain')),
+      Object.assign({ label: 'Self-drive', toggle: () => this.upd({ cap: s.cap === 'self' ? 'any' : 'self' }) }, on(s.cap === 'self')),
+      Object.assign({ label: '4.5+ stars', toggle: () => this.upd({ rating: s.rating === 4.5 ? 0 : 4.5 }) }, on(s.rating === 4.5)),
+      Object.assign({ label: 'Tube with rope', toggle: () => this.upd({ extras: s.extras.indexOf('tube') >= 0 ? s.extras.filter(x => x !== 'tube') : s.extras.concat('tube') }) }, on(s.extras.indexOf('tube') >= 0)),
+      Object.assign({ label: 'Pontoon', toggle: () => this.upd({ types: s.types.indexOf('pontoon') >= 0 ? s.types.filter(x => x !== 'pontoon') : s.types.concat('pontoon') }) }, on(s.types.indexOf('pontoon') >= 0))
+    ];
+    const areas = ['all', 'Cornelius', 'Davidson', 'Huntersville', 'Mooresville', 'Denver', 'Sherrills Ford'].map(a => Object.assign({ label: a === 'all' ? 'All areas' : a, pick: () => this.upd({ area: a }) }, on(s.area === a)));
+    const ratings = [[0, 'Any'], [4, '4+ ★'], [4.5, '4.5+ ★']].map(([v, l]) => ({ label: l, checked: s.rating === v, border: s.rating === v ? '2px solid #0A6C7A' : '1px solid #C9D6DD', bg: s.rating === v ? '#E3F2F4' : '#FFFFFF', pick: () => this.upd({ rating: v }) }));
+    const caps = [['any', 'Either', 'Show all boats'], ['captain', 'Captain available', 'A licensed captain drives'], ['self', 'Self-drive', 'Age and boater education rules apply']].map(([v, l, sub]) => ({ label: l, sub, checked: s.cap === v, pick: () => this.upd({ cap: v }) }));
+    const extras = Object.keys(EX).map(k => ({ label: EX[k], checked: s.extras.indexOf(k) >= 0, toggle: () => this.upd({ extras: s.extras.indexOf(k) >= 0 ? s.extras.filter(x => x !== k) : s.extras.concat(k) }) }));
+    const types = Object.keys(TY).map(k => Object.assign({ label: TY[k], toggle: () => this.upd({ types: s.types.indexOf(k) >= 0 ? s.types.filter(x => x !== k) : s.types.concat(k) }) }, on(s.types.indexOf(k) >= 0)));
+
+    const pins = results.map(b => ({ x: b.x, y: b.y, price: b.price, label: b.title + ', from $' + b.price, bg: s.sel === b.id ? '#0F2A3D' : '#FFFFFF', fg: s.sel === b.id ? '#FFFFFF' : '#0F2A3D', z: s.sel === b.id ? 4 : 2, pick: () => this.setState({ sel: b.id }) }));
+    const selB = results.find(b => b.id === s.sel);
+    const n = results.length;
+    const isMap = s.view === 'map';
+    return {
+      guests: s.guests,
+      incG: () => this.upd({ guests: Math.min(20, s.guests + 1) }),
+      decG: () => this.upd({ guests: Math.max(1, s.guests - 1) }),
+      quick, chips: chipsOut, hasActive: chips.length > 0, activeCount: chips.length,
+      clearAll: () => this.upd({ area: 'all', cap: 'any', rating: 0, extras: [], types: [], priceMax: null }),
+      countLabel: n === 1 ? '1 boat' : n + ' boats',
+      lengthLabel: s.len === 'half' ? 'Half-day' : 'Full-day', lengthTitle: s.len === 'half' ? 'Half-day' : 'Full-day',
+      halfPressed: s.len === 'half' ? 'true' : 'false', fullPressed: s.len === 'full' ? 'true' : 'false',
+      halfBg: s.len === 'half' ? '#FFFFFF' : 'transparent', fullBg: s.len === 'full' ? '#FFFFFF' : 'transparent',
+      setHalf: () => this.upd({ len: 'half', priceMax: null }), setFull: () => this.upd({ len: 'full', priceMax: null }),
+      sort: s.sort, setSort: (e) => this.upd({ sort: e.target.value }),
+      loading: s.loading, showEmpty: !s.loading && n === 0, showList: !s.loading && n > 0,
+      results, suggest, skeletons: [1, 2, 3, 4],
+      pins, hasSel: !!selB, sel: selB ? { x: selB.x, y: selB.y, title: selB.title, area: selB.area, guests: selB.guests, price: selB.price, per: selB.per } : {},
+      listCls: isMap ? 'off' : '', mapCls: isMap ? 'on' : '',
+      listPressed: isMap ? 'false' : 'true', mapPressed: isMap ? 'true' : 'false',
+      listBtnBg: isMap ? 'transparent' : '#FFFFFF', listBtnFg: isMap ? '#FFFFFF' : '#0F2A3D',
+      mapBtnBg: isMap ? '#FFFFFF' : 'transparent', mapBtnFg: isMap ? '#0F2A3D' : '#FFFFFF',
+      showListView: () => this.setState({ view: 'list' }), showMapView: () => this.setState({ view: 'map' }),
+      panel: s.panel, openPanel: () => this.setState({ panel: true }), closePanel: () => this.setState({ panel: false }),
+      areas, ratings, caps, extras, types,
+      priceFloor: floor, priceCeil: ceil, priceMaxVal: s.priceMax === null ? ceil : s.priceMax,
+      setMax: (e) => { const v = Number(e.target.value); this.upd({ priceMax: v >= ceil ? null : v }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

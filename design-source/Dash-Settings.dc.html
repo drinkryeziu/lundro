@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Owner settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F9FA}
+*{box-sizing:border-box}
+a{color:#0A6C7A}a:hover{color:#08525D}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+.disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+.btn-p{background:#0A6C7A;color:#fff}.btn-p:hover{background:#08525D;color:#fff}
+.btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}.btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+.muted{color:#4A5F6E}
+.card{background:#fff;border:1px solid #DCE5EA;border-radius:18px;padding:22px}
+.card h2{margin:0 0 4px;font-size:19px}
+.inp{width:100%;min-height:44px;border:1px solid #7B8F9B;border-radius:12px;padding:0 12px;background:#fff;font-size:16px;color:#0F2A3D}
+textarea.inp{padding:10px 12px;min-height:90px}
+.inp:disabled{background:#F1F6F8;color:#3D5160}
+.lbl{display:block;font-size:14px;font-weight:700;color:#3D5160;margin-bottom:6px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.side{flex:0 0 248px;background:#fff;border-right:1px solid #DCE5EA;padding:16px 12px;display:flex;flex-direction:column;gap:4px}
+.nv{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;text-decoration:none;color:#0F2A3D;font-weight:600}
+.nv:hover{background:#EEF4F7;color:#0F2A3D}
+.nv.on{background:#E3F2F4;color:#0B4F59;font-weight:700}
+.tabbar{display:none}
+.badge{display:inline-flex;align-items:center;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{text-align:left;font-size:13px;color:#3D5160;font-weight:700;padding:10px 8px;border-bottom:1px solid #DCE5EA}
+td{padding:10px 8px;border-bottom:1px solid #EEF2F4}
+@media (max-width:860px){.side{display:none}.tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #DCE5EA;z-index:20}.main{padding-bottom:96px!important}.hide-sm{display:none!important}}
+</style>
+</helmet>
+<div style="min-height: 100%; display: flex; flex-wrap: wrap; background: #F6F9FA; font-family: 'Figtree', system-ui, sans-serif; color: #0F2A3D; font-size: 16px; line-height: 1.5">
+
+<nav class="side" aria-label="Dashboard">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F2A3D; padding: 4px 8px 12px" aria-label="Lundro home"><svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"></circle><circle cx="24" cy="12" r="4" fill="#FFC94A"></circle><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg><span class="disp" style="font-weight: 700; font-size: 22px">Lundro</span></a>
+<div style="display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid #DCE5EA; border-radius: 14px; margin-bottom: 8px"><span aria-hidden="true" class="disp" style="width: 36px; height: 36px; border-radius: 10px; background: #0F2A3D; color: #FFC94A; display: grid; place-items: center; font-weight: 700; font-size: 13px">C&amp;C</span><span style="line-height: 1.2"><strong style="display: block; font-size: 14px">Cove &amp; Co.</strong><span class="muted" style="font-size: 13px">Jordan Hale · Owner</span></span></div>
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="11">
+<a href="{{n.href}}" class="nv {{n.cls}}" aria-current="{{n.cur}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.hasBadge}}" hint-placeholder-val="{{false}}"><span class="badge" style="background: {{n.badgeBg}}; color: {{n.badgeFg}}">{{n.badge}}</span></sc-if></a>
+</sc-for>
+<a href="Main.dc.html" class="nv" style="margin-top: 12px; color: #0A6C7A">View public site ↗</a>
+</nav>
+
+<div class="main" style="flex: 999 1 560px; min-width: 0; padding: 28px 32px 48px">
+<h1 class="disp" style="margin: 0; font-size: 32px">Settings</h1>
+<div role="tablist" aria-label="Settings sections" style="display: flex; gap: 6px; margin-top: 16px; border-bottom: 1px solid #DCE5EA; overflow-x: auto">
+<sc-for list="{{tabsList}}" as="t" hint-placeholder-count="4"><button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="border: 0; background: transparent; min-height: 48px; padding: 0 14px; font-weight: 700; color: {{t.fg}}; border-bottom: 3px solid {{t.line}}; cursor: pointer; white-space: nowrap">{{t.label}}</button></sc-for>
+</div>
+
+<sc-if value="{{saved}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 16px 0 0; background: #DDF3E4; color: #14532D; border-radius: 12px; padding: 10px 14px; font-weight: 700">✓ Changes saved</p></sc-if>
+
+<sc-if value="{{tProfile}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 18px; align-items: flex-start">
+<section class="card" style="flex: 999 1 480px; min-width: 0" aria-labelledby="pub-h">
+<h2 id="pub-h">Public profile</h2><p class="muted" style="margin: 0 0 14px; font-size: 14px">Shown on your boat pages.</p>
+<div class="g2">
+<div><label for="s-dba" class="lbl">Display name</label><input id="s-dba" class="inp" value="{{p.name}}" onInput="{{setName}}" onChange="{{setName}}"></div>
+<div><label for="s-web" class="lbl">Website</label><input id="s-web" class="inp" value="coveandco.example"></div>
+<div style="grid-column: 1 / -1"><label for="s-desc" class="lbl">Business description</label><textarea id="s-desc" class="inp">Family-run rental fleet on Lake Norman since 2023. Clean boats, friendly captains, easy pickup in Cornelius.</textarea></div>
+<div><label for="s-hrs" class="lbl">Business hours</label><input id="s-hrs" class="inp" value="Daily 8 AM – 7 PM (Apr–Oct)"></div>
+<div><label for="s-sup" class="lbl">Support contact (shown after booking)</label><input id="s-sup" class="inp" value="help@coveandco.example"></div>
+</div>
+<h2 style="margin-top: 22px">Private business details</h2><p class="muted" style="margin: 0 0 14px; font-size: 14px">Verified. Contact Lundro support to change these.</p>
+<div class="g2">
+<div><label for="s-legal" class="lbl">Legal name</label><input id="s-legal" class="inp" value="Cove and Co Boat Rentals LLC" disabled="{{true}}"></div>
+<div><label for="s-ent" class="lbl">Entity · state</label><input id="s-ent" class="inp" value="LLC · North Carolina" disabled="{{true}}"></div>
+<div><label for="s-reg" class="lbl">NC SOS registration no.</label><input id="s-reg" class="inp" value="2318804" disabled="{{true}}"></div>
+</div>
+<button type="button" class="btn btn-p" onClick="{{save}}" style="margin-top: 18px">Save changes</button>
+</section>
+<aside class="card" style="flex: 1 1 280px; min-width: 0" aria-label="Preview">
+<p class="muted" style="margin: 0 0 10px; font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase">Renters see</p>
+<div style="display: flex; gap: 12px; align-items: center"><span aria-hidden="true" class="disp" style="width: 52px; height: 52px; border-radius: 14px; background: #0F2A3D; color: #FFC94A; display: grid; place-items: center; font-weight: 700">C&amp;C</span><span><strong style="display: block">{{p.name}}</strong><span class="muted" style="font-size: 14px">★ 4.9 · 3 years hosting</span></span></div>
+<p style="margin: 10px 0 0; display: flex; gap: 6px; flex-wrap: wrap"><span class="badge" style="background: #DDF3E4; color: #14532D">✓ Verified owner</span><span class="badge" style="background: #E3F2F4; color: #0B4F59">Insured</span></p>
+<p class="muted" style="margin: 12px 0 0; font-size: 14px">Your phone, email and address are never shown.</p>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{tPayout}}" hint-placeholder-val="{{false}}">
+<section class="card" style="margin-top: 18px; max-width: 720px" aria-labelledby="po-h">
+<h2 id="po-h">Payout method</h2><p class="muted" style="margin: 0 0 14px; font-size: 14px">Managed securely by Stripe. Lundro never stores your bank details.</p>
+<div style="display: flex; gap: 14px; align-items: center; border: 1px solid #DCE5EA; border-radius: 14px; padding: 14px; flex-wrap: wrap">
+<span aria-hidden="true" style="width: 44px; height: 44px; border-radius: 12px; background: #E3F2F4; color: #0B4F59; display: grid; place-items: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 10l9-6 9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"></path></svg></span>
+<span style="flex: 1 1 200px"><strong style="display: block">Bank account ending 6789</strong><span class="muted" style="font-size: 14px">Cove and Co Boat Rentals LLC · Verified</span></span>
+<button type="button" class="btn btn-g">Update in Stripe</button>
+</div>
+<div class="g2" style="margin-top: 16px">
+<div><p class="lbl">Payout schedule</p><p style="margin: 0">2 business days after each trip ends</p></div>
+<div><p class="lbl">Tax ID</p><p style="margin: 0">EIN ending 4402 · on file with Stripe</p></div>
+<div><p class="lbl">Tax forms</p><p style="margin: 0">Annual 1099-K available in Stripe</p></div>
+<div><p class="lbl">Sales tax</p><p style="margin: 0">Collected and remitted by Lundro. You don't file NC sales tax on Lundro bookings.</p></div>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{tTeam}}" hint-placeholder-val="{{false}}">
+<section class="card" style="margin-top: 18px" aria-labelledby="tm-h">
+<h2 id="tm-h">Team members</h2><p class="muted" style="margin: 0 0 14px; font-size: 14px">Give captains and staff their own login.</p>
+<div style="overflow-x: auto"><table>
+<thead><tr><th scope="col">Name</th><th scope="col">Role</th><th scope="col" class="hide-sm">Can access</th><th scope="col"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden">Actions</span></th></tr></thead>
+<tbody><sc-for list="{{team}}" as="m" hint-placeholder-count="3"><tr>
+<td><strong>{{m.name}}</strong><span class="muted" style="display: block; font-size: 13px">{{m.email}}</span></td>
+<td><span class="badge" style="background: {{m.bg}}; color: {{m.fg}}">{{m.role}}</span></td>
+<td class="hide-sm muted" style="font-size: 14px">{{m.access}}</td>
+<td style="text-align: right"><sc-if value="{{m.removable}}" hint-placeholder-val="{{true}}"><button type="button" class="btn btn-g" onClick="{{m.remove}}" aria-label="Remove {{m.name}}">Remove</button></sc-if></td>
+</tr></sc-for></tbody>
+</table></div>
+<h3 style="margin: 20px 0 8px; font-size: 16px">Invite someone</h3>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end">
+<div style="flex: 1 1 240px"><label for="inv-e" class="lbl">Email</label><input id="inv-e" type="email" class="inp" value="{{inv.email}}" onInput="{{setInvEmail}}" onChange="{{setInvEmail}}" placeholder="name@example.com"></div>
+<div style="flex: 0 1 200px"><label for="inv-r" class="lbl">Role</label><select id="inv-r" class="inp" value="{{inv.role}}" onChange="{{setInvRole}}"><option>Manager</option><option>Captain</option><option>Dock staff</option></select></div>
+<button type="button" class="btn btn-p" onClick="{{invite}}">Send invite</button>
+</div>
+<sc-if value="{{invErr}}" hint-placeholder-val="{{false}}"><p role="alert" style="margin: 8px 0 0; color: #B42318; font-weight: 600; font-size: 14px">Enter a valid email address.</p></sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{tNotif}}" hint-placeholder-val="{{false}}">
+<section class="card" style="margin-top: 18px; max-width: 760px" aria-labelledby="nt-h">
+<h2 id="nt-h">Notifications</h2><p class="muted" style="margin: 0 0 10px; font-size: 14px">Sent to jordan@coveandco.example and (704) 555-0142.</p>
+<div style="overflow-x: auto"><table>
+<thead><tr><th scope="col">When</th><th scope="col">Email</th><th scope="col">Text</th></tr></thead>
+<tbody><sc-for list="{{notif}}" as="n" hint-placeholder-count="6"><tr>
+<td><strong>{{n.label}}</strong><span class="muted" style="display: block; font-size: 13px">{{n.sub}}</span></td>
+<td><input type="checkbox" checked="{{n.email}}" onChange="{{n.tEmail}}" disabled="{{n.locked}}" aria-label="{{n.label}} by email" style="width: 22px; height: 22px; accent-color: #0A6C7A"></td>
+<td><input type="checkbox" checked="{{n.sms}}" onChange="{{n.tSms}}" aria-label="{{n.label}} by text" style="width: 22px; height: 22px; accent-color: #0A6C7A"></td>
+</tr></sc-for></tbody>
+</table></div>
+<button type="button" class="btn btn-p" onClick="{{save}}" style="margin-top: 16px">Save preferences</button>
+</section>
+</sc-if>
+</div>
+
+<nav class="tabbar" aria-label="Dashboard">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<a href="{{t.href}}" aria-current="{{t.cur}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; text-decoration: none; color: {{t.fg}}; font-size: 12px; font-weight: 700"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg>{{t.label}}</a>
+</sc-for>
+<button type="button" onClick="{{toggleMore}}" aria-expanded="{{moreExp}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; border: 0; background: transparent; color: #4A5F6E; font-size: 12px; font-weight: 700; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></svg>More</button>
+</nav>
+<sc-if value="{{more}}" hint-placeholder-val="{{false}}">
+<div style="position: fixed; left: 0; right: 0; bottom: 64px; background: #fff; border-top: 1px solid #DCE5EA; border-radius: 20px 20px 0 0; box-shadow: 0 -8px 24px rgba(15,42,61,.15); padding: 12px; z-index: 21">
+<sc-for list="{{moreItems}}" as="n" hint-placeholder-count="7"><a href="{{n.href}}" class="nv">{{n.label}}</a></sc-for>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { more: false, tab: 'profile', saved: false, name: 'Cove & Co. Boat Rentals', inv: { email: '', role: 'Manager' }, invErr: false,
+      team: [
+        { name: 'Jordan Hale', email: 'jordan@coveandco.example', role: 'Owner', access: 'Everything' },
+        { name: 'Sara Lin', email: 'sara@coveandco.example', role: 'Manager', access: 'Bookings, calendar, messages, boats' },
+        { name: 'Mike R.', email: 'mike@coveandco.example', role: 'Captain', access: 'Own trips and calendar' }
+      ],
+      nt: { req: [1, 1], conf: [1, 0], msg: [1, 1], exp: [1, 1], pay: [1, 0], rev: [1, 0] } };
+  }
+  shell(cur) {
+    const N = [
+      ['Overview', 'Dash-Overview.dc.html', 'M3 12l9-8 9 8M5 10v10h14V10'],
+      ['Calendar', 'Dash-Calendar.dc.html', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4'],
+      ['Bookings', 'Dash-Bookings.dc.html', 'M5 4h14v16H5zM9 8h6M9 12h6M9 16h4', '3', 'n'],
+      ['Boats', 'Dash-Boats.dc.html', 'M3 15h18l-2 4H5zM6 15V9h9l3 6M10 9V5'],
+      ['Extras', 'Dash-Extras.dc.html', 'M12 3v18M3 12h18M7 7h10v10H7z'],
+      ['Customers', 'Dash-Customers.dc.html', 'M9 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM3 20c.6-3.4 3-5.4 6-5.4s5.4 2 6 5.4M16 5a3 3 0 0 1 0 6M18 15c1.7.7 2.7 2.4 3 5'],
+      ['Messages', 'Dash-Messages.dc.html', 'M4 5h16v11H8l-4 4z', '2', 'n'],
+      ['Earnings', 'Dash-Earnings.dc.html', 'M12 3v18M16 7H10a2.5 2.5 0 0 0 0 5h4a2.5 2.5 0 0 1 0 5H8'],
+      ['Reviews', 'Dash-Reviews.dc.html', 'M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6L3.3 9.3l6.1-.7z'],
+      ['Verification', 'Dash-Verification.dc.html', 'M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6zM9 12l2 2 4-4', '3', 'w'],
+      ['Settings', 'Dash-Settings.dc.html', 'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2']
+    ];
+    const nav = N.map(([label, href, icon, badge, kind]) => ({ label, href, icon, cls: label === cur ? 'on' : '', cur: label === cur ? 'page' : 'false', hasBadge: !!badge, badge: badge || '', badgeBg: kind === 'w' ? '#FDE2E1' : '#0F2A3D', badgeFg: kind === 'w' ? '#8E1B13' : '#fff' }));
+    const top = ['Overview', 'Calendar', 'Bookings', 'Messages'];
+    const tabs = nav.filter(n => top.indexOf(n.label) >= 0).map(n => Object.assign({}, n, { fg: n.label === cur ? '#0A6C7A' : '#4A5F6E' }));
+    const moreItems = nav.filter(n => top.indexOf(n.label) < 0);
+    return { nav, tabs, moreItems, more: this.state.more, moreExp: this.state.more ? 'true' : 'false', toggleMore: () => this.setState({ more: !this.state.more }) };
+  }
+  renderVals() {
+    const s = this.state;
+    const T = [['profile', 'Company profile'], ['payout', 'Payout method'], ['team', 'Team members'], ['notif', 'Notifications']];
+    const RC = { Owner: ['#0F2A3D', '#fff'], Manager: ['#E3F2F4', '#0B4F59'], Captain: ['#FFF1C7', '#5C4300'], 'Dock staff': ['#E8EFF2', '#3D5160'], Invited: ['#F3EEE3', '#5E4513'] };
+    const NT = [['req', 'New booking request', 'You have 24 hours to reply'], ['conf', 'Booking confirmed or cancelled', ''], ['msg', 'New message from a renter', ''], ['exp', 'Document expiring', '30 days before. Email is always on.'], ['pay', 'Payout sent', ''], ['rev', 'New review', '']];
+    const flip = (k, i) => () => { const v = s.nt[k].slice(); v[i] = v[i] ? 0 : 1; this.setState({ nt: Object.assign({}, s.nt, { [k]: v }), saved: false }); };
+    return Object.assign(this.shell('Settings'), {
+      tabsList: T.map(([k, label]) => ({ label, sel: s.tab === k ? 'true' : 'false', fg: s.tab === k ? '#0F2A3D' : '#4A5F6E', line: s.tab === k ? '#0A6C7A' : 'transparent', pick: () => this.setState({ tab: k, saved: false }) })),
+      tProfile: s.tab === 'profile', tPayout: s.tab === 'payout', tTeam: s.tab === 'team', tNotif: s.tab === 'notif',
+      saved: s.saved, save: () => this.setState({ saved: true }),
+      p: { name: s.name }, setName: e => this.setState({ name: e.target.value, saved: false }),
+      team: s.team.map((m, i) => { const rc = RC[m.invited ? 'Invited' : m.role]; return { name: m.name, email: m.email, role: m.invited ? m.role + ' · invite sent' : m.role, access: m.access, bg: rc[0], fg: rc[1], removable: m.role !== 'Owner', remove: () => this.setState({ team: s.team.filter((_, j) => j !== i) }) }; }),
+      inv: s.inv, invErr: s.invErr,
+      setInvEmail: e => this.setState({ inv: Object.assign({}, this.state.inv, { email: e.target.value }), invErr: false }),
+      setInvRole: e => this.setState({ inv: Object.assign({}, this.state.inv, { role: e.target.value }) }),
+      invite: () => {
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.inv.email)) { this.setState({ invErr: true }); return; }
+        const acc = { Manager: 'Bookings, calendar, messages, boats', Captain: 'Own trips and calendar', 'Dock staff': 'Today’s trips and check-in' }[s.inv.role];
+        this.setState({ team: s.team.concat({ name: s.inv.email.split('@')[0], email: s.inv.email, role: s.inv.role, access: acc, invited: true }), inv: { email: '', role: s.inv.role } });
+      },
+      notif: NT.map(([k, label, sub]) => ({ label, sub, email: !!s.nt[k][0], sms: !!s.nt[k][1], locked: k === 'exp', tEmail: flip(k, 0), tSms: flip(k, 1) }))
+    });
+  }
+}
+</script>
+</body>
+</html>

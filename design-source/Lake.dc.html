@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Boat rentals on Lake Norman</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F9FA}
+*{box-sizing:border-box}
+a{color:#0A6C7A}a:hover{color:#08525D}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+.disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+.btn-p{background:#0A6C7A;color:#fff}.btn-p:hover{background:#08525D;color:#fff}
+.btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}.btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+.btn-sm{min-height:44px;padding:0 16px;font-size:15px}
+.nav-a{color:#0F2A3D;text-decoration:none;font-weight:600;padding:12px 14px;border-radius:999px}.nav-a:hover{background:#EEF4F7;color:#0F2A3D}
+.inp{width:100%;min-height:48px;border:1px solid #7B8F9B;border-radius:12px;padding:0 14px;background:#fff;font-size:16px;color:#0F2A3D}
+.lbl{display:block;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#3D5160;margin-bottom:6px}
+.muted{color:#4A5F6E}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.tile{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid #DCE5EA;border-radius:16px;padding:18px 20px;text-decoration:none;color:#0F2A3D}.tile:hover{border-color:#0A6C7A;color:#0F2A3D}
+.foot a{color:#CDE7EC;text-decoration:none}.foot a:hover{color:#fff;text-decoration:underline}
+@media (max-width:760px){.hide-sm{display:none!important}.wrap{padding:0 16px}.hero-h{font-size:36px!important}}
+</style>
+</helmet>
+<div style="min-height: 100%; background: #F6F9FA; font-family: 'Figtree', system-ui, sans-serif; color: #0F2A3D; font-size: 16px; line-height: 1.5">
+
+<header style="background: #FFFFFF; border-bottom: 1px solid #DCE5EA">
+<div class="wrap" style="display: flex; align-items: center; gap: 12px; min-height: 72px; flex-wrap: wrap">
+<a href="Main.dc.html" aria-label="Lundro home" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F2A3D">
+<svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"></circle><circle cx="24" cy="12" r="4" fill="#FFC94A"></circle><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path><path d="M9 26c2.5-2 4.5-2 7 0s4.5 2 7 0" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.7"></path></svg>
+<span class="disp" style="font-weight: 700; font-size: 26px">Lundro</span>
+</a>
+<nav aria-label="Main" style="margin-left: auto; display: flex; align-items: center; gap: 4px; flex-wrap: wrap">
+<a href="Lake.dc.html" class="nav-a hide-sm" aria-current="page">Lake Norman</a>
+<a href="OwnerSignup.dc.html" class="nav-a">List your boat</a>
+<a href="Dash-Overview.dc.html" class="btn btn-g btn-sm">Log in</a>
+</nav>
+</div>
+</header>
+
+<section style="background: #0F2A3D; color: #FFFFFF; position: relative; overflow: hidden">
+<svg viewBox="0 0 1440 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%">
+<rect width="1440" height="460" fill="#0F2A3D"></rect>
+<path d="M980 -20 C1010 60 1040 100 1030 160 C1080 180 1160 170 1200 210 C1150 235 1090 225 1070 255 C1090 310 1140 330 1180 370 C1140 390 1090 365 1070 390 C1080 430 1100 450 1090 480 H900 C920 450 930 420 900 400 C860 395 830 410 800 390 C840 370 880 375 905 360 C925 310 920 260 895 235 C870 215 835 220 815 200 C850 185 905 195 935 180 C950 120 960 60 980 -20 Z" fill="#1E5A78"></path>
+</svg>
+<div class="wrap" style="position: relative; padding-top: 28px; padding-bottom: 56px">
+<nav aria-label="Breadcrumb" style="font-size: 14px"><a href="Main.dc.html" style="color: #CDE7EC">Home</a> <span aria-hidden="true" style="color: #9FB7C4">/</span> <span>North Carolina</span> <span aria-hidden="true" style="color: #9FB7C4">/</span> <span aria-current="page">Lake Norman</span></nav>
+<h1 class="disp hero-h" style="margin: 20px 0 0; font-size: 54px; line-height: 1.05; font-weight: 700; max-width: 720px">Boat rentals on Lake Norman</h1>
+<p style="margin: 14px 0 0; font-size: 19px; max-width: 620px; color: #D6E4EA">Pontoons, ski and wake boats, center consoles and sailboats from verified owners around North Carolina's largest man-made lake, just north of Charlotte.</p>
+<form role="search" aria-label="Search Lake Norman boats" style="margin-top: 28px; background: #FFFFFF; color: #0F2A3D; border-radius: 20px; padding: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; max-width: 760px">
+<div style="flex: 1 1 180px"><label for="l-date" class="lbl">Date</label><input id="l-date" type="date" class="inp" value="2027-06-12"></div>
+<div style="flex: 1 1 140px"><label for="l-guests" class="lbl">Guests</label><select id="l-guests" class="inp"><option>2 guests</option><option>4 guests</option><option selected>6 guests</option><option>8 guests</option><option>10 guests</option><option>12+ guests</option></select></div>
+<a href="Search.dc.html" class="btn btn-p" style="min-height: 50px">See available boats</a>
+</form>
+</div>
+</section>
+
+<section aria-labelledby="areas-h" class="wrap" style="padding-top: 56px">
+<h2 id="areas-h" class="disp" style="margin: 0; font-size: 30px; font-weight: 700">Rent by area</h2>
+<p class="muted" style="margin: 6px 0 0">Boats are picked up at marinas around the lake. The exact pickup address is shared after booking.</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 20px">
+<sc-for list="{{areas}}" as="a" hint-placeholder-count="6">
+<a href="Search.dc.html" class="tile"><span style="font-weight: 700; font-size: 17px">{{a.name}}</span><span class="muted" style="font-size: 14px">{{a.count}} boats</span></a>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="types-h" class="wrap" style="padding-top: 56px">
+<h2 id="types-h" class="disp" style="margin: 0; font-size: 30px; font-weight: 700">Boats on Lake Norman</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 20px">
+<sc-for list="{{types}}" as="t" hint-placeholder-count="5">
+<a href="Search.dc.html" class="tile"><span style="font-weight: 700; font-size: 17px">{{t.name}}</span><span class="muted" style="font-size: 14px">{{t.desc}}</span><span style="margin-top: 8px; font-size: 15px">From <strong>${{t.from}}</strong> / half day</span></a>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="top-h" class="wrap" style="padding-top: 56px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+<h2 id="top-h" class="disp" style="margin: 0; font-size: 30px; font-weight: 700">Top-rated on Lake Norman</h2>
+<a href="Search.dc.html" style="font-weight: 700; padding: 10px 0">See all 14 boats</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px 20px; margin-top: 20px">
+<sc-for list="{{boats}}" as="item" hint-placeholder-count="3">
+<a href="Boat.dc.html" style="display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: #0F2A3D">
+<span style="position: relative; display: block; border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3">
+<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block"><rect width="400" height="300" fill="{{item.sky}}"></rect><circle cx="{{item.sunX}}" cy="62" r="24" fill="{{item.sun}}"></circle><path d="M0 150 Q50 118 110 136 T230 126 T330 132 T400 124 V176 H0 Z" fill="{{item.hillFar}}"></path><path d="M0 168 Q90 146 180 162 T400 156 V186 H0 Z" fill="{{item.hillNear}}"></path><rect y="182" width="400" height="118" fill="{{item.water}}"></rect><g transform="translate({{item.boatX}} 0)"><rect x="0" y="232" width="160" height="8" rx="4" fill="#B8C4CC"></rect><rect x="4" y="212" width="152" height="20" rx="4" fill="#FFFFFF"></rect><rect x="4" y="221" width="152" height="3" fill="{{item.accent}}"></rect><rect x="38" y="186" width="2.5" height="26" fill="#5B6B77"></rect><rect x="118" y="186" width="2.5" height="26" fill="#5B6B77"></rect><path d="M30 187 H128 Q124 177 79 177 Q34 177 30 187 Z" fill="{{item.accent}}"></path></g></svg>
+</span>
+<span style="display: flex; flex-direction: column; gap: 2px">
+<span style="display: flex; justify-content: space-between; gap: 10px"><span class="disp" style="font-size: 19px; font-weight: 600">{{item.title}}</span><span style="font-weight: 700; white-space: nowrap">★ {{item.rating}} <span class="muted" style="font-weight: 500">({{item.reviews}})</span></span></span>
+<span class="muted" style="font-size: 15px">Lake Norman · {{item.area}} · Up to {{item.guests}} guests</span>
+<span style="margin-top: 4px">From <strong style="font-size: 18px">${{item.half}}</strong> <span class="muted">/ half day</span></span>
+</span>
+</a>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="know-h" class="wrap" style="padding-top: 56px">
+<div style="background: #FFFFFF; border: 1px solid #DCE5EA; border-radius: 22px; padding: 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px">
+<div>
+<h2 id="know-h" class="disp" style="margin: 0; font-size: 26px; font-weight: 700">Good to know before you go</h2>
+<p class="muted" style="margin: 8px 0 0">Owners set their own age and experience rules. Each boat page lists them.</p>
+</div>
+<div>
+<h3 style="margin: 0; font-size: 17px">Boater education</h3>
+<p class="muted" style="margin: 4px 0 0; font-size: 15px">In North Carolina, anyone born on or after January 1, 1988 needs a boater education card to drive a boat with a 10 hp or larger motor. Book a captain and you don't need one.</p>
+</div>
+<div>
+<h3 style="margin: 0; font-size: 17px">Life jackets for kids</h3>
+<p class="muted" style="margin: 4px 0 0; font-size: 15px">Children under 13 must wear a life jacket while the boat is moving. Owners list adult and child life jacket counts.</p>
+</div>
+<div>
+<h3 style="margin: 0; font-size: 17px">Drinks on board</h3>
+<p class="muted" style="margin: 4px 0 0; font-size: 15px">Lundro doesn't sell alcohol. Some owners allow you to bring your own; check the house rules.</p>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="faq-h" class="wrap" style="padding-top: 56px; max-width: 880px">
+<h2 id="faq-h" class="disp" style="margin: 0; font-size: 30px; font-weight: 700">Lake Norman boat rental questions</h2>
+<div style="margin-top: 16px; border-top: 1px solid #DCE5EA">
+<sc-for list="{{faqs}}" as="f" hint-placeholder-count="5">
+<div style="border-bottom: 1px solid #DCE5EA">
+<h3 style="margin: 0"><button type="button" aria-expanded="{{f.expanded}}" onClick="{{f.toggle}}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 0; background: transparent; text-align: left; font-size: 17px; font-weight: 700; padding: 18px 0; min-height: 56px; cursor: pointer; color: #0F2A3D">{{f.q}}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" style="flex: none; transform: rotate({{f.rot}})"><path d="M6 9l6 6 6-6"></path></svg></button></h3>
+<sc-if value="{{f.open}}" hint-placeholder-val="{{false}}"><p class="muted" style="margin: 0 0 18px; max-width: 720px">{{f.a}}</p></sc-if>
+</div>
+</sc-for>
+</div>
+</section>
+
+<footer class="foot" style="background: #0F2A3D; color: #FFFFFF; margin-top: 72px">
+<div class="wrap" style="padding-top: 40px; padding-bottom: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; font-size: 15px">
+<div><p class="disp" style="margin: 0; font-size: 22px; font-weight: 700">Lundro</p><p style="margin: 6px 0 0; color: #B9CCD6">Boat rentals on North Carolina lakes.</p></div>
+<nav aria-label="Renters"><p style="margin: 0 0 8px; font-weight: 700">Renters</p><p style="margin: 4px 0"><a href="Lake.dc.html">Boat rentals on Lake Norman</a></p><p style="margin: 4px 0"><a href="Search.dc.html">Search boats</a></p></nav>
+<nav aria-label="Owners"><p style="margin: 0 0 8px; font-weight: 700">Owners</p><p style="margin: 4px 0"><a href="OwnerSignup.dc.html">List your boat</a></p><p style="margin: 4px 0"><a href="Dash-Overview.dc.html">Owner dashboard</a></p></nav>
+<nav aria-label="Lundro"><p style="margin: 0 0 8px; font-weight: 700">Lundro</p><p style="margin: 4px 0"><a href="Admin-Review.dc.html">Admin console</a></p><p style="margin: 4px 0"><a href="#">Help center</a></p></nav>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3000}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { open: 0 }; }
+  renderVals() {
+    const faqsRaw = [
+      ['How does pickup work?', 'Each boat has a pickup marina shown on the map. Once your booking is confirmed you get the exact address, parking notes and the owner’s contact details.'],
+      ['Do I need a boating license?', 'Not if you book a captain. To drive yourself, you must meet the owner’s minimum age, and in NC anyone born on or after Jan 1, 1988 needs a boater education card.'],
+      ['What does the price include?', 'The boat for your chosen half or full day. Extras, a captain, the Lundro service fee and NC sales tax are all itemized before you pay. The security deposit is a hold, not a charge.'],
+      ['What happens if the weather is bad?', 'Each owner sets a weather policy, shown on the boat page. If the owner cancels for weather, you get a full refund, tax included.'],
+      ['Can I cancel?', 'Each boat has a Flexible, Moderate or Strict cancellation policy. Refunds include the tax you paid.']
+    ];
+    const faqs = faqsRaw.map(([q, a], i) => {
+      const open = this.state.open === i;
+      return { q, a, open, expanded: open ? 'true' : 'false', rot: open ? '180deg' : '0deg',
+        toggle: () => this.setState({ open: open ? -1 : i }) };
+    });
+    return {
+      faqs,
+      areas: [{ name: 'Cornelius', count: 4 }, { name: 'Mooresville', count: 3 }, { name: 'Davidson', count: 2 }, { name: 'Huntersville', count: 2 }, { name: 'Denver', count: 2 }, { name: 'Sherrills Ford', count: 1 }],
+      types: [
+        { name: 'Pontoons', desc: 'Roomy and easy for families', from: 260 },
+        { name: 'Ski and wake boats', desc: 'For tubing, skiing and surfing', from: 340 },
+        { name: 'Center consoles', desc: 'Fishing and cruising', from: 410 },
+        { name: 'Sailboats', desc: 'Quiet days, captain included', from: 300 },
+        { name: 'Jet skis', desc: '1 to 3 riders', from: 180 }
+      ],
+      boats: [
+        { title: "26' Harris Grand Mariner", area: 'Cornelius', guests: 14, half: 575, rating: '4.9', reviews: 63, sky: '#FCE3C2', sun: '#FFC94A', hillFar: '#A3A982', hillNear: '#6F8065', water: '#4C8DA8', accent: '#C2410C', boatX: 110, sunX: 310 },
+        { title: "24' Bennington Pontoon", area: 'Cornelius', guests: 12, half: 350, rating: '4.9', reviews: 38, sky: '#CFE8F5', sun: '#FFE7A3', hillFar: '#8FB8A0', hillNear: '#5E9478', water: '#3E8FB0', accent: '#0A6C7A', boatX: 120, sunX: 320 },
+        { title: "21' Malibu Wakesetter", area: 'Mooresville', guests: 12, half: 560, rating: '4.7', reviews: 44, sky: '#BFE3F4', sun: '#FFF6D6', hillFar: '#86B39A', hillNear: '#4F8A6C', water: '#2F7FA3', accent: '#0F2A3D', boatX: 90, sunX: 330 }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

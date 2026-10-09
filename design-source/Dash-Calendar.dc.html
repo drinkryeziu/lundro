@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Owner calendar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F9FA}
+*{box-sizing:border-box}
+a{color:#0A6C7A}a:hover{color:#08525D}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+.disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+.btn-p{background:#0A6C7A;color:#fff}.btn-p:hover{background:#08525D;color:#fff}
+.btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}.btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+.muted{color:#4A5F6E}
+.card{background:#fff;border:1px solid #DCE5EA;border-radius:18px;padding:20px}
+.inp{width:100%;min-height:44px;border:1px solid #7B8F9B;border-radius:12px;padding:0 12px;background:#fff;font-size:16px;color:#0F2A3D}
+.lbl{display:block;font-size:14px;font-weight:700;color:#3D5160;margin-bottom:6px}
+.side{flex:0 0 248px;background:#fff;border-right:1px solid #DCE5EA;padding:16px 12px;display:flex;flex-direction:column;gap:4px}
+.nv{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;text-decoration:none;color:#0F2A3D;font-weight:600}
+.nv:hover{background:#EEF4F7;color:#0F2A3D}
+.nv.on{background:#E3F2F4;color:#0B4F59;font-weight:700}
+.tabbar{display:none}
+.badge{display:inline-flex;align-items:center;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid #DCE5EA;border-left:1px solid #DCE5EA}
+.cell{min-height:118px;border-right:1px solid #DCE5EA;border-bottom:1px solid #DCE5EA;padding:6px;display:flex;flex-direction:column;gap:4px;background:#fff}
+.ev{display:block;width:100%;text-align:left;font-size:12px;font-weight:700;border-radius:6px;padding:3px 6px;cursor:pointer;line-height:1.3;min-height:24px}
+.blk{background:repeating-linear-gradient(45deg,#E8EFF2,#E8EFF2 6px,#F6F9FA 6px,#F6F9FA 12px);color:#3D5160;border:1px solid #9FB1BC}
+@media (max-width:860px){.side{display:none}.tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #DCE5EA;z-index:20}.main{padding-bottom:96px!important}.cell{min-height:80px;padding:3px}.ev{font-size:10px;padding:2px 3px}.hide-sm{display:none!important}}
+</style>
+</helmet>
+<div style="min-height: 100%; display: flex; flex-wrap: wrap; background: #F6F9FA; font-family: 'Figtree', system-ui, sans-serif; color: #0F2A3D; font-size: 16px; line-height: 1.5">
+
+<nav class="side" aria-label="Dashboard">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F2A3D; padding: 4px 8px 12px" aria-label="Lundro home"><svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"></circle><circle cx="24" cy="12" r="4" fill="#FFC94A"></circle><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg><span class="disp" style="font-weight: 700; font-size: 22px">Lundro</span></a>
+<div style="display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid #DCE5EA; border-radius: 14px; margin-bottom: 8px"><span aria-hidden="true" class="disp" style="width: 36px; height: 36px; border-radius: 10px; background: #0F2A3D; color: #FFC94A; display: grid; place-items: center; font-weight: 700; font-size: 13px">C&amp;C</span><span style="line-height: 1.2"><strong style="display: block; font-size: 14px">Cove &amp; Co.</strong><span class="muted" style="font-size: 13px">Jordan Hale · Owner</span></span></div>
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="11">
+<a href="{{n.href}}" class="nv {{n.cls}}" aria-current="{{n.cur}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.hasBadge}}" hint-placeholder-val="{{false}}"><span class="badge" style="background: {{n.badgeBg}}; color: {{n.badgeFg}}">{{n.badge}}</span></sc-if></a>
+</sc-for>
+<a href="Main.dc.html" class="nv" style="margin-top: 12px; color: #0A6C7A">View public site ↗</a>
+</nav>
+
+<div class="main" style="flex: 999 1 560px; min-width: 0; padding: 28px 32px 48px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+<h1 class="disp" style="margin: 0; font-size: 32px">Calendar</h1>
+<button type="button" class="btn btn-p" onClick="{{openBlock}}">Block dates</button>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 18px">
+<div style="display: flex; align-items: center; gap: 4px">
+<button type="button" class="btn btn-g" aria-label="Previous month" style="width: 44px; padding: 0">‹</button>
+<h2 class="disp" aria-live="polite" style="margin: 0 8px; font-size: 22px; min-width: 120px; text-align: center">June 2027</h2>
+<button type="button" class="btn btn-g" aria-label="Next month" style="width: 44px; padding: 0">›</button>
+</div>
+<fieldset style="border: 0; padding: 0; margin: 0 0 0 auto; display: flex; flex-wrap: wrap; gap: 6px"><legend style="position: absolute; width: 1px; height: 1px; overflow: hidden">Show boats</legend>
+<sc-for list="{{legend}}" as="l" hint-placeholder-count="4">
+<label style="display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px; border: 1px solid #C9D6DD; border-radius: 999px; background: #fff; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{l.on}}" onChange="{{l.toggle}}" style="width: 18px; height: 18px; accent-color: #0A6C7A; margin: 0"><span aria-hidden="true" style="width: 14px; height: 14px; border-radius: 4px; background: {{l.bg}}; border: 1px solid {{l.fg}}"></span>{{l.label}}</label>
+</sc-for>
+</fieldset>
+</div>
+<p class="muted" style="margin: 10px 0 0; font-size: 14px">Dashed outline = request awaiting your reply · Striped = blocked · 20' Sea Ray SPX is paused and hidden from renters.</p>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; margin-top: 14px">
+<div style="flex: 999 1 600px; min-width: 0; overflow-x: auto">
+<div class="cal" role="grid" aria-label="June 2027" style="min-width: 520px">
+<sc-for list="{{dow}}" as="d" hint-placeholder-count="7"><div role="columnheader" style="padding: 8px; font-size: 13px; font-weight: 700; color: #3D5160; background: #F1F6F8; border-right: 1px solid #DCE5EA; border-bottom: 1px solid #DCE5EA">{{d}}</div></sc-for>
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="35">
+<div class="cell" role="gridcell" style="background: {{c.bg}}">
+<span style="font-size: 13px; font-weight: 700; color: {{c.numFg}}; display: flex; justify-content: space-between">{{c.num}}<sc-if value="{{c.today}}" hint-placeholder-val="{{false}}"><span class="badge" style="background: #0A6C7A; color: #fff; padding: 1px 6px; font-size: 11px">Today</span></sc-if></span>
+<sc-for list="{{c.events}}" as="e" hint-placeholder-count="0">
+<button type="button" class="ev {{e.cls}}" onClick="{{e.open}}" style="background: {{e.bg}}; color: {{e.fg}}; border: {{e.border}}; text-decoration: {{e.deco}}">{{e.text}}</button>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+
+<aside class="card" aria-label="Details" style="flex: 1 1 280px; min-width: 0">
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{true}}">
+<p class="muted" style="margin: 0; font-size: 14px; font-weight: 600">{{sel.date}}</p>
+<h2 style="margin: 2px 0 0; font-size: 19px">{{sel.boat}}</h2>
+<p style="margin: 8px 0 0"><span class="badge" style="background: {{sel.sBg}}; color: {{sel.sFg}}">{{sel.status}}</span></p>
+<p style="margin: 10px 0 0">{{sel.detail}}</p>
+<sc-if value="{{sel.isBlock}}" hint-placeholder-val="{{false}}"><button type="button" class="btn btn-g" onClick="{{unblock}}" style="margin-top: 14px">Remove block</button></sc-if>
+<sc-if value="{{sel.isBooking}}" hint-placeholder-val="{{true}}"><a href="Dash-Bookings.dc.html" class="btn btn-g" style="margin-top: 14px">Open booking</a></sc-if>
+</sc-if>
+<sc-if value="{{noSel}}" hint-placeholder-val="{{false}}"><p class="muted" style="margin: 0">Select a booking or block to see details.</p></sc-if>
+</aside>
+</div>
+</div>
+
+<sc-if value="{{blockOpen}}" hint-placeholder-val="{{false}}">
+<div style="position: fixed; inset: 0; background: rgba(15,42,61,.55); z-index: 40; display: flex; align-items: center; justify-content: center; padding: 16px">
+<div role="dialog" aria-modal="true" aria-labelledby="blk-h" style="background: #fff; border-radius: 22px; padding: 24px; width: 100%; max-width: 480px">
+<h2 id="blk-h" class="disp" style="margin: 0; font-size: 24px">Block dates</h2>
+<p class="muted" style="margin: 4px 0 16px; font-size: 15px">Renters can't book a blocked boat. Existing bookings aren't affected.</p>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div><label for="bk-boat" class="lbl">Boat</label><select id="bk-boat" class="inp" value="{{bk.boat}}" onChange="{{bkSet.boat}}"><option value="B">24' Bennington Pontoon</option><option value="M">22' MasterCraft XT22</option><option value="H">26' Harris Grand Mariner</option></select></div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div><label for="bk-from" class="lbl">From (June)</label><select id="bk-from" class="inp" value="{{bk.from}}" onChange="{{bkSet.from}}"><sc-for list="{{days}}" as="d" hint-placeholder-count="30"><option value="{{d}}">Jun {{d}}</option></sc-for></select></div>
+<div><label for="bk-to" class="lbl">To (June)</label><select id="bk-to" class="inp" value="{{bk.to}}" onChange="{{bkSet.to}}"><sc-for list="{{days}}" as="d" hint-placeholder-count="30"><option value="{{d}}">Jun {{d}}</option></sc-for></select></div>
+</div>
+<div><label for="bk-why" class="lbl">Reason (only you see this)</label><select id="bk-why" class="inp" value="{{bk.why}}" onChange="{{bkSet.why}}"><option>Maintenance</option><option>Personal use</option><option>Other</option></select></div>
+</div>
+<sc-if value="{{bkConflict}}" hint-placeholder-val="{{false}}"><p role="alert" style="margin: 12px 0 0; color: #B42318; font-weight: 600; font-size: 14px">{{bkConflictText}}</p></sc-if>
+<div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px"><button type="button" class="btn btn-g" onClick="{{closeBlock}}">Cancel</button><button type="button" class="btn btn-p" onClick="{{saveBlock}}">Block dates</button></div>
+</div>
+</div>
+</sc-if>
+
+<nav class="tabbar" aria-label="Dashboard">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<a href="{{t.href}}" aria-current="{{t.cur}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; text-decoration: none; color: {{t.fg}}; font-size: 12px; font-weight: 700"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg>{{t.label}}</a>
+</sc-for>
+<button type="button" onClick="{{toggleMore}}" aria-expanded="{{moreExp}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; border: 0; background: transparent; color: #4A5F6E; font-size: 12px; font-weight: 700; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></svg>More</button>
+</nav>
+<sc-if value="{{more}}" hint-placeholder-val="{{false}}">
+<div style="position: fixed; left: 0; right: 0; bottom: 64px; background: #fff; border-top: 1px solid #DCE5EA; border-radius: 20px 20px 0 0; box-shadow: 0 -8px 24px rgba(15,42,61,.15); padding: 12px; z-index: 21">
+<sc-for list="{{moreItems}}" as="n" hint-placeholder-count="7"><a href="{{n.href}}" class="nv">{{n.label}}</a></sc-for>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { more: false, show: { B: true, M: true, H: true }, sel: 'e4', blockOpen: false, bk: { boat: 'B', from: '28', to: '29', why: 'Maintenance' }, blocks: [{ id: 'k1', boat: 'M', from: 15, to: 16, why: 'Maintenance' }], conflict: '' };
+  }
+  shell(cur) {
+    const N = [
+      ['Overview', 'Dash-Overview.dc.html', 'M3 12l9-8 9 8M5 10v10h14V10'],
+      ['Calendar', 'Dash-Calendar.dc.html', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4'],
+      ['Bookings', 'Dash-Bookings.dc.html', 'M5 4h14v16H5zM9 8h6M9 12h6M9 16h4', '3', 'n'],
+      ['Boats', 'Dash-Boats.dc.html', 'M3 15h18l-2 4H5zM6 15V9h9l3 6M10 9V5'],
+      ['Extras', 'Dash-Extras.dc.html', 'M12 3v18M3 12h18M7 7h10v10H7z'],
+      ['Customers', 'Dash-Customers.dc.html', 'M9 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM3 20c.6-3.4 3-5.4 6-5.4s5.4 2 6 5.4M16 5a3 3 0 0 1 0 6M18 15c1.7.7 2.7 2.4 3 5'],
+      ['Messages', 'Dash-Messages.dc.html', 'M4 5h16v11H8l-4 4z', '2', 'n'],
+      ['Earnings', 'Dash-Earnings.dc.html', 'M12 3v18M16 7H10a2.5 2.5 0 0 0 0 5h4a2.5 2.5 0 0 1 0 5H8'],
+      ['Reviews', 'Dash-Reviews.dc.html', 'M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6L3.3 9.3l6.1-.7z'],
+      ['Verification', 'Dash-Verification.dc.html', 'M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6zM9 12l2 2 4-4', '3', 'w'],
+      ['Settings', 'Dash-Settings.dc.html', 'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2']
+    ];
+    const nav = N.map(([label, href, icon, badge, kind]) => ({ label, href, icon, cls: label === cur ? 'on' : '', cur: label === cur ? 'page' : 'false', hasBadge: !!badge, badge: badge || '', badgeBg: kind === 'w' ? '#FDE2E1' : '#0F2A3D', badgeFg: kind === 'w' ? '#8E1B13' : '#fff' }));
+    const top = ['Overview', 'Calendar', 'Bookings', 'Messages'];
+    const tabs = nav.filter(n => top.indexOf(n.label) >= 0).map(n => Object.assign({}, n, { fg: n.label === cur ? '#0A6C7A' : '#4A5F6E' }));
+    const moreItems = nav.filter(n => top.indexOf(n.label) < 0);
+    return { nav, tabs, moreItems, more: this.state.more, moreExp: this.state.more ? 'true' : 'false', toggleMore: () => this.setState({ more: !this.state.more }) };
+  }
+  renderVals() {
+    const s = this.state;
+    const BOAT = { B: { name: "24' Bennington Pontoon", short: 'Bennington', bg: '#0A6C7A', fg: '#FFFFFF' }, M: { name: "22' MasterCraft XT22", short: 'MasterCraft', bg: '#FFD9C2', fg: '#7A2E0B' }, H: { name: "26' Harris Grand Mariner", short: 'Harris', bg: '#0F2A3D', fg: '#FFFFFF' } };
+    const EV = [
+      ['e1', 5, 'H', 'Full day', 'Derek P.', 'done'], ['e2', 6, 'B', '9 AM', 'Priya S.', 'done'], ['e3', 8, 'B', '9 AM', 'Sam N.', 'cancel'],
+      ['e4', 10, 'B', '9 AM', 'Alicia M.', 'ok'], ['e5', 10, 'M', '1:30 PM', 'Ben T.', 'ok'], ['e6', 12, 'B', '9 AM', 'Taylor R.', 'ok'], ['e7', 12, 'H', 'Full day', 'Devon S.', 'ok'],
+      ['e8', 13, 'M', '9 AM', 'Chris P.', 'ok'], ['e9', 19, 'H', 'Full day', 'Marcus L.', 'req'], ['e10', 20, 'M', '1:30 PM', 'Hannah K.', 'req'], ['e11', 20, 'B', 'Full day', 'Kim J.', 'ok'],
+      ['e12', 25, 'B', '9 AM', 'NC DEQ', 'req'], ['e13', 26, 'B', '9 AM', 'Rosa G.', 'ok'], ['e14', 26, 'B', '1:30 PM', 'Will F.', 'ok'], ['e15', 26, 'H', 'Full day', 'Omar A.', 'ok'], ['e16', 27, 'M', '9 AM', 'Lena V.', 'ok']
+    ];
+    const ST = { ok: ['Confirmed', '#DDF3E4', '#14532D'], req: ['Request · awaiting you', '#FFF1C7', '#5C4300'], done: ['Completed', '#E8EFF2', '#3D5160'], cancel: ['Cancelled · weather', '#FDE2E1', '#8E1B13'] };
+    const items = {};
+    EV.forEach(([id, d, b, t, who, st]) => { items[id] = { id, d, b, t, who, st }; });
+    s.blocks.forEach(k => { items[k.id] = { id: k.id, block: true, from: k.from, to: k.to, b: k.boat, why: k.why }; });
+    const cells = [];
+    for (let i = 0; i < 2; i++) cells.push({ num: '', events: [], bg: '#F6F9FA', numFg: '#9FB1BC', today: false });
+    for (let d = 1; d <= 30; d++) {
+      const evs = EV.filter(e => e[1] === d && s.show[e[2]]).map(([id, , b, t, who, st]) => {
+        const bo = BOAT[b];
+        return { text: t + ' · ' + who, cls: '', bg: st === 'cancel' ? '#FFFFFF' : bo.bg, fg: st === 'cancel' ? '#8E1B13' : bo.fg, border: st === 'req' ? '2px dashed #5C4300' : (st === 'cancel' ? '1px solid #F4B4AE' : '0'), deco: st === 'cancel' ? 'line-through' : 'none', open: () => this.setState({ sel: id }) };
+      });
+      s.blocks.filter(k => d >= k.from && d <= k.to && s.show[k.boat]).forEach(k => evs.push({ text: 'Blocked · ' + BOAT[k.boat].short, cls: 'blk', bg: '', fg: '', border: '1px solid #9FB1BC', deco: 'none', open: () => this.setState({ sel: k.id }) }));
+      cells.push({ num: d, events: evs, bg: d === 10 ? '#F0FAFB' : '#FFFFFF', numFg: d < 10 ? '#4A5F6E' : '#0F2A3D', today: d === 10 });
+    }
+    for (let i = 0; i < 3; i++) cells.push({ num: '', events: [], bg: '#F6F9FA', numFg: '#9FB1BC', today: false });
+    const it = items[s.sel];
+    let sel = {};
+    if (it && it.block) sel = { date: 'Jun ' + it.from + (it.to !== it.from ? ' – ' + it.to : ''), boat: BOAT[it.b].name, status: 'Blocked', sBg: '#E8EFF2', sFg: '#3D5160', detail: 'Reason: ' + it.why + '. Renters see this boat as unavailable.', isBlock: true, isBooking: false };
+    else if (it) { const st = ST[it.st]; sel = { date: 'June ' + it.d + ', 2027 · ' + it.t, boat: BOAT[it.b].name, status: st[0], sBg: st[1], sFg: st[2], detail: 'Renter: ' + it.who + (it.st === 'req' ? '. Accept or decline from Bookings.' : ''), isBlock: false, isBooking: true }; }
+    const bkSet = {};
+    ['boat', 'from', 'to', 'why'].forEach(k => { bkSet[k] = e => this.setState({ bk: Object.assign({}, this.state.bk, { [k]: e.target.value }), conflict: '' }); });
+    return Object.assign(this.shell('Calendar'), {
+      dow: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], cells,
+      legend: Object.keys(BOAT).map(k => ({ label: BOAT[k].short, bg: BOAT[k].bg, fg: BOAT[k].fg, on: !!s.show[k], toggle: () => this.setState({ show: Object.assign({}, s.show, { [k]: !s.show[k] }) }) })),
+      hasSel: !!it, noSel: !it, sel,
+      unblock: () => this.setState({ blocks: s.blocks.filter(k => k.id !== s.sel), sel: null }),
+      blockOpen: s.blockOpen, openBlock: () => this.setState({ blockOpen: true, conflict: '' }), closeBlock: () => this.setState({ blockOpen: false }),
+      bk: s.bk, bkSet, days: Array.from({ length: 30 }, (_, i) => String(i + 1)),
+      bkConflict: !!s.conflict, bkConflictText: s.conflict,
+      saveBlock: () => {
+        const from = Number(s.bk.from), to = Math.max(from, Number(s.bk.to));
+        const clash = EV.filter(e => e[2] === s.bk.boat && e[1] >= from && e[1] <= to && e[5] !== 'cancel' && e[5] !== 'done');
+        if (clash.length) { this.setState({ conflict: 'This boat has a booking on Jun ' + clash[0][1] + '. Pick other dates, or cancel that booking first from Bookings.' }); return; }
+        const id = 'k' + Date.now();
+        this.setState({ blocks: s.blocks.concat({ id, boat: s.bk.boat, from, to, why: s.bk.why }), blockOpen: false, sel: id });
+      }
+    });
+  }
+}
+</script>
+</body>
+</html>

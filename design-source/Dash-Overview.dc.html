@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Owner dashboard overview</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F9FA}
+*{box-sizing:border-box}
+a{color:#0A6C7A}a:hover{color:#08525D}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+.disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+.btn-p{background:#0A6C7A;color:#fff}.btn-p:hover{background:#08525D;color:#fff}
+.btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}.btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+.muted{color:#4A5F6E}
+.card{background:#fff;border:1px solid #DCE5EA;border-radius:18px;padding:20px}
+.card h2{margin:0;font-size:18px}
+.side{flex:0 0 248px;background:#fff;border-right:1px solid #DCE5EA;padding:16px 12px;display:flex;flex-direction:column;gap:4px}
+.nv{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;text-decoration:none;color:#0F2A3D;font-weight:600}
+.nv:hover{background:#EEF4F7;color:#0F2A3D}
+.nv.on{background:#E3F2F4;color:#0B4F59;font-weight:700}
+.tabbar{display:none}
+.badge{display:inline-flex;align-items:center;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+@media (max-width:860px){.side{display:none}.tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #DCE5EA;z-index:20}.main{padding-bottom:96px!important}.hide-sm{display:none!important}}
+</style>
+</helmet>
+<div style="min-height: 100%; display: flex; flex-wrap: wrap; background: #F6F9FA; font-family: 'Figtree', system-ui, sans-serif; color: #0F2A3D; font-size: 16px; line-height: 1.5">
+
+<nav class="side" aria-label="Dashboard">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F2A3D; padding: 4px 8px 12px" aria-label="Lundro home"><svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"></circle><circle cx="24" cy="12" r="4" fill="#FFC94A"></circle><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg><span class="disp" style="font-weight: 700; font-size: 22px">Lundro</span></a>
+<div style="display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid #DCE5EA; border-radius: 14px; margin-bottom: 8px"><span aria-hidden="true" class="disp" style="width: 36px; height: 36px; border-radius: 10px; background: #0F2A3D; color: #FFC94A; display: grid; place-items: center; font-weight: 700; font-size: 13px">C&amp;C</span><span style="line-height: 1.2"><strong style="display: block; font-size: 14px">Cove &amp; Co.</strong><span class="muted" style="font-size: 13px">Jordan Hale · Owner</span></span></div>
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="11">
+<a href="{{n.href}}" class="nv {{n.cls}}" aria-current="{{n.cur}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.hasBadge}}" hint-placeholder-val="{{false}}"><span class="badge" style="background: {{n.badgeBg}}; color: {{n.badgeFg}}">{{n.badge}}</span></sc-if></a>
+</sc-for>
+<a href="Main.dc.html" class="nv" style="margin-top: 12px; color: #0A6C7A">View public site ↗</a>
+</nav>
+
+<div class="main" style="flex: 999 1 560px; min-width: 0; padding: 28px 32px 48px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+<div><p class="muted" style="margin: 0; font-weight: 600">Thursday, June 10</p><h1 class="disp" style="margin: 2px 0 0; font-size: 32px">Good morning, Jordan</h1></div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap"><a href="Dash-Calendar.dc.html" class="btn btn-g">Block dates</a><a href="OwnerSignup.dc.html" class="btn btn-p">+ Add a boat</a></div>
+</div>
+
+<sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+<section class="card" style="margin-top: 24px; text-align: center; padding: 48px 24px">
+<svg width="120" height="80" viewBox="0 0 120 80" aria-hidden="true"><ellipse cx="60" cy="68" rx="56" ry="10" fill="#D7ECF4"></ellipse><rect x="22" y="44" width="76" height="12" rx="4" fill="#fff" stroke="#0F2A3D" stroke-width="2.5"></rect><rect x="20" y="56" width="80" height="5" rx="2.5" fill="#9FB1BC"></rect><path d="M34 44 V28 M86 44 V28 M30 28 H90" stroke="#0F2A3D" stroke-width="2.5" fill="none"></path></svg>
+<h2 class="disp" style="font-size: 26px; margin-top: 12px">Your dock is empty</h2>
+<p class="muted" style="margin: 8px auto 0; max-width: 460px">Add your first boat to start getting bookings. You can save a draft and finish later.</p>
+<a href="OwnerSignup.dc.html" class="btn btn-p" style="margin-top: 18px; min-height: 48px">Add your first boat</a>
+</section>
+</sc-if>
+
+<sc-if value="{{full}}" hint-placeholder-val="{{true}}">
+<section aria-label="Alerts" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px">
+<sc-for list="{{alerts}}" as="a" hint-placeholder-count="3">
+<div role="alert" style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; background: {{a.bg}}; border: 1px solid {{a.line}}; border-radius: 14px; padding: 12px 16px">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 50%; background: {{a.dot}}; color: #fff; display: grid; place-items: center; font-weight: 700; flex: none">!</span>
+<span style="flex: 1 1 280px"><strong>{{a.title}}</strong> <span style="color: #1F3B4F">{{a.body}}</span></span>
+<a href="Dash-Verification.dc.html" class="btn btn-g" style="background: #fff">{{a.cta}}</a>
+</div>
+</sc-for>
+</section>
+
+<section aria-label="This month" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-top: 20px">
+<a href="Dash-Earnings.dc.html" class="card" style="text-decoration: none; color: #0F2A3D"><p class="muted" style="margin: 0; font-size: 14px; font-weight: 600">Earnings in June so far</p><p class="disp" style="margin: 4px 0 0; font-size: 30px; font-weight: 700">$5,449</p><p class="muted" style="margin: 0; font-size: 13px">After commission · next payout Mon</p></a>
+<a href="Dash-Bookings.dc.html" class="card" style="text-decoration: none; color: #0F2A3D"><p class="muted" style="margin: 0; font-size: 14px; font-weight: 600">Trips next 7 days</p><p class="disp" style="margin: 4px 0 0; font-size: 30px; font-weight: 700">6</p><p class="muted" style="margin: 0; font-size: 13px">Across 3 live boats</p></a>
+<a href="Dash-Bookings.dc.html" class="card" style="text-decoration: none; color: #0F2A3D"><p class="muted" style="margin: 0; font-size: 14px; font-weight: 600">Requests waiting</p><p class="disp" style="margin: 4px 0 0; font-size: 30px; font-weight: 700">{{pendingCount}}</p><p class="muted" style="margin: 0; font-size: 13px">Reply within 24 hours</p></a>
+<a href="Dash-Reviews.dc.html" class="card" style="text-decoration: none; color: #0F2A3D"><p class="muted" style="margin: 0; font-size: 14px; font-weight: 600">Owner rating</p><p class="disp" style="margin: 4px 0 0; font-size: 30px; font-weight: 700">4.9 ★</p><p class="muted" style="margin: 0; font-size: 13px">2 reviews need a reply</p></a>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; align-items: flex-start">
+<section class="card" aria-labelledby="req-h" style="flex: 1 1 420px; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: center"><h2 id="req-h">Booking requests</h2><a href="Dash-Bookings.dc.html" style="font-weight: 700; font-size: 15px; padding: 8px 0">All bookings</a></div>
+<sc-if value="{{noRequests}}" hint-placeholder-val="{{false}}"><p class="muted" style="margin: 16px 0 0">You're all caught up. New requests will show here.</p></sc-if>
+<ul style="list-style: none; margin: 8px 0 0; padding: 0">
+<sc-for list="{{requests}}" as="r" hint-placeholder-count="3">
+<li style="padding: 14px 0; border-top: 1px solid #EEF2F4">
+<div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+<span><strong>{{r.who}}</strong> <span class="muted">· {{r.guests}} guests</span><span style="display: block; font-size: 15px">{{r.boat}}</span><span class="muted" style="display: block; font-size: 14px">{{r.when}} · {{r.mode}}</span>
+<sc-if value="{{r.exempt}}" hint-placeholder-val="{{false}}"><span class="badge" style="background: #FFF1C7; color: #5C4300; margin-top: 4px">Tax-exempt · pending Lundro review</span></sc-if></span>
+<span style="text-align: right"><strong>{{r.payout}}</strong><span class="muted" style="display: block; font-size: 13px">your payout</span><span style="display: block; font-size: 13px; color: #9A3412; font-weight: 600">{{r.due}}</span></span>
+</div>
+<sc-if value="{{r.open}}" hint-placeholder-val="{{true}}"><div style="display: flex; gap: 8px; margin-top: 10px"><button type="button" class="btn btn-p" onClick="{{r.accept}}">Accept</button><button type="button" class="btn btn-g" onClick="{{r.decline}}">Decline</button><a href="Dash-Messages.dc.html" class="btn btn-g">Message</a></div></sc-if>
+<sc-if value="{{r.decided}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 10px 0 0; font-weight: 700; color: {{r.decColor}}">{{r.decText}} <button type="button" onClick="{{r.undo}}" style="border: 0; background: transparent; color: #0A6C7A; font-weight: 700; text-decoration: underline; cursor: pointer; min-height: 32px">Undo</button></p></sc-if>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section class="card" aria-labelledby="today-h" style="flex: 1 1 380px; min-width: 0">
+<h2 id="today-h">Today on the water</h2>
+<ul style="list-style: none; margin: 8px 0 0; padding: 0">
+<sc-for list="{{today}}" as="t" hint-placeholder-count="2">
+<li style="display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid #EEF2F4">
+<span style="flex: none; width: 64px; text-align: center; background: #E3F2F4; color: #0B4F59; border-radius: 12px; padding: 8px 0; font-weight: 700; font-size: 14px; line-height: 1.2">{{t.time}}<span style="display: block; font-weight: 500; font-size: 12px">{{t.len}}</span></span>
+<span style="flex: 1; min-width: 0"><strong style="display: block">{{t.boat}}</strong><span class="muted" style="font-size: 14px">{{t.who}} · {{t.guests}} guests · {{t.mode}}</span><span class="badge" style="background: {{t.sBg}}; color: {{t.sFg}}; margin-top: 4px">{{t.status}}</span></span>
+</li>
+</sc-for>
+</ul>
+<h2 style="margin-top: 18px">Coming up</h2>
+<ul style="list-style: none; margin: 8px 0 0; padding: 0">
+<sc-for list="{{upcoming}}" as="u" hint-placeholder-count="3">
+<li style="display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-top: 1px solid #EEF2F4; font-size: 15px"><span><strong>{{u.day}}</strong> · {{u.boat}}</span><span class="muted">{{u.who}}</span></li>
+</sc-for>
+</ul>
+<a href="Dash-Calendar.dc.html" style="display: inline-block; margin-top: 8px; font-weight: 700; padding: 8px 0">Open calendar</a>
+</section>
+</div>
+</sc-if>
+</div>
+
+<nav class="tabbar" aria-label="Dashboard">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+<a href="{{t.href}}" aria-current="{{t.cur}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; text-decoration: none; color: {{t.fg}}; font-size: 12px; font-weight: 700"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg>{{t.label}}</a>
+</sc-for>
+<button type="button" onClick="{{toggleMore}}" aria-expanded="{{moreExp}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; border: 0; background: transparent; color: #4A5F6E; font-size: 12px; font-weight: 700; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></svg>More</button>
+</nav>
+<sc-if value="{{more}}" hint-placeholder-val="{{false}}">
+<div style="position: fixed; left: 0; right: 0; bottom: 64px; background: #fff; border-top: 1px solid #DCE5EA; border-radius: 20px 20px 0 0; box-shadow: 0 -8px 24px rgba(15,42,61,.15); padding: 12px; z-index: 21">
+<sc-for list="{{moreItems}}" as="n" hint-placeholder-count="7"><a href="{{n.href}}" class="nv">{{n.label}}</a></sc-for>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"newOwner":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { more: false, dec: {} }; }
+  shell(cur) {
+    const N = [
+      ['Overview', 'Dash-Overview.dc.html', 'M3 12l9-8 9 8M5 10v10h14V10'],
+      ['Calendar', 'Dash-Calendar.dc.html', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4'],
+      ['Bookings', 'Dash-Bookings.dc.html', 'M5 4h14v16H5zM9 8h6M9 12h6M9 16h4', '3', 'n'],
+      ['Boats', 'Dash-Boats.dc.html', 'M3 15h18l-2 4H5zM6 15V9h9l3 6M10 9V5'],
+      ['Extras', 'Dash-Extras.dc.html', 'M12 3v18M3 12h18M7 7h10v10H7z'],
+      ['Customers', 'Dash-Customers.dc.html', 'M9 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM3 20c.6-3.4 3-5.4 6-5.4s5.4 2 6 5.4M16 5a3 3 0 0 1 0 6M18 15c1.7.7 2.7 2.4 3 5'],
+      ['Messages', 'Dash-Messages.dc.html', 'M4 5h16v11H8l-4 4z', '2', 'n'],
+      ['Earnings', 'Dash-Earnings.dc.html', 'M12 3v18M16 7H10a2.5 2.5 0 0 0 0 5h4a2.5 2.5 0 0 1 0 5H8'],
+      ['Reviews', 'Dash-Reviews.dc.html', 'M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6L3.3 9.3l6.1-.7z'],
+      ['Verification', 'Dash-Verification.dc.html', 'M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6zM9 12l2 2 4-4', '3', 'w'],
+      ['Settings', 'Dash-Settings.dc.html', 'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2']
+    ];
+    const nav = N.map(([label, href, icon, badge, kind]) => ({ label, href, icon, cls: label === cur ? 'on' : '', cur: label === cur ? 'page' : 'false', hasBadge: !!badge, badge: badge || '', badgeBg: kind === 'w' ? '#FDE2E1' : '#0F2A3D', badgeFg: kind === 'w' ? '#8E1B13' : '#fff' }));
+    const top = ['Overview', 'Calendar', 'Bookings', 'Messages'];
+    const tabs = nav.filter(n => top.indexOf(n.label) >= 0).map(n => Object.assign({}, n, { fg: n.label === cur ? '#0A6C7A' : '#4A5F6E' }));
+    const moreItems = nav.filter(n => top.indexOf(n.label) < 0);
+    return { nav, tabs, moreItems, more: this.state.more, moreExp: this.state.more ? 'true' : 'false', toggleMore: () => this.setState({ more: !this.state.more }) };
+  }
+  renderVals() {
+    const s = this.state;
+    const empty = !!this.props.newOwner;
+    const R = [
+      ['r1', 'Marcus L.', 12, "26' Harris Grand Mariner", 'Sat, Jun 19 · Full day · 9:00 AM', 'Captain', '$1,296.25', 'Respond within 18 hrs', false],
+      ['r2', 'Hannah K.', 8, "22' MasterCraft XT22", 'Sun, Jun 20 · Half day · 1:30 PM', 'Self-drive · boater card ✓', '$480.25', 'Respond within 21 hrs', false],
+      ['r3', 'Dana W. · NC Dept. of Environmental Quality', 10, "24' Bennington Pontoon", 'Fri, Jun 25 · Half day · 9:00 AM', 'Captain', '$484.50', 'Respond within 23 hrs', true]
+    ];
+    const requests = R.map(([id, who, guests, boat, when, mode, payout, due, exempt]) => {
+      const d = s.dec[id];
+      const setD = v => this.setState({ dec: Object.assign({}, s.dec, { [id]: v }) });
+      return { who, guests, boat, when, mode, payout, due, exempt, open: !d, decided: !!d,
+        decText: d === 'a' ? '✓ Accepted. The renter has been notified.' : 'Declined. The renter was not charged.', decColor: d === 'a' ? '#14532D' : '#8E1B13',
+        accept: () => setD('a'), decline: () => setD('d'), undo: () => setD(null) };
+    });
+    const pendingCount = requests.filter(r => r.open).length;
+    return Object.assign(this.shell('Overview'), {
+      empty, full: !empty, requests, pendingCount, noRequests: pendingCount === 0 && false,
+      alerts: [
+        { title: 'Insurance expires in 21 days.', body: "22' MasterCraft XT22 · Jul 1. Upload a new certificate so it isn't paused.", cta: 'Upload', bg: '#FFF8E1', line: '#F3D27A', dot: '#7A5A00' },
+        { title: 'Paused automatically.', body: "20' Sea Ray SPX · insurance expired May 31.", cta: 'Fix now', bg: '#FEF3F2', line: '#F4B4AE', dot: '#B42318' },
+        { title: 'Additional info required.', body: "21' Bayliner Element · the name on the registration doesn't match your ID.", cta: 'Review', bg: '#FEF3F2', line: '#F4B4AE', dot: '#B42318' }
+      ],
+      today: [
+        { time: '9:00 AM', len: 'Half day', boat: "24' Bennington Pontoon", who: 'Alicia M.', guests: 9, mode: 'Captain Mike R.', status: 'Checked in', sBg: '#DDF3E4', sFg: '#14532D' },
+        { time: '1:30 PM', len: 'Half day', boat: "22' MasterCraft XT22", who: 'Ben T.', guests: 6, mode: 'Self-drive', status: 'Upcoming', sBg: '#E3F2F4', sFg: '#0B4F59' }
+      ],
+      upcoming: [
+        { day: 'Sat, Jun 12', boat: "24' Bennington Pontoon", who: 'Taylor R.' },
+        { day: 'Sat, Jun 12', boat: "26' Harris Grand Mariner", who: 'Devon S.' },
+        { day: 'Sun, Jun 13', boat: "22' MasterCraft XT22", who: 'Chris P.' }
+      ]
+    });
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lundro admin review</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEF2F4}
+*{box-sizing:border-box}
+a{color:#0A6C7A}a:hover{color:#08525D}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+.disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+.btn-p{background:#0A6C7A;color:#fff}.btn-p:hover{background:#08525D;color:#fff}
+.btn-p:disabled{background:#9FB1BC;cursor:not-allowed}
+.btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}.btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+.btn-d{background:#fff;color:#B42318;border:1px solid #B42318}.btn-d:hover{background:#FEF3F2}
+.muted{color:#4A5F6E}
+.card{background:#fff;border:1px solid #DCE5EA;border-radius:18px;padding:20px}
+.inp{width:100%;min-height:44px;border:1px solid #7B8F9B;border-radius:12px;padding:0 12px;background:#fff;font-size:16px;color:#0F2A3D}
+textarea.inp{padding:10px 12px;min-height:80px}
+.lbl{display:block;font-size:14px;font-weight:700;color:#3D5160;margin-bottom:6px}
+.badge{display:inline-flex;align-items:center;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.kv{display:grid;grid-template-columns:170px 1fr;gap:6px 14px;font-size:15px}
+@media (max-width:700px){.kv{grid-template-columns:1fr}}
+</style>
+</helmet>
+<div style="min-height: 100%; background: #EEF2F4; font-family: 'Figtree', system-ui, sans-serif; color: #0F2A3D; font-size: 16px; line-height: 1.5">
+<header style="background: #0F2A3D; color: #fff">
+<div style="max-width: 1360px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 14px; min-height: 64px; flex-wrap: wrap">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff" aria-label="Lundro home"><svg width="30" height="30" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"></circle><circle cx="24" cy="12" r="4" fill="#FFC94A"></circle><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg><span class="disp" style="font-weight: 700; font-size: 22px">Lundro</span></a>
+<span class="badge" style="background: #FFC94A; color: #0F2A3D">Admin</span>
+<span style="margin-left: auto; color: #CDE7EC; font-size: 14px">Signed in as Riley (Trust &amp; Safety)</span>
+</div>
+</header>
+
+<main style="max-width: 1360px; margin: 0 auto; padding: 24px 24px 48px">
+<h1 class="disp" style="margin: 0; font-size: 30px">Review queue</h1>
+<div role="tablist" aria-label="Queues" style="display: flex; gap: 6px; margin-top: 14px; border-bottom: 1px solid #C9D6DD; overflow-x: auto">
+<sc-for list="{{queues}}" as="q" hint-placeholder-count="3"><button type="button" role="tab" aria-selected="{{q.sel}}" onClick="{{q.pick}}" style="border: 0; background: transparent; min-height: 48px; padding: 0 14px; font-weight: 700; color: {{q.fg}}; border-bottom: 3px solid {{q.line}}; cursor: pointer; white-space: nowrap">{{q.label}} <span class="badge" style="background: {{q.cBg}}; color: {{q.cFg}}">{{q.count}}</span></button></sc-for>
+</div>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 14px 0 0; background: #0F2A3D; color: #fff; border-radius: 12px; padding: 10px 14px; font-weight: 600">{{toastText}}</p></sc-if>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 18px; align-items: flex-start">
+<section aria-label="Items" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{items}}" as="i" hint-placeholder-count="3">
+<button type="button" onClick="{{i.pick}}" aria-current="{{i.cur}}" style="text-align: left; background: #fff; border: {{i.border}}; border-radius: 14px; padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 2px">
+<span style="display: flex; justify-content: space-between; gap: 8px"><strong>{{i.title}}</strong><span class="badge" style="background: {{i.sBg}}; color: {{i.sFg}}">{{i.status}}</span></span>
+<span class="muted" style="font-size: 14px">{{i.sub}}</span>
+<span class="muted" style="font-size: 13px">{{i.age}}</span>
+</button>
+</sc-for>
+</section>
+
+<section class="card" aria-labelledby="det-h" style="flex: 999 1 560px; min-width: 0">
+<div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap"><div><p class="muted" style="margin: 0; font-size: 14px; font-weight: 600">{{d.kind}}</p><h2 id="det-h" class="disp" style="margin: 2px 0 0; font-size: 26px">{{d.title}}</h2></div><span class="badge" style="background: {{d.sBg}}; color: {{d.sFg}}; align-self: flex-start">{{d.status}}</span></div>
+<div class="kv" style="margin-top: 16px"><sc-for list="{{d.facts}}" as="f" hint-placeholder-count="5"><span class="muted">{{f.k}}</span><span style="font-weight: 600">{{f.v}}</span></sc-for></div>
+
+<sc-if value="{{d.hasDocs}}" hint-placeholder-val="{{true}}">
+<h3 style="margin: 20px 0 8px; font-size: 16px">Documents</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px">
+<sc-for list="{{d.docs}}" as="doc" hint-placeholder-count="2"><button type="button" style="border: 1px solid #DCE5EA; border-radius: 12px; background: #F6F9FA; padding: 0; cursor: pointer; text-align: left; overflow: hidden"><span aria-hidden="true" style="display: block; height: 96px; background: repeating-linear-gradient(#fff 0 10px, #E8EFF2 10px 12px); border-bottom: 1px solid #DCE5EA"></span><span style="display: block; padding: 8px 10px; font-size: 14px; font-weight: 600">{{doc}}</span></button></sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{d.isTax}}" hint-placeholder-val="{{false}}">
+<div style="margin-top: 18px; border: 1px solid #DCE5EA; border-radius: 14px; padding: 14px">
+<p style="margin: 0; font-weight: 700">NCDOR exemption registry</p>
+<sc-if value="{{regIdle}}" hint-placeholder-val="{{true}}"><button type="button" class="btn btn-g" onClick="{{checkReg}}" style="margin-top: 8px">Check number {{d.exNo}}</button></sc-if>
+<sc-if value="{{regChecking}}" hint-placeholder-val="{{false}}"><p role="status" class="muted" style="margin: 8px 0 0">Checking…</p></sc-if>
+<sc-if value="{{regDone}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 8px 0 0; font-weight: 600; color: {{d.regFg}}">{{d.regResult}}</p></sc-if>
+</div>
+</sc-if>
+
+<h3 style="margin: 20px 0 6px; font-size: 16px">Checklist</h3>
+<sc-for list="{{d.checks}}" as="c" hint-placeholder-count="4">
+<label style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-top: 1px solid #EEF2F4; cursor: pointer; min-height: 44px"><input type="checkbox" checked="{{c.on}}" onChange="{{c.toggle}}" disabled="{{d.closed}}" style="width: 20px; height: 20px; accent-color: #0A6C7A; margin-top: 2px; flex: none"><span><strong style="display: block; font-size: 15px">{{c.label}}</strong><sc-if value="{{c.hasFlag}}" hint-placeholder-val="{{false}}"><span style="font-size: 14px; color: #B42318; font-weight: 600">{{c.flag}}</span></sc-if></span></label>
+</sc-for>
+
+<sc-if value="{{d.open}}" hint-placeholder-val="{{true}}">
+<div style="margin-top: 16px"><label for="adm-note" class="lbl">Message to {{d.who}} (needed for Request info or Reject)</label><textarea id="adm-note" class="inp" value="{{note}}" onInput="{{setNote}}" onChange="{{setNote}}" placeholder="{{d.notePh}}"></textarea>
+<sc-if value="{{noteErr}}" hint-placeholder-val="{{false}}"><p role="alert" style="margin: 6px 0 0; color: #B42318; font-weight: 600; font-size: 14px">Add a short message so they know what to fix.</p></sc-if></div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px">
+<button type="button" class="btn btn-p" onClick="{{approve}}" disabled="{{cantApprove}}">{{d.approveLabel}}</button>
+<sc-if value="{{d.canInfo}}" hint-placeholder-val="{{true}}"><button type="button" class="btn btn-g" onClick="{{reqInfo}}">Request info</button></sc-if>
+<button type="button" class="btn btn-d" onClick="{{reject}}">{{d.rejectLabel}}</button>
+</div>
+<p class="muted" style="margin: 8px 0 0; font-size: 13px">{{d.hint}}</p>
+</sc-if>
+<sc-if value="{{d.closed}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 16px 0 0; background: #F1F6F8; border-radius: 12px; padding: 12px 14px; font-weight: 600">{{d.outcome}}</p></sc-if>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { q: 'listings', sel: 'L1', checks: {}, dec: {}, note: '', noteErr: false, reg: {}, toast: '' }; }
+  renderVals() {
+    const s = this.state;
+    const I = {
+      L1: { q: 'listings', kind: 'New listing', title: "24' Tahoe LTZ Pontoon", who: 'Cove & Co.', sub: 'Cove & Co. Boat Rentals · Cornelius', age: 'Submitted Jun 8 · 2 days', facts: [['Owner', 'Cove and Co Boat Rentals LLC (business verified)'], ['ID name', 'Jordan Hale'], ['HIN', 'TAH41022C727'], ['Registration name', 'Cove and Co Boat Rentals LLC'], ['Insurance', 'Policy active to May 2028 · covers rentals'], ['Photos', '8']], docs: ['Registration.pdf', 'Insurance certificate.pdf'],
+        checks: [['Registration name matches the owner or business', ''], ['HIN on registration matches the listing', ''], ['Insurance is active and covers rentals', ''], ['Photos meet guidelines (5+ and show the actual boat)', '']], approve: 'Approve · go live', reject: 'Reject listing', ph: 'e.g. Please upload a registration showing the LLC as owner.', hint: 'Approving makes the boat Live because the owner’s payouts are verified.' },
+      L2: { q: 'listings', kind: 'Resubmitted listing', title: "21' Bayliner Element", who: 'Cove & Co.', sub: 'Cove & Co. Boat Rentals · Davidson', age: 'Flagged Jun 2 · 8 days', facts: [['Owner', 'Cove and Co Boat Rentals LLC'], ['ID name', 'Jordan Hale'], ['Registration name', 'J. Hale-Martin'], ['Insurance', 'Active to Jan 2028']], docs: ['Registration.pdf', 'Insurance certificate.pdf'],
+        checks: [['Registration name matches the owner or business', 'Mismatch: “J. Hale-Martin” vs “Jordan Hale” / LLC'], ['Insurance is active and covers rentals', ''], ['Photos meet guidelines', '']], approve: 'Approve · go live', reject: 'Reject listing', ph: 'e.g. Upload a bill of sale or updated registration.', hint: 'Name mismatches between ID, registration and payout account set “Additional info required”.' },
+      L3: { q: 'listings', kind: 'Business verification', title: 'Bluewater Lake Rentals LLC', who: 'Bluewater', sub: 'New company account · Mooresville', age: 'Submitted Jun 9 · 1 day', facts: [['Legal name', 'Bluewater Lake Rentals LLC'], ['Entity', 'LLC · North Carolina'], ['SOS number', '2290415'], ['NC SOS registry', 'Current-Active · name matches'], ['Stripe identity', 'Verified']], docs: ['Articles of organization.pdf'],
+        checks: [['Registry status is active', ''], ['Legal name matches Stripe and payout account', '']], approve: 'Verify business', reject: 'Reject', ph: 'e.g. Registry shows a different legal name.', hint: 'Adds the “Business verified” badge.' },
+      T1: { q: 'tax', kind: 'Tax-exempt booking · NC state agency', title: 'NC Dept. of Environmental Quality', who: 'Dana W.', sub: "Booking LND-0625 · 24' Bennington · Jun 25", age: 'Submitted Jun 9 · 1 day', exNo: '400012345', regOk: true, facts: [['Form', 'E-595E, signed'], ['Exemption number', '400012345'], ['Payment method', 'State-issued purchase card'], ['Tax at stake', '$12.15 (State $11.45 · County $0.40 · Transit $0.30)'], ['Saved for reuse', 'Yes']], docs: ['E-595E_signed.pdf'],
+        checks: [['Number found in NCDOR registry', ''], ['Agency name on E-595E matches the booking', ''], ['Paid with state card, check, deposit or PO (not personal card)', '']], approve: 'Approve exemption', reject: 'Deny · charge tax', ph: 'e.g. The card used appears to be a personal card.', hint: 'Approving keeps tax at $0. Denying charges the tax before the trip and emails the renter.' },
+      T2: { q: 'tax', kind: 'Tax-exempt request', title: 'Lake Norman Youth Sailing (nonprofit)', who: 'Coach Pat O.', sub: 'Booking LND-0703 · Catalina 25 · Jul 3', age: 'Submitted Jun 10 · today', exNo: '56-2048817', regOk: false, facts: [['Organization type selected', 'Nonprofit · uploaded IRS 501(c)(3) letter'], ['Number given', '56-2048817 (federal EIN)'], ['Tax at stake', '$9.00 (State, 3% boat rental)']], docs: ['IRS_determination_letter.pdf'],
+        checks: [['Organization is a U.S. federal or NC state agency', 'Nonprofits are not exempt from NC sales tax at checkout'], ['Number found in NCDOR registry', '']], approve: 'Approve exemption', reject: 'Deny · charge tax', ph: 'Nonprofits pay NC sales tax at checkout and can request a refund from NCDOR. Your receipt shows state, county and transit tax.', hint: 'Denying charges tax and sends the renter the refund-claim note.' },
+      D1: { q: 'docs', kind: 'Expiring document', title: "22' MasterCraft XT22 · Insurance", who: 'Cove & Co.', sub: 'Cove & Co. · expires Jul 1', age: '21 days left · 30-day email sent Jun 1', facts: [['Expires', 'Jul 1, 2027'], ['Upcoming bookings after expiry', '3'], ['Reminder', 'Email sent Jun 1']], docs: [], checks: [['Owner notified', '']], approve: 'Send another reminder', reject: 'Pause now', ph: '', hint: 'If not renewed, the boat pauses automatically on Jul 1.' },
+      D2: { q: 'docs', kind: 'Expired document', title: "20' Sea Ray SPX · Insurance", who: 'Cove & Co.', sub: 'Cove & Co. · expired May 31', age: 'Boat auto-paused', facts: [['Expired', 'May 31, 2027'], ['Status', 'Paused automatically']], docs: [], checks: [['Boat paused', '']], approve: 'Send reminder', reject: 'Unlist boat', ph: '', hint: 'Boat resumes when a new certificate is approved.' }
+    };
+    const Q = [['listings', 'Listings and businesses'], ['tax', 'Tax exemptions'], ['docs', 'Expiring documents']];
+    const open = id => !s.dec[id];
+    const items = Object.keys(I).filter(id => I[id].q === s.q).map(id => {
+      const it = I[id], dec = s.dec[id];
+      const st = dec ? { approve: ['Approved', '#DDF3E4', '#14532D'], info: ['Info requested', '#FFF1C7', '#5C4300'], reject: ['Rejected', '#FDE2E1', '#8E1B13'] }[dec] : (it.q === 'docs' ? ['Watch', '#FFF1C7', '#5C4300'] : ['To review', '#E3F2F4', '#0B4F59']);
+      return { title: it.title, sub: it.sub, age: it.age, status: st[0], sBg: st[1], sFg: st[2], cur: s.sel === id ? 'true' : 'false', border: s.sel === id ? '2px solid #0A6C7A' : '1px solid #DCE5EA', pick: () => this.setState({ sel: id, note: '', noteErr: false }) };
+    });
+    const id = I[s.sel] && I[s.sel].q === s.q ? s.sel : Object.keys(I).find(k => I[k].q === s.q);
+    const it = I[id], dec = s.dec[id];
+    const ck = s.checks[id] || {};
+    const checks = it.checks.map(([label, flag], i) => ({ label, flag, hasFlag: !!flag, on: !!ck[i], toggle: () => this.setState({ checks: Object.assign({}, s.checks, { [id]: Object.assign({}, ck, { [i]: !ck[i] }) }) }) }));
+    const allOk = checks.every(c => c.on);
+    const st = dec ? { approve: ['Approved', '#DDF3E4', '#14532D'], info: ['Info requested', '#FFF1C7', '#5C4300'], reject: ['Rejected', '#FDE2E1', '#8E1B13'] }[dec] : ['To review', '#E3F2F4', '#0B4F59'];
+    const decide = (kind, needNote) => {
+      if (needNote && !s.note.trim() && it.q !== 'docs') { this.setState({ noteErr: true }); return; }
+      const msg = { approve: it.title + ': ' + it.approve.toLowerCase() + ' done. ' + it.who + ' has been emailed.', info: 'Info requested from ' + it.who + '. Status set to Additional info required.', reject: it.title + ': ' + it.reject.toLowerCase() + '. ' + it.who + ' has been emailed.' }[kind];
+      this.setState({ dec: Object.assign({}, s.dec, { [id]: kind }), noteErr: false, toast: msg });
+      clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '' }), 3200);
+    };
+    const reg = s.reg[id] || 'idle';
+    const outcome = dec ? { approve: 'Decision: approved by Riley on Jun 10, 2027.', info: 'Decision: more info requested on Jun 10, 2027. Item returns to the queue when the owner responds.', reject: 'Decision: ' + it.reject.toLowerCase() + ' on Jun 10, 2027.' }[dec] : '';
+    return {
+      queues: Q.map(([k, label]) => ({ label, count: Object.keys(I).filter(x => I[x].q === k && open(x)).length, sel: s.q === k ? 'true' : 'false', fg: s.q === k ? '#0F2A3D' : '#4A5F6E', line: s.q === k ? '#0A6C7A' : 'transparent', cBg: s.q === k ? '#0F2A3D' : '#DCE5EA', cFg: s.q === k ? '#fff' : '#3D5160', pick: () => this.setState({ q: k, note: '', noteErr: false }) })),
+      items, toast: !!s.toast, toastText: s.toast,
+      d: { kind: it.kind, title: it.title, who: it.who, status: st[0], sBg: st[1], sFg: st[2], facts: it.facts.map(([k, v]) => ({ k, v })), docs: it.docs, hasDocs: it.docs.length > 0,
+        isTax: it.q === 'tax', exNo: it.exNo || '', regResult: it.regOk ? '✓ Valid · NC Dept. of Environmental Quality · active' : '✗ Not found. This looks like a federal EIN, not an NC exemption number.', regFg: it.regOk ? '#14532D' : '#B42318',
+        checks, open: !dec, closed: !!dec, outcome, approveLabel: it.approve, rejectLabel: it.reject, canInfo: it.q === 'listings', notePh: it.ph, hint: it.hint },
+      regIdle: reg === 'idle', regChecking: reg === 'checking', regDone: reg === 'done',
+      checkReg: () => { this.setState({ reg: Object.assign({}, s.reg, { [id]: 'checking' }) }); setTimeout(() => this.setState({ reg: Object.assign({}, this.state.reg, { [id]: 'done' }) }), 900); },
+      note: s.note, setNote: e => this.setState({ note: e.target.value, noteErr: false }), noteErr: s.noteErr,
+      cantApprove: it.q !== 'docs' && !allOk,
+      approve: () => decide('approve', false), reqInfo: () => decide('info', true), reject: () => decide('reject', true)
+    };
+  }
+}
+</script>
+</body>
+</html>

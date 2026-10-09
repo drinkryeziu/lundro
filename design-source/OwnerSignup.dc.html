@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>List your boat on Lundro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F9FA}
+*{box-sizing:border-box}
+a{color:#0A6C7A}a:hover{color:#08525D}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+.disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+.btn-p{background:#0A6C7A;color:#fff}.btn-p:hover{background:#08525D;color:#fff}
+.btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}.btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+.btn-sm{min-height:44px;padding:0 16px;font-size:15px}
+.inp{width:100%;min-height:48px;border:1px solid #7B8F9B;border-radius:12px;padding:0 14px;background:#fff;font-size:16px;color:#0F2A3D}
+textarea.inp{padding:12px 14px;min-height:100px}
+.inp.err{border:2px solid #B42318}
+.lbl{display:block;font-size:14px;font-weight:700;color:#3D5160;margin-bottom:6px}
+.hint{font-size:13px;color:#4A5F6E;margin:6px 0 0}
+.errt{color:#B42318;font-size:14px;font-weight:600;margin:6px 0 0}
+.muted{color:#4A5F6E}
+.card{background:#fff;border:1px solid #DCE5EA;border-radius:20px;padding:28px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.opt{display:flex;gap:12px;align-items:flex-start;border-radius:14px;padding:14px 16px;cursor:pointer}
+.opt input{width:20px;height:20px;accent-color:#0A6C7A;margin:2px 0 0;flex:none}
+.chk{display:flex;gap:10px;align-items:center;min-height:44px;cursor:pointer}
+.chk input{width:20px;height:20px;accent-color:#0A6C7A;flex:none;margin:0}
+.sub{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#3D5160;margin:24px 0 10px}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.upl{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px dashed #7B8F9B;border-radius:14px;padding:12px 14px;flex-wrap:wrap}
+@media (max-width:760px){.card{padding:18px}.hide-sm{display:none!important}}
+</style>
+</helmet>
+<div style="min-height: 100%; background: #F6F9FA; font-family: 'Figtree', system-ui, sans-serif; color: #0F2A3D; font-size: 16px; line-height: 1.5">
+
+<header style="background: #FFFFFF; border-bottom: 1px solid #DCE5EA">
+<div style="max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 12px; min-height: 72px; flex-wrap: wrap">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F2A3D" aria-label="Lundro home"><svg width="34" height="34" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"></circle><circle cx="24" cy="12" r="4" fill="#FFC94A"></circle><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg><span class="disp" style="font-weight: 700; font-size: 24px">Lundro</span><span class="muted hide-sm" style="font-size: 15px; font-weight: 600; margin-left: 4px">for owners</span></a>
+<p role="status" aria-live="polite" style="margin: 0 0 0 auto; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: {{saveColor}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="{{saveIcon}}"></path></svg>{{saveLabel}}</p>
+<a href="Dash-Overview.dc.html" class="btn btn-g btn-sm">Save and exit</a>
+</div>
+<div role="progressbar" aria-label="Signup progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{pct}}" style="height: 6px; background: #E8EFF2"><div style="height: 6px; width: {{pct}}%; background: #0A6C7A; transition: width .3s"></div></div>
+</header>
+
+<main style="max-width: 1100px; margin: 0 auto; padding: 24px 24px 80px">
+<sc-if value="{{notSubmitted}}" hint-placeholder-val="{{true}}">
+<ol aria-label="Signup steps" style="list-style: none; margin: 0 0 20px; padding: 0; display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{stepper}}" as="st" hint-placeholder-count="5">
+<li><button type="button" onClick="{{st.go}}" disabled="{{st.locked}}" aria-current="{{st.cur}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px 0 6px; border-radius: 999px; border: {{st.border}}; background: {{st.bg}}; color: {{st.fg}}; font-weight: 700; font-size: 14px; cursor: pointer"><span style="width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: {{st.dotBg}}; color: {{st.dotFg}}">{{st.mark}}</span>{{st.label}}</button></li>
+</sc-for>
+</ol>
+
+<sc-if value="{{s1}}" hint-placeholder-val="{{true}}">
+<section class="card" aria-labelledby="h1x">
+<p class="muted" style="margin: 0; font-weight: 700; font-size: 14px">Step 1 of 5</p>
+<h1 id="h1x" class="disp" style="margin: 4px 0 0; font-size: 30px">Let's set up your account</h1>
+<fieldset style="margin-top: 20px"><legend class="lbl">I'm listing as</legend>
+<div class="g2">
+<label class="opt" style="border: {{indivOpt.border}}; background: {{indivOpt.bg}}"><input type="radio" name="acct" checked="{{isIndiv}}" onChange="{{pickIndiv}}"><span><strong>An individual owner</strong><span class="muted" style="display: block; font-size: 14px">Renters see your first name and last initial.</span></span></label>
+<label class="opt" style="border: {{compOpt.border}}; background: {{compOpt.bg}}"><input type="radio" name="acct" checked="{{isComp}}" onChange="{{pickComp}}"><span><strong>A company</strong><span class="muted" style="display: block; font-size: 14px">Renters see your company name and logo.</span></span></label>
+</div>
+</fieldset>
+<div class="g2" style="margin-top: 20px">
+<div><label for="o-name" class="lbl">Full name</label><input id="o-name" class="inp" value="{{f.name}}" onChange="{{set.name}}" autocomplete="name"><p class="hint">{{publicName}}</p></div>
+<div><label for="o-email" class="lbl">Email</label><input id="o-email" type="email" class="inp" value="{{f.email}}" onChange="{{set.email}}"></div>
+<div><label for="o-phone" class="lbl">Phone</label><input id="o-phone" type="tel" class="inp" value="{{f.phone}}" onChange="{{set.phone}}"></div>
+<div><label for="o-addr" class="lbl">Mailing address</label><input id="o-addr" class="inp" value="{{f.addr}}" onChange="{{set.addr}}"></div>
+</div>
+<p class="muted" style="margin: 14px 0 0; font-size: 14px; display: flex; gap: 6px; align-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Your phone, email and address are never shown publicly.</p>
+</section>
+</sc-if>
+
+<sc-if value="{{s2}}" hint-placeholder-val="{{false}}">
+<section class="card" aria-labelledby="h2x">
+<p class="muted" style="margin: 0; font-weight: 700; font-size: 14px">Step 2 of 5</p>
+<h1 id="h2x" class="disp" style="margin: 4px 0 0; font-size: 30px">Company profile</h1>
+<p class="sub">Public · shown on your boat pages</p>
+<div class="g2">
+<div><span class="lbl">Logo</span><div class="upl"><span style="display: flex; gap: 12px; align-items: center"><span class="disp" aria-hidden="true" style="width: 48px; height: 48px; border-radius: 12px; background: #0F2A3D; color: #FFC94A; display: grid; place-items: center; font-weight: 700">C&amp;C</span><span class="muted" style="font-size: 14px">cove-logo.png</span></span><button type="button" class="btn btn-g btn-sm">Replace</button></div></div>
+<div><label for="c-web" class="lbl">Website</label><input id="c-web" class="inp" value="coveandco.example" onChange="{{touch}}"></div>
+<div style="grid-column: 1 / -1"><label for="c-desc" class="lbl">Business description</label><textarea id="c-desc" class="inp" onChange="{{touch}}">Family-run rental fleet on Lake Norman since 2023. Clean boats, friendly captains, easy pickup in Cornelius.</textarea></div>
+<div><label for="c-hours" class="lbl">Business hours</label><input id="c-hours" class="inp" value="Daily 8 AM – 7 PM (Apr–Oct)" onChange="{{touch}}"></div>
+<div><label for="c-sup" class="lbl">Customer support contact</label><input id="c-sup" class="inp" value="help@coveandco.example" onChange="{{touch}}"><p class="hint">Shown to renters after they book.</p></div>
+<div><label for="c-soc" class="lbl">Social links (optional)</label><input id="c-soc" class="inp" placeholder="instagram.com/yourcompany"></div>
+</div>
+<p class="sub">Private · for verification only</p>
+<div class="g2">
+<div><label for="c-legal" class="lbl">Legal business name</label><input id="c-legal" class="inp" value="Cove and Co Boat Rentals LLC" onChange="{{touch}}"></div>
+<div><label for="c-dba" class="lbl">DBA (optional)</label><input id="c-dba" class="inp" value="Cove &amp; Co. Boat Rentals"></div>
+<div><label for="c-ent" class="lbl">Entity type</label><select id="c-ent" class="inp"><option selected="selected">LLC</option><option>Corporation</option><option>Partnership</option><option>Sole proprietor</option></select></div>
+<div><label for="c-st" class="lbl">State of registration</label><select id="c-st" class="inp"><option>North Carolina</option><option>South Carolina</option><option>Other</option></select></div>
+<div style="grid-column: 1 / -1"><label for="c-reg" class="lbl">NC Secretary of State registration number</label>
+<div style="display: flex; gap: 8px; flex-wrap: wrap"><input id="c-reg" class="inp" value="2318804" style="flex: 1 1 200px; width: auto"><button type="button" class="btn btn-g" onClick="{{checkReg}}">Check registry</button></div>
+<sc-if value="{{regChecking}}" hint-placeholder-val="{{false}}"><p class="hint" role="status">Checking the NC Secretary of State registry…</p></sc-if>
+<sc-if value="{{regFound}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 10px 0 0; background: #DDF3E4; color: #14532D; border-radius: 12px; padding: 10px 14px; font-weight: 600">✓ Found: COVE AND CO BOAT RENTALS LLC · Status: Current-Active · Name matches. A Lundro admin will confirm.</p></sc-if>
+</div>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{s3}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<nav aria-label="Boat setup sections" style="flex: 1 1 220px; background: #fff; border: 1px solid #DCE5EA; border-radius: 20px; padding: 10px">
+<p style="margin: 6px 10px 8px; font-weight: 700">Add boat <span class="muted" style="font-weight: 500">· {{boatName}}</span></p>
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{subnav}}" as="sn" hint-placeholder-count="9">
+<li><button type="button" onClick="{{sn.go}}" aria-current="{{sn.cur}}" style="width: 100%; display: flex; align-items: center; gap: 10px; min-height: 44px; border: 0; border-radius: 10px; padding: 0 10px; background: {{sn.bg}}; color: #0F2A3D; font-weight: {{sn.weight}}; cursor: pointer; text-align: left"><span aria-hidden="true" style="width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; background: {{sn.dot}}; color: #fff">{{sn.mark}}</span>{{sn.label}}</button></li>
+</sc-for>
+</ul>
+</nav>
+<section class="card" style="flex: 999 1 520px; min-width: 0" aria-labelledby="h3x">
+<p class="muted" style="margin: 0; font-weight: 700; font-size: 14px">Step 3 of 5 · {{subPos}}</p>
+<h1 id="h3x" class="disp" style="margin: 4px 0 18px; font-size: 28px">{{subTitle}}</h1>
+
+<sc-if value="{{b0}}" hint-placeholder-val="{{true}}">
+<div class="g2">
+<div><label for="b-type" class="lbl">Boat type</label><select id="b-type" class="inp" onChange="{{touch}}"><option>Pontoon</option><option>Ski / wake boat</option><option>Center console</option><option>Sailboat</option><option>Jet ski</option></select></div>
+<div><label for="b-make" class="lbl">Make</label><input id="b-make" class="inp" value="Bennington" onChange="{{touch}}"></div>
+<div><label for="b-model" class="lbl">Model</label><input id="b-model" class="inp" value="24 LSR" onChange="{{touch}}"></div>
+<div><label for="b-year" class="lbl">Year</label><input id="b-year" class="inp" inputmode="numeric" value="2022" onChange="{{touch}}"></div>
+<div><label for="b-len" class="lbl">Length (ft)</label><input id="b-len" class="inp" inputmode="numeric" value="24" onChange="{{touch}}"></div>
+<div><label for="b-max" class="lbl">Max passengers</label><input id="b-max" class="inp" inputmode="numeric" value="12" onChange="{{touch}}"><p class="hint">Use the number on the boat's capacity plate.</p></div>
+<div><label for="b-eng" class="lbl">Engine</label><input id="b-eng" class="inp" value="Yamaha 150 hp outboard" onChange="{{touch}}"></div>
+<div><label for="b-hin" class="lbl">Hull ID number (HIN)</label><input id="b-hin" class="inp {{hinCls}}" value="{{f.hin}}" onChange="{{set.hin}}" aria-invalid="{{hinInv}}" aria-describedby="hin-h"><sc-if value="{{hinErr}}" hint-placeholder-val="{{false}}"><p class="errt">A HIN has 12 letters and numbers. You've entered {{hinLen}}.</p></sc-if><p id="hin-h" class="hint">Found on the right side of the transom. Never shown publicly.</p></div>
+</div>
+</sc-if>
+
+<sc-if value="{{b1}}" hint-placeholder-val="{{false}}">
+<sc-if value="{{photoErr}}" hint-placeholder-val="{{false}}"><div role="alert" style="border: 2px solid #B42318; background: #FEF3F2; color: #7A1A12; border-radius: 12px; padding: 12px 16px; font-weight: 600; margin-bottom: 14px">Add at least 5 photos. You have {{photos}}.</div></sc-if>
+<p class="muted" style="margin: 0 0 12px">At least 5 photos. Drag to reorder; the first photo is your cover.</p>
+<ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px">
+<sc-for list="{{photoTiles}}" as="p" hint-placeholder-count="3">
+<li style="position: relative; aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; background: {{p.water}}">
+<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%"><rect width="160" height="120" fill="{{p.sky}}"></rect><path d="M0 60 Q40 48 80 56 T160 52 V74 H0 Z" fill="{{p.hill}}"></path><rect y="72" width="160" height="48" fill="{{p.water}}"></rect><rect x="40" y="86" width="80" height="12" rx="3" fill="#fff"></rect><path d="M50 78 H110 Q106 70 80 70 Q54 70 50 78 Z" fill="#0A6C7A"></path></svg>
+<sc-if value="{{p.cover}}" hint-placeholder-val="{{false}}"><span style="position: absolute; top: 8px; left: 8px; background: #0F2A3D; color: #fff; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 8px">Cover</span></sc-if>
+<button type="button" aria-label="Move photo {{p.n}}" style="position: absolute; bottom: 6px; right: 6px; width: 36px; height: 36px; border-radius: 8px; border: 0; background: rgba(255,255,255,.92); cursor: grab">⋮⋮</button>
+</li>
+</sc-for>
+<li><button type="button" onClick="{{addPhoto}}" style="width: 100%; aspect-ratio: 4 / 3; border: 2px dashed #7B8F9B; border-radius: 12px; background: #fff; cursor: pointer; font-weight: 700; color: #0A6C7A">+ Add photos</button></li>
+</ul>
+<div style="margin-top: 18px"><label for="b-desc" class="lbl">Description</label><textarea id="b-desc" class="inp" onChange="{{touch}}">A roomy tritoon with plush lounge seating, a Bimini top for shade and a swim ladder.</textarea></div>
+</sc-if>
+
+<sc-if value="{{b2}}" hint-placeholder-val="{{false}}">
+<div class="g2">
+<div><label for="l-lake" class="lbl">Lake</label><select id="l-lake" class="inp"><option>Lake Norman</option></select></div>
+<div><label for="l-marina" class="lbl">Marina</label><input id="l-marina" class="inp" value="Harbor Point Marina" onChange="{{touch}}"></div>
+<div style="grid-column: 1 / -1"><label for="l-addr" class="lbl">Pickup address</label><input id="l-addr" class="inp" value="20210 Harbor Point Ln, Cornelius, NC 28031" onChange="{{touch}}"><p class="hint">Renters only see the exact address after they book. We also use it to apply the right county tax (Mecklenburg).</p></div>
+<div style="grid-column: 1 / -1"><label for="l-park" class="lbl">Parking and access notes</label><textarea id="l-park" class="inp" onChange="{{touch}}">Gravel lot by the bait shop, spaces marked "Rental guests". Dock B, slip 14.</textarea></div>
+</div>
+</sc-if>
+
+<sc-if value="{{b3}}" hint-placeholder-val="{{false}}">
+<fieldset><legend class="lbl">Who drives?</legend>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{opModes}}" as="o" hint-placeholder-count="3"><label class="opt" style="border: {{o.border}}; background: {{o.bg}}"><input type="radio" name="op" checked="{{o.checked}}" onChange="{{o.pick}}"><span><strong>{{o.label}}</strong><span class="muted" style="display: block; font-size: 14px">{{o.sub}}</span></span></label></sc-for>
+</div>
+</fieldset>
+<sc-if value="{{offersCaptain}}" hint-placeholder-val="{{true}}">
+<div class="g2" style="margin-top: 16px">
+<div><label for="cap-p" class="lbl">Captain price</label><input id="cap-p" class="inp" value="$50 per hour"></div>
+<div><label for="cap-l" class="lbl">Captain's USCG license number</label><input id="cap-l" class="inp" value="USCG-OUPV 7781203"><p class="hint">Upload the license in Documents.</p></div>
+</div>
+</sc-if>
+<sc-if value="{{allowsSelf}}" hint-placeholder-val="{{true}}">
+<div class="g2" style="margin-top: 16px">
+<div><label for="min-age" class="lbl">Minimum driver age</label><select id="min-age" class="inp"><option>18</option><option>21</option><option selected="selected">25</option></select></div>
+<div style="display: flex; align-items: flex-end"><label class="chk"><input type="checkbox" checked="{{true}}" onChange="{{touch}}">Require NC boater education card (born on or after Jan 1, 1988)</label></div>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{b4}}" hint-placeholder-val="{{false}}">
+<div class="g2">
+<div><label for="p-hh" class="lbl">Half-day length</label><select id="p-hh" class="inp"><option>3 hours</option><option selected="selected">4 hours</option><option>5 hours</option></select></div>
+<div><label for="p-hp" class="lbl">Half-day price</label><input id="p-hp" class="inp" inputmode="numeric" value="{{f.halfPrice}}" onChange="{{set.halfPrice}}"><p class="hint">{{earnHalf}}</p></div>
+<div><label for="p-fh" class="lbl">Full-day length</label><select id="p-fh" class="inp"><option selected="selected">8 hours</option><option>10 hours</option></select></div>
+<div><label for="p-fp" class="lbl">Full-day price</label><input id="p-fp" class="inp" inputmode="numeric" value="{{f.fullPrice}}" onChange="{{set.fullPrice}}"><p class="hint">{{earnFull}}</p></div>
+</div>
+<fieldset style="margin-top: 18px"><legend class="lbl">Available start times</legend>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{startTimes}}" as="t" hint-placeholder-count="5"><button type="button" aria-pressed="{{t.pressed}}" onClick="{{t.toggle}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: {{t.border}}; background: {{t.bg}}; color: {{t.fg}}; font-weight: 700; cursor: pointer">{{t.label}}</button></sc-for>
+</div>
+</fieldset>
+<div class="g2" style="margin-top: 18px">
+<div><label for="p-dep" class="lbl">Security deposit</label><input id="p-dep" class="inp" value="$500"><p class="hint">Held on the renter's card, not charged.</p></div>
+<div><label for="p-fuel" class="lbl">Fuel policy</label><select id="p-fuel" class="inp"><option>Renter pays for fuel used</option><option>Fuel included</option><option>Flat fuel fee</option></select></div>
+</div>
+<p class="muted" style="margin: 16px 0 0; font-size: 14px">Don't add sales tax to your prices. Lundro collects and pays NC sales tax for you.</p>
+</sc-if>
+
+<sc-if value="{{b5}}" hint-placeholder-val="{{false}}">
+<p class="muted" style="margin: 0 0 12px">Switch on extras from your library for this boat. Change the price here to override it for this boat only.</p>
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{libExtras}}" as="x" hint-placeholder-count="6">
+<li style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #EEF2F4; flex-wrap: wrap">
+<label class="chk" style="flex: 1 1 220px"><input type="checkbox" checked="{{x.on}}" onChange="{{x.toggle}}"><span><strong>{{x.name}}</strong><span class="muted" style="display: block; font-size: 13px">{{x.kind}} · default ${{x.price}} {{x.per}}</span></span></label>
+<label style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: #3D5160">Price for this boat<input class="inp" value="${{x.price}}" disabled="{{x.off}}" style="width: 96px; min-height: 44px"></label>
+</li>
+</sc-for>
+</ul>
+<a href="Dash-Extras.dc.html" style="display: inline-block; margin-top: 12px; font-weight: 700; padding: 8px 0">Manage extras library</a>
+</sc-if>
+
+<sc-if value="{{b6}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{docs}}" as="d" hint-placeholder-count="3">
+<div class="upl">
+<span style="flex: 1 1 220px"><strong>{{d.label}}</strong><span class="muted" style="display: block; font-size: 14px">{{d.status}}</span></span>
+<sc-if value="{{d.hasExp}}" hint-placeholder-val="{{false}}"><label style="font-size: 14px; font-weight: 600; color: #3D5160">Expires<input type="date" class="inp" value="{{d.exp}}" style="min-height: 44px; margin-top: 4px"></label></sc-if>
+<button type="button" class="btn btn-g btn-sm" onClick="{{d.upload}}">{{d.cta}}</button>
+</div>
+</sc-for>
+</div>
+<p class="muted" style="margin: 14px 0 0; font-size: 14px">Documents are only seen by Lundro's review team. The name on the registration should match your ID and payout account. We'll email you 30 days before anything expires.</p>
+</sc-if>
+
+<sc-if value="{{b7}}" hint-placeholder-val="{{false}}">
+<div class="g2">
+<div><label for="s-ad" class="lbl">Adult life jackets</label><input id="s-ad" type="number" min="0" class="inp" value="12"></div>
+<div><label for="s-ch" class="lbl">Child life jackets</label><input id="s-ch" type="number" min="0" class="inp" value="4"></div>
+</div>
+<fieldset style="margin-top: 16px"><legend class="lbl">On board</legend>
+<sc-for list="{{safety}}" as="s" hint-placeholder-count="5"><label class="chk"><input type="checkbox" checked="{{s.on}}" onChange="{{s.toggle}}">{{s.label}}</label></sc-for>
+</fieldset>
+<sc-if value="{{safetyMissing}}" hint-placeholder-val="{{false}}"><p class="errt" role="alert">NC requires a throwable device and sound device on this boat. Check them off to continue.</p></sc-if>
+</sc-if>
+
+<sc-if value="{{b8}}" hint-placeholder-val="{{false}}">
+<fieldset><legend class="lbl">Cancellation policy</legend>
+<div class="g2">
+<sc-for list="{{tiers}}" as="t" hint-placeholder-count="3"><label class="opt" style="border: {{t.border}}; background: {{t.bg}}"><input type="radio" name="tier" checked="{{t.checked}}" onChange="{{t.pick}}"><span><strong>{{t.label}}</strong><span class="muted" style="display: block; font-size: 14px">{{t.sub}}</span></span></label></sc-for>
+</div>
+</fieldset>
+<div style="margin-top: 16px"><label for="w-pol" class="lbl">Weather policy</label><select id="w-pol" class="inp"><option>Full refund or reschedule if I cancel for weather</option><option>Reschedule only</option></select></div>
+<fieldset style="margin-top: 16px"><legend class="lbl">House rules</legend>
+<label class="chk"><input type="checkbox" checked="{{true}}">Pets allowed</label>
+<label class="chk"><input type="checkbox">Smoking allowed</label>
+<label class="chk"><input type="checkbox" checked="{{true}}">BYOB allowed (no glass)</label>
+</fieldset>
+<p class="muted" style="margin: 10px 0 0; font-size: 14px">Lundro can't sell alcohol as an extra. You can allow guests to bring their own.</p>
+</sc-if>
+
+<div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 24px; flex-wrap: wrap">
+<button type="button" class="btn btn-g" onClick="{{subBack}}" disabled="{{subFirst}}">Previous section</button>
+<sc-if value="{{subNotLast}}" hint-placeholder-val="{{true}}"><button type="button" class="btn btn-p" onClick="{{subNext}}">Save and continue</button></sc-if>
+<sc-if value="{{subLast}}" hint-placeholder-val="{{false}}"><button type="button" class="btn btn-p" onClick="{{finishBoat}}">Save boat</button></sc-if>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{s4}}" hint-placeholder-val="{{false}}">
+<section class="card" aria-labelledby="h4x">
+<p class="muted" style="margin: 0; font-weight: 700; font-size: 14px">Step 4 of 5</p>
+<h1 id="h4x" class="disp" style="margin: 4px 0 0; font-size: 30px">Get paid</h1>
+<p class="muted" style="margin: 6px 0 0">Lundro pays out through Stripe. You'll add a bank account, tax ID and verify your identity. Takes about 5 minutes.</p>
+<div style="margin-top: 20px; border: 1px solid #DCE5EA; border-radius: 18px; padding: 22px; background: #FAFCFD">
+<sc-if value="{{payPending}}" hint-placeholder-val="{{true}}">
+<p style="margin: 0; font-weight: 700">Stripe Connect</p>
+<p class="muted" style="margin: 4px 0 14px; font-size: 15px">Secure onboarding opens here. Lundro never sees your full bank details.</p>
+<button type="button" class="btn btn-p" onClick="{{connect}}">Set up payouts with Stripe</button>
+</sc-if>
+<sc-if value="{{payConnecting}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 0; font-weight: 600">Connecting to Stripe…</p></sc-if>
+<sc-if value="{{payDone}}" hint-placeholder-val="{{false}}">
+<p role="status" style="margin: 0; font-weight: 700; color: #14532D">✓ Payouts set up</p>
+<p class="muted" style="margin: 4px 0 0; font-size: 15px">Bank account ending 6789 · Identity check in progress (usually a few minutes)</p>
+</sc-if>
+<sc-if value="{{paySkipped}}" hint-placeholder-val="{{false}}">
+<p role="status" style="margin: 0; font-weight: 700; color: #7A5A00">Payouts skipped for now</p>
+<p class="muted" style="margin: 4px 0 12px; font-size: 15px">Your boats stay in Draft until payouts are set up. You can finish this from the dashboard any time.</p>
+<button type="button" class="btn btn-g btn-sm" onClick="{{connect}}">Set up now instead</button>
+</sc-if>
+</div>
+<sc-if value="{{payPending}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{skipPay}}" style="margin-top: 12px; border: 0; background: transparent; font-weight: 700; text-decoration: underline; min-height: 44px; cursor: pointer">Skip for now</button></sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{s5}}" hint-placeholder-val="{{false}}">
+<section class="card" aria-labelledby="h5x">
+<p class="muted" style="margin: 0; font-weight: 700; font-size: 14px">Step 5 of 5</p>
+<h1 id="h5x" class="disp" style="margin: 4px 0 0; font-size: 30px">Review and submit</h1>
+<div style="margin-top: 16px">
+<sc-for list="{{review}}" as="r" hint-placeholder-count="4">
+<div style="display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid #EEF2F4; flex-wrap: wrap">
+<div style="flex: 1 1 300px"><p style="margin: 0; font-weight: 700">{{r.title}}</p><p class="muted" style="margin: 2px 0 0; font-size: 15px">{{r.body}}</p></div>
+<span style="display: flex; gap: 12px; align-items: center"><span style="font-size: 13px; font-weight: 700; border-radius: 999px; padding: 4px 10px; background: {{r.badgeBg}}; color: {{r.badgeFg}}">{{r.badge}}</span><button type="button" onClick="{{r.edit}}" style="border: 0; background: transparent; color: #0A6C7A; font-weight: 700; text-decoration: underline; min-height: 44px; cursor: pointer">Edit</button></span>
+</div>
+</sc-for>
+</div>
+<p class="muted" style="margin: 16px 0 0; font-size: 15px">Submitting sends your boat to Lundro's review team. It goes live once your documents are verified{{payClause}}.</p>
+</section>
+</sc-if>
+
+<div style="display: flex; justify-content: space-between; gap: 12px; margin-top: 20px">
+<sc-if value="{{canBack}}" hint-placeholder-val="{{false}}"><button type="button" class="btn btn-g" onClick="{{back}}">Back</button></sc-if><span></span>
+<sc-if value="{{showNext}}" hint-placeholder-val="{{true}}"><button type="button" class="btn btn-p" onClick="{{next}}" style="min-width: 180px">Continue</button></sc-if>
+<sc-if value="{{s5}}" hint-placeholder-val="{{false}}"><button type="button" class="btn btn-p" onClick="{{submit}}" style="min-width: 200px">Submit for review</button></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{submitted}}" hint-placeholder-val="{{false}}">
+<section class="card" style="max-width: 720px; margin: 24px auto 0; text-align: center" aria-labelledby="done-h">
+<span aria-hidden="true" style="display: inline-grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: #DDF3E4; color: #14532D"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12l5 5 9-10"></path></svg></span>
+<h1 id="done-h" class="disp" role="status" style="margin: 14px 0 0; font-size: 32px">Submitted for review</h1>
+<p class="muted" style="margin: 8px auto 0; max-width: 520px">Your 24' Bennington Pontoon is now <strong style="color: #5C4300">Pending review</strong>. We usually review documents within 1 to 2 business days and email you either way.</p>
+<ul style="list-style: none; padding: 0; margin: 20px auto 0; max-width: 420px; text-align: left">
+<li style="padding: 8px 0">✓ Account created</li>
+<li style="padding: 8px 0">✓ Boat details, photos and pricing saved</li>
+<li style="padding: 8px 0">◷ Ownership and insurance check by Lundro</li>
+<li style="padding: 8px 0">{{payLine}}</li>
+</ul>
+<div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap">
+<a href="Dash-Overview.dc.html" class="btn btn-p">Go to your dashboard</a>
+<button type="button" class="btn btn-g" onClick="{{addAnother}}">Add another boat</button>
+</div>
+</section>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"commissionPct":{"editor":"range","default":15,"min":0,"max":30,"step":1,"unit":"%"},"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { step: 1, max: 1, acct: 'company', f: { name: 'Jordan Hale', email: 'jordan@coveandco.example', phone: '(704) 555-0142', addr: '412 Catawba Ave, Cornelius, NC 28031', hin: 'ETWC1124L122', halfPrice: '350', fullPrice: '600' },
+      saving: false, reg: 'idle', sub: 0, subMax: 0, photos: 3, photoTried: false, op: 'optional', times: { '9:00 AM': true, '1:30 PM': true }, extrasOn: { tube: true, sup: true, mat: true, cooler: true, speaker: true, hour: true, fishing: false },
+      docs: { reg: true, ins: false, cap: false }, safe: { ext: true, throw: false, sound: true, aid: true }, safeTried: false, tier: 'moderate', pay: 'pending', submitted: false };
+  }
+  touch() { this.setState({ saving: true }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ saving: false }), 800); }
+  renderVals() {
+    const s = this.state, f = s.f;
+    const comp = s.acct === 'company';
+    const flow = comp ? [1, 2, 3, 4, 5] : [1, 3, 4, 5];
+    const labels = { 1: 'Account', 2: 'Company', 3: 'Add boat', 4: 'Payouts', 5: 'Review' };
+    const idx = flow.indexOf(s.step);
+    const sel = on => on ? { border: '2px solid #0A6C7A', bg: '#E3F2F4' } : { border: '1px solid #C9D6DD', bg: '#FFFFFF' };
+    const go = n => { this.setState({ step: n, max: Math.max(s.max, n) }); this.touch(); };
+    const stepper = flow.map((n, i) => {
+      const cur = n === s.step, done = n < s.step || (n <= s.max && !cur);
+      return { label: labels[n], mark: done ? '✓' : String(i + 1), cur: cur ? 'step' : 'false', locked: n > s.max,
+        border: cur ? '2px solid #0A6C7A' : '1px solid #DCE5EA', bg: cur ? '#E3F2F4' : '#fff', fg: '#0F2A3D',
+        dotBg: cur ? '#0A6C7A' : (done ? '#14532D' : '#E8EFF2'), dotFg: cur || done ? '#fff' : '#3D5160', go: () => { if (n <= s.max) go(n); } };
+    });
+    const subLabels = ['Details', 'Photos', 'Location', 'Operation', 'Pricing', 'Extras', 'Documents', 'Safety', 'Policies'];
+    const subTitles = ['Boat details', 'Photos and description', 'Where renters pick up', 'Captain and self-drive', 'Pricing and start times', 'Extras for this boat', 'Documents', 'Safety checklist', 'Policies and house rules'];
+    const subnav = subLabels.map((label, i) => ({ label, cur: i === s.sub ? 'step' : 'false', bg: i === s.sub ? '#E3F2F4' : 'transparent', weight: i === s.sub ? 700 : 500,
+      dot: i < s.subMax || (i <= s.subMax && i !== s.sub) ? '#14532D' : (i === s.sub ? '#0A6C7A' : '#9FB1BC'), mark: i < s.subMax ? '✓' : String(i + 1), go: () => this.setState({ sub: i, subMax: Math.max(s.subMax, i) }) }));
+    const hinErr = f.hin.length > 0 && f.hin.replace(/[^A-Za-z0-9]/g, '').length !== 12;
+    const set = {};
+    ['name', 'email', 'phone', 'addr', 'hin', 'halfPrice', 'fullPrice'].forEach(k => { set[k] = e => { this.setState({ f: Object.assign({}, this.state.f, { [k]: e.target.value }) }); this.touch(); }; });
+    const comm = (this.props.commissionPct ?? 15) / 100;
+    const earn = v => { const n = Number(String(v).replace(/[^0-9.]/g, '')); return n ? 'You earn about $' + Math.round(n * (1 - comm)) + ' after Lundro’s ' + Math.round(comm * 100) + '% commission.' : 'Enter a price'; };
+    const subNext = () => {
+      if (s.sub === 0 && hinErr) return;
+      if (s.sub === 1 && s.photos < 5) { this.setState({ photoTried: true }); return; }
+      if (s.sub === 7 && (!s.safe.throw || !s.safe.sound)) { this.setState({ safeTried: true }); return; }
+      const n = s.sub + 1; this.setState({ sub: n, subMax: Math.max(s.subMax, n) }); this.touch();
+    };
+    const photoTiles = Array.from({ length: s.photos }, (_, i) => {
+      const P = [['#CFE8F5', '#5E9478', '#3E8FB0'], ['#FCE3C2', '#6F8065', '#4C8DA8'], ['#E4F1F7', '#6E9D84', '#5BA3C0'], ['#BFE3F4', '#4F8A6C', '#2F7FA3']][i % 4];
+      return { n: i + 1, cover: i === 0, sky: P[0], hill: P[1], water: P[2] };
+    });
+    const opModes = [['required', 'Captain required', 'You always provide a captain'], ['optional', 'Captain optional', 'Renters choose a captain or drive themselves'], ['self', 'Self-drive only', 'No captain offered']]
+      .map(([v, l, sub]) => Object.assign({ label: l, sub, checked: s.op === v, pick: () => { this.setState({ op: v }); this.touch(); } }, sel(s.op === v)));
+    const startTimes = ['8:00 AM', '9:00 AM', '10:00 AM', '1:30 PM', '4:00 PM'].map(t => { const on = !!s.times[t]; return { label: t, pressed: on ? 'true' : 'false', border: on ? '2px solid #0F2A3D' : '1px solid #7B8F9B', bg: on ? '#0F2A3D' : '#fff', fg: on ? '#fff' : '#0F2A3D', toggle: () => { this.setState({ times: Object.assign({}, s.times, { [t]: !on }) }); this.touch(); } }; });
+    const LIB = [['tube', 'Tube with rope', 'Catalog · Water activities', 40, 'per booking'], ['sup', 'Paddleboard', 'Catalog · Water activities', 25, 'each'], ['mat', 'Floating mat', 'Catalog · Water activities', 35, 'per booking'], ['cooler', 'Cooler with ice', 'Catalog · Comfort', 20, 'per booking'], ['speaker', 'Bluetooth speaker', 'Catalog · Comfort', 15, 'per booking'], ['hour', 'Extra hour', 'Catalog · Time', 85, 'per hour'], ['fishing', 'Rods and reels', 'Catalog · Fishing', 30, 'per booking']];
+    const libExtras = LIB.map(([k, name, kind, price, per]) => { const on = !!s.extrasOn[k]; return { name, kind, price, per, on, off: !on, toggle: () => { this.setState({ extrasOn: Object.assign({}, s.extrasOn, { [k]: !on }) }); this.touch(); } }; });
+    const docDef = [['reg', 'Registration or title', false, ''], ['ins', 'Insurance certificate', true, '2028-04-30']].concat(s.op !== 'self' ? [['cap', 'Captain USCG license', true, '2029-02-14']] : []);
+    const docs = docDef.map(([k, label, hasExp, exp]) => { const up = !!s.docs[k]; return { label, hasExp, exp, status: up ? 'Uploaded · ' + label.toLowerCase().replace(/ /g, '_') + '.pdf' : 'Required', cta: up ? 'Replace' : 'Upload', upload: () => { this.setState({ docs: Object.assign({}, s.docs, { [k]: true }) }); this.touch(); } }; });
+    const safety = [['ext', 'Fire extinguisher'], ['throw', 'Throwable flotation device'], ['sound', 'Sound device (horn or whistle)'], ['aid', 'First aid kit']].map(([k, label]) => ({ label, on: !!s.safe[k], toggle: () => { this.setState({ safe: Object.assign({}, s.safe, { [k]: !s.safe[k] }) }); this.touch(); } }));
+    const tiers = [['flexible', 'Flexible', 'Full refund up to 24 hours before'], ['moderate', 'Moderate', 'Full refund up to 5 days before'], ['strict', 'Strict', 'Full refund up to 14 days before']].map(([v, l, sub]) => Object.assign({ label: l, sub, checked: s.tier === v, pick: () => { this.setState({ tier: v }); this.touch(); } }, sel(s.tier === v)));
+    const payDoneish = s.pay === 'done';
+    const badge = (t) => ({ ok: ['Complete', '#DDF3E4', '#14532D'], warn: ['Needs attention', '#FFF1C7', '#5C4300'], skip: ['Skipped', '#FDE2E1', '#8E1B13'] })[t];
+    const rv = (title, body, t, n) => { const b = badge(t); return { title, body, badge: b[0], badgeBg: b[1], badgeFg: b[2], edit: () => go(n) }; };
+    const docsMissing = docs.filter(d => d.cta === 'Upload').length;
+    const review = [rv('Account', f.name + ' · ' + (comp ? 'Company' : 'Individual owner') + ' · ' + f.email, 'ok', 1)]
+      .concat(comp ? [rv('Company profile', 'Cove & Co. Boat Rentals · NC registry match found', s.reg === 'found' ? 'ok' : 'warn', 2)] : [])
+      .concat([rv("24' Bennington Pontoon", s.photos + ' photos · $' + f.halfPrice + ' half day / $' + f.fullPrice + ' full day · ' + (docsMissing ? docsMissing + ' document(s) missing' : 'all documents uploaded'), docsMissing || s.photos < 5 ? 'warn' : 'ok', 3),
+        rv('Payouts', payDoneish ? 'Stripe · bank ending 6789' : 'Not set up. Boats stay in Draft until done.', payDoneish ? 'ok' : 'skip', 4)]);
+    return {
+      saveLabel: s.saving ? 'Saving…' : 'All changes saved', saveColor: s.saving ? '#4A5F6E' : '#14532D', saveIcon: s.saving ? 'M12 4a8 8 0 1 0 8 8' : 'M5 12l5 5 9-10',
+      pct: s.submitted ? 100 : Math.round(((idx < 0 ? 0 : idx) + (s.step === 3 ? s.sub / 9 : 0)) / flow.length * 100),
+      notSubmitted: !s.submitted, submitted: s.submitted, stepper,
+      s1: s.step === 1, s2: s.step === 2, s3: s.step === 3, s4: s.step === 4, s5: s.step === 5,
+      isIndiv: !comp, isComp: comp, indivOpt: sel(!comp), compOpt: sel(comp),
+      pickIndiv: () => { this.setState({ acct: 'individual' }); this.touch(); }, pickComp: () => { this.setState({ acct: 'company' }); this.touch(); },
+      publicName: comp ? 'Renters see your company name, not your own.' : 'Renters will see you as “' + (f.name.split(' ')[0] || '') + ' ' + ((f.name.split(' ')[1] || '')[0] || '') + '.”',
+      f, set, touch: () => this.touch(),
+      checkReg: () => { this.setState({ reg: 'checking' }); setTimeout(() => this.setState({ reg: 'found' }), 1100); },
+      regChecking: s.reg === 'checking', regFound: s.reg === 'found',
+      boatName: "24' Bennington Pontoon", subnav, subPos: 'Section ' + (s.sub + 1) + ' of 9', subTitle: subTitles[s.sub],
+      b0: s.sub === 0, b1: s.sub === 1, b2: s.sub === 2, b3: s.sub === 3, b4: s.sub === 4, b5: s.sub === 5, b6: s.sub === 6, b7: s.sub === 7, b8: s.sub === 8,
+      hinErr, hinCls: hinErr ? 'err' : '', hinInv: hinErr ? 'true' : 'false', hinLen: f.hin.replace(/[^A-Za-z0-9]/g, '').length,
+      photos: s.photos, photoTiles, photoErr: s.photoTried && s.photos < 5, addPhoto: () => { this.setState({ photos: s.photos + 1 }); this.touch(); },
+      opModes, offersCaptain: s.op !== 'self', allowsSelf: s.op !== 'required',
+      earnHalf: earn(f.halfPrice), earnFull: earn(f.fullPrice), startTimes, libExtras, docs, safety,
+      safetyMissing: s.safeTried && (!s.safe.throw || !s.safe.sound), tiers,
+      subFirst: s.sub === 0, subNotLast: s.sub < 8, subLast: s.sub === 8,
+      subBack: () => this.setState({ sub: Math.max(0, s.sub - 1) }), subNext,
+      finishBoat: () => go(4),
+      payPending: s.pay === 'pending', payConnecting: s.pay === 'connecting', payDone: payDoneish, paySkipped: s.pay === 'skipped',
+      connect: () => { this.setState({ pay: 'connecting' }); setTimeout(() => this.setState({ pay: 'done' }), 1200); this.touch(); },
+      skipPay: () => { this.setState({ pay: 'skipped' }); this.touch(); },
+      review, payClause: payDoneish ? '' : ' and your payouts are set up',
+      canBack: idx > 0, showNext: s.step !== 3 && s.step !== 5,
+      back: () => go(flow[idx - 1]), next: () => go(flow[idx + 1]),
+      submit: () => this.setState({ submitted: true }),
+      payLine: payDoneish ? '◷ Identity check by Stripe' : '! Set up payouts so your boat can go live',
+      addAnother: () => this.setState({ submitted: false, step: 3, sub: 0, subMax: 0, photos: 0, photoTried: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

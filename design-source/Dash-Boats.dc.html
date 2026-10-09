@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Owner boats</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F9FA}
+*{box-sizing:border-box}
+a{color:#0A6C7A}a:hover{color:#08525D}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+.disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+.btn-p{background:#0A6C7A;color:#fff}.btn-p:hover{background:#08525D;color:#fff}
+.btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}.btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+.muted{color:#4A5F6E}
+.card{background:#fff;border:1px solid #DCE5EA;border-radius:18px;padding:20px}
+.side{flex:0 0 248px;background:#fff;border-right:1px solid #DCE5EA;padding:16px 12px;display:flex;flex-direction:column;gap:4px}
+.nv{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;text-decoration:none;color:#0F2A3D;font-weight:600}
+.nv:hover{background:#EEF4F7;color:#0F2A3D}
+.nv.on{background:#E3F2F4;color:#0B4F59;font-weight:700}
+.tabbar{display:none}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+@media (max-width:860px){.side{display:none}.tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #DCE5EA;z-index:20}.main{padding-bottom:96px!important}.hide-sm{display:none!important}}
+</style>
+</helmet>
+<div style="min-height: 100%; display: flex; flex-wrap: wrap; background: #F6F9FA; font-family: 'Figtree', system-ui, sans-serif; color: #0F2A3D; font-size: 16px; line-height: 1.5">
+
+<nav class="side" aria-label="Dashboard">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F2A3D; padding: 4px 8px 12px" aria-label="Lundro home"><svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"></circle><circle cx="24" cy="12" r="4" fill="#FFC94A"></circle><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg><span class="disp" style="font-weight: 700; font-size: 22px">Lundro</span></a>
+<div style="display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid #DCE5EA; border-radius: 14px; margin-bottom: 8px"><span aria-hidden="true" class="disp" style="width: 36px; height: 36px; border-radius: 10px; background: #0F2A3D; color: #FFC94A; display: grid; place-items: center; font-weight: 700; font-size: 13px">C&amp;C</span><span style="line-height: 1.2"><strong style="display: block; font-size: 14px">Cove &amp; Co.</strong><span class="muted" style="font-size: 13px">Jordan Hale · Owner</span></span></div>
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="11">
+<a href="{{n.href}}" class="nv {{n.cls}}" aria-current="{{n.cur}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.hasBadge}}" hint-placeholder-val="{{false}}"><span class="badge" style="background: {{n.badgeBg}}; color: {{n.badgeFg}}">{{n.badge}}</span></sc-if></a>
+</sc-for>
+<a href="Main.dc.html" class="nv" style="margin-top: 12px; color: #0A6C7A">View public site ↗</a>
+</nav>
+
+<div class="main" style="flex: 999 1 560px; min-width: 0; padding: 28px 32px 48px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+<div><h1 class="disp" style="margin: 0; font-size: 32px">Boats</h1><p class="muted" style="margin: 2px 0 0">{{summary}}</p></div>
+<a href="OwnerSignup.dc.html" class="btn btn-p">+ Add a boat</a>
+</div>
+
+<sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+<section class="card" style="margin-top: 24px; text-align: center; padding: 48px 24px">
+<h2 class="disp" style="margin: 0; font-size: 26px">No boats yet</h2>
+<p class="muted" style="margin: 8px auto 0; max-width: 440px">Add your first boat. You can save it as a draft and publish once it's verified.</p>
+<a href="OwnerSignup.dc.html" class="btn btn-p" style="margin-top: 18px; min-height: 48px">Add your first boat</a>
+</section>
+</sc-if>
+
+<sc-if value="{{full}}" hint-placeholder-val="{{true}}">
+<div role="group" aria-label="Filter by status" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="6"><button type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" style="min-height: 40px; padding: 0 14px; border-radius: 999px; border: {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-weight: 700; font-size: 14px; cursor: pointer">{{f.label}} · {{f.count}}</button></sc-for>
+</div>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 14px 0 0; background: #0F2A3D; color: #fff; border-radius: 12px; padding: 10px 14px; font-weight: 600">{{toastText}}</p></sc-if>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin-top: 18px">
+<sc-for list="{{boats}}" as="b" hint-placeholder-count="6">
+<article style="background: #fff; border: 1px solid #DCE5EA; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+<div style="position: relative; aspect-ratio: 16 / 9; background: {{b.water}}">
+<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; filter: {{b.filter}}"><rect width="400" height="225" fill="{{b.sky}}"></rect><path d="M0 110 Q60 90 140 104 T400 98 V140 H0 Z" fill="{{b.hill}}"></path><rect y="136" width="400" height="89" fill="{{b.water}}"></rect><rect x="120" y="170" width="160" height="18" rx="4" fill="#fff"></rect><rect x="116" y="188" width="168" height="7" rx="3.5" fill="#B8C4CC"></rect><path d="M150 168 H250 Q244 156 200 156 Q156 156 150 168 Z" fill="#0A6C7A"></path></svg>
+<span class="badge" style="position: absolute; top: 12px; left: 12px; background: {{b.sBg}}; color: {{b.sFg}}; box-shadow: 0 1px 4px rgba(15,42,61,.15)"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{b.sFg}}"></span>{{b.status}}</span>
+</div>
+<div style="padding: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1">
+<h2 class="disp" style="margin: 0; font-size: 19px">{{b.name}}</h2>
+<p class="muted" style="margin: 0; font-size: 14px">{{b.meta}}</p>
+<sc-if value="{{b.hasNote}}" hint-placeholder-val="{{false}}"><p style="margin: 4px 0 0; font-size: 14px; font-weight: 600; color: {{b.noteFg}}; background: {{b.noteBg}}; border-radius: 10px; padding: 8px 10px">{{b.note}}</p></sc-if>
+<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 10px">
+<a href="OwnerSignup.dc.html" class="btn btn-g">Edit</a>
+<sc-if value="{{b.canPause}}" hint-placeholder-val="{{false}}"><button type="button" class="btn btn-g" onClick="{{b.pause}}">Pause</button></sc-if>
+<sc-if value="{{b.canResume}}" hint-placeholder-val="{{false}}"><button type="button" class="btn btn-g" onClick="{{b.resume}}">Resume</button></sc-if>
+<sc-if value="{{b.needsFix}}" hint-placeholder-val="{{false}}"><a href="Dash-Verification.dc.html" class="btn btn-p">{{b.fixLabel}}</a></sc-if>
+<button type="button" class="btn btn-g" onClick="{{b.dup}}">Duplicate</button>
+<sc-if value="{{b.isLive}}" hint-placeholder-val="{{false}}"><a href="Boat.dc.html" class="btn btn-g" aria-label="View public page for {{b.name}}">View</a></sc-if>
+</div>
+</div>
+</article>
+</sc-for>
+</div>
+</sc-if>
+</div>
+
+<nav class="tabbar" aria-label="Dashboard">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<a href="{{t.href}}" aria-current="{{t.cur}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; text-decoration: none; color: {{t.fg}}; font-size: 12px; font-weight: 700"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg>{{t.label}}</a>
+</sc-for>
+<button type="button" onClick="{{toggleMore}}" aria-expanded="{{moreExp}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; border: 0; background: transparent; color: #4A5F6E; font-size: 12px; font-weight: 700; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></svg>More</button>
+</nav>
+<sc-if value="{{more}}" hint-placeholder-val="{{false}}">
+<div style="position: fixed; left: 0; right: 0; bottom: 64px; background: #fff; border-top: 1px solid #DCE5EA; border-radius: 20px 20px 0 0; box-shadow: 0 -8px 24px rgba(15,42,61,.15); padding: 12px; z-index: 21">
+<sc-for list="{{moreItems}}" as="n" hint-placeholder-count="7"><a href="{{n.href}}" class="nv">{{n.label}}</a></sc-for>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"noBoats":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { more: false, filter: 'all', toast: '', boats: [
+      { id: 1, name: "24' Bennington Pontoon", st: 'live', meta: 'Cornelius · $350 half / $600 full · ★ 4.9 (38) · Next trip today', note: '' },
+      { id: 2, name: "22' MasterCraft XT22", st: 'live', meta: 'Mooresville · $525 half / $950 full · ★ 4.8 (21) · Next trip today', note: 'Insurance expires Jul 1 (in 21 days)', warn: true },
+      { id: 3, name: "26' Harris Grand Mariner", st: 'live', meta: 'Cornelius · $575 half / $1,050 full · ★ 4.9 (63) · Next trip Sat', note: '' },
+      { id: 4, name: "24' Tahoe LTZ Pontoon", st: 'pending', meta: 'Cornelius · Submitted Jun 8', note: 'Lundro is checking ownership and insurance. Usually 1 to 2 business days.' },
+      { id: 5, name: "21' Bayliner Element", st: 'info', meta: 'Davidson · Submitted Jun 2', note: "Name on the registration doesn't match your ID. Upload a bill of sale or updated registration.", fix: 'Add info' },
+      { id: 6, name: "20' Sea Ray SPX", st: 'paused', auto: true, meta: 'Cornelius · Paused May 31', note: 'Paused automatically: insurance expired May 31. Upload a new certificate to resume.', fix: 'Upload insurance' },
+      { id: 7, name: 'Sea-Doo Wake Pro 230', st: 'draft', meta: 'Mooresville · Last edited Jun 9', note: 'Draft: add 3 more photos and a registration to submit.' }
+    ] };
+  }
+  shell(cur) {
+    const N = [
+      ['Overview', 'Dash-Overview.dc.html', 'M3 12l9-8 9 8M5 10v10h14V10'],
+      ['Calendar', 'Dash-Calendar.dc.html', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4'],
+      ['Bookings', 'Dash-Bookings.dc.html', 'M5 4h14v16H5zM9 8h6M9 12h6M9 16h4', '3', 'n'],
+      ['Boats', 'Dash-Boats.dc.html', 'M3 15h18l-2 4H5zM6 15V9h9l3 6M10 9V5'],
+      ['Extras', 'Dash-Extras.dc.html', 'M12 3v18M3 12h18M7 7h10v10H7z'],
+      ['Customers', 'Dash-Customers.dc.html', 'M9 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM3 20c.6-3.4 3-5.4 6-5.4s5.4 2 6 5.4M16 5a3 3 0 0 1 0 6M18 15c1.7.7 2.7 2.4 3 5'],
+      ['Messages', 'Dash-Messages.dc.html', 'M4 5h16v11H8l-4 4z', '2', 'n'],
+      ['Earnings', 'Dash-Earnings.dc.html', 'M12 3v18M16 7H10a2.5 2.5 0 0 0 0 5h4a2.5 2.5 0 0 1 0 5H8'],
+      ['Reviews', 'Dash-Reviews.dc.html', 'M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6L3.3 9.3l6.1-.7z'],
+      ['Verification', 'Dash-Verification.dc.html', 'M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6zM9 12l2 2 4-4', '3', 'w'],
+      ['Settings', 'Dash-Settings.dc.html', 'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2']
+    ];
+    const nav = N.map(([label, href, icon, badge, kind]) => ({ label, href, icon, cls: label === cur ? 'on' : '', cur: label === cur ? 'page' : 'false', hasBadge: !!badge, badge: badge || '', badgeBg: kind === 'w' ? '#FDE2E1' : '#0F2A3D', badgeFg: kind === 'w' ? '#8E1B13' : '#fff' }));
+    const top = ['Overview', 'Calendar', 'Bookings', 'Messages'];
+    const tabs = nav.filter(n => top.indexOf(n.label) >= 0).map(n => Object.assign({}, n, { fg: n.label === cur ? '#0A6C7A' : '#4A5F6E' }));
+    const moreItems = nav.filter(n => top.indexOf(n.label) < 0);
+    return { nav, tabs, moreItems, more: this.state.more, moreExp: this.state.more ? 'true' : 'false', toggleMore: () => this.setState({ more: !this.state.more }) };
+  }
+  flash(t) { this.setState({ toast: t }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '' }), 2600); }
+  renderVals() {
+    const s = this.state;
+    const ST = { live: ['Live', '#DDF3E4', '#14532D'], pending: ['Pending review', '#FFF1C7', '#5C4300'], info: ['Additional info required', '#FDE2E1', '#8E1B13'], paused: ['Paused', '#E9E3F5', '#4C2F87'], draft: ['Draft', '#E8EFF2', '#3D5160'] };
+    const PAL = [['#CFE8F5', '#5E9478', '#3E8FB0'], ['#BFE3F4', '#4F8A6C', '#2F7FA3'], ['#FCE3C2', '#6F8065', '#4C8DA8'], ['#E4F1F7', '#6E9D84', '#5BA3C0']];
+    const upd = (id, patch) => this.setState({ boats: this.state.boats.map(b => b.id === id ? Object.assign({}, b, patch) : b) });
+    const list = s.boats.filter(b => s.filter === 'all' || b.st === s.filter);
+    const boats = list.map((b, i) => {
+      const st = ST[b.st], p = PAL[b.id % 4];
+      const manualPaused = b.st === 'paused' && !b.auto;
+      return { name: b.name, meta: b.meta, status: st[0], sBg: st[1], sFg: st[2], sky: p[0], hill: p[1], water: p[2],
+        filter: b.st === 'paused' || b.st === 'draft' ? 'grayscale(0.6)' : 'none',
+        hasNote: !!(b.note || manualPaused), note: manualPaused ? 'Paused by you. Renters can’t book it until you resume.' : b.note,
+        noteBg: b.warn || b.st === 'pending' ? '#FFF8E1' : (b.st === 'info' || b.auto ? '#FEF3F2' : '#F1F6F8'),
+        noteFg: b.warn || b.st === 'pending' ? '#5C4300' : (b.st === 'info' || b.auto ? '#8E1B13' : '#3D5160'),
+        isLive: b.st === 'live', canPause: b.st === 'live', canResume: manualPaused, needsFix: !!b.fix && !manualPaused, fixLabel: b.fix || '',
+        pause: () => { upd(b.id, { st: 'paused', auto: false }); this.flash(b.name + ' is paused. Existing bookings still go ahead.'); },
+        resume: () => { upd(b.id, { st: 'live' }); this.flash(b.name + ' is live again.'); },
+        dup: () => { this.setState({ boats: this.state.boats.concat({ id: Date.now(), name: b.name + ' (copy)', st: 'draft', meta: 'Draft copy · photos and documents not copied', note: 'Add photos, registration and insurance for this boat.' }) }); this.flash('Duplicated as a draft. Pricing, extras and policies were copied.'); } };
+    });
+    const count = k => s.boats.filter(b => k === 'all' || b.st === k).length;
+    const F = [['all', 'All'], ['live', 'Live'], ['pending', 'Pending review'], ['info', 'Needs info'], ['paused', 'Paused'], ['draft', 'Draft']];
+    const filters = F.map(([k, label]) => { const on = s.filter === k; return { label, count: count(k), pressed: on ? 'true' : 'false', border: on ? '2px solid #0F2A3D' : '1px solid #7B8F9B', bg: on ? '#0F2A3D' : '#fff', fg: on ? '#fff' : '#0F2A3D', pick: () => this.setState({ filter: k }) }; });
+    const empty = !!this.props.noBoats;
+    return Object.assign(this.shell('Boats'), {
+      empty, full: !empty, boats, filters, toast: !!s.toast, toastText: s.toast,
+      summary: count('live') + ' live · ' + (s.boats.length - count('live')) + ' not bookable yet'
+    });
+  }
+}
+</script>
+</body>
+</html>

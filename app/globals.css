@@ -1,0 +1,42 @@
+/* Tailwind without its preflight reset, so the design's own element styles are untouched. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+  --color-navy: #0F2A3D;
+  --color-teal: #0A6C7A;
+  --color-teal-dark: #08525D;
+  --color-teal-ink: #0B4F59;
+  --color-teal-light: #E3F2F4;
+  --color-sun: #FFC94A;
+  --color-canvas: #F6F9FA;
+  --color-line: #DCE5EA;
+  --color-hover: #EEF4F7;
+  --color-muted: #4A5F6E;
+  --color-danger-bg: #FDE2E1;
+  --color-danger-ink: #8E1B13;
+  --color-error: #B42318;
+  --font-sans: 'Figtree', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', sans-serif;
+}
+
+@layer base {
+  body{margin:0;background:#F6F9FA}
+  *{box-sizing:border-box}
+  a{color:#0A6C7A}
+  a:hover{color:#08525D}
+  button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+  :focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+  .disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+  .muted{color:#4A5F6E}
+}
+
+/* Shared buttons. Renter pages add a larger size on top (see each page's own CSS). */
+@layer components {
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+  .btn-p{background:#0A6C7A;color:#fff}
+  .btn-p:hover{background:#08525D;color:#fff}
+  .btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}
+  .btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+}

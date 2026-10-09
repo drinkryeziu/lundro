@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Owner messages</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F9FA}
+*{box-sizing:border-box}
+a{color:#0A6C7A}a:hover{color:#08525D}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid #FFC94A;outline-offset:2px}
+.disp{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;border:0;white-space:nowrap}
+.btn-p{background:#0A6C7A;color:#fff}.btn-p:hover{background:#08525D;color:#fff}
+.btn-g{background:#fff;color:#0F2A3D;border:1px solid #7B8F9B}.btn-g:hover{background:#EEF4F7;color:#0F2A3D}
+.muted{color:#4A5F6E}
+.inp{width:100%;min-height:48px;border:1px solid #7B8F9B;border-radius:14px;padding:12px 14px;background:#fff;font-size:16px;color:#0F2A3D;resize:none}
+.side{flex:0 0 248px;background:#fff;border-right:1px solid #DCE5EA;padding:16px 12px;display:flex;flex-direction:column;gap:4px}
+.nv{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;text-decoration:none;color:#0F2A3D;font-weight:600}
+.nv:hover{background:#EEF4F7;color:#0F2A3D}
+.nv.on{background:#E3F2F4;color:#0B4F59;font-weight:700}
+.tabbar{display:none}
+.badge{display:inline-flex;align-items:center;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+@media (max-width:860px){.side{display:none}.tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #DCE5EA;z-index:20}.main{padding-bottom:96px!important}.hide-sm{display:none!important}}
+</style>
+</helmet>
+<div style="min-height: 100%; display: flex; flex-wrap: wrap; background: #F6F9FA; font-family: 'Figtree', system-ui, sans-serif; color: #0F2A3D; font-size: 16px; line-height: 1.5">
+
+<nav class="side" aria-label="Dashboard">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F2A3D; padding: 4px 8px 12px" aria-label="Lundro home"><svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="#0A6C7A"></circle><circle cx="24" cy="12" r="4" fill="#FFC94A"></circle><path d="M7 21c3-3 5-3 8 0s5 3 8 0 5-3 6-1" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg><span class="disp" style="font-weight: 700; font-size: 22px">Lundro</span></a>
+<div style="display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid #DCE5EA; border-radius: 14px; margin-bottom: 8px"><span aria-hidden="true" class="disp" style="width: 36px; height: 36px; border-radius: 10px; background: #0F2A3D; color: #FFC94A; display: grid; place-items: center; font-weight: 700; font-size: 13px">C&amp;C</span><span style="line-height: 1.2"><strong style="display: block; font-size: 14px">Cove &amp; Co.</strong><span class="muted" style="font-size: 13px">Jordan Hale · Owner</span></span></div>
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="11">
+<a href="{{n.href}}" class="nv {{n.cls}}" aria-current="{{n.cur}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.hasBadge}}" hint-placeholder-val="{{false}}"><span class="badge" style="background: {{n.badgeBg}}; color: {{n.badgeFg}}">{{n.badge}}</span></sc-if></a>
+</sc-for>
+<a href="Main.dc.html" class="nv" style="margin-top: 12px; color: #0A6C7A">View public site ↗</a>
+</nav>
+
+<div class="main" style="flex: 999 1 560px; min-width: 0; padding: 28px 32px 48px">
+<h1 class="disp" style="margin: 0; font-size: 32px">Messages</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 0; margin-top: 18px; background: #fff; border: 1px solid #DCE5EA; border-radius: 20px; overflow: hidden; min-height: 640px">
+<section aria-label="Conversations" style="flex: 1 1 300px; min-width: 0; border-right: 1px solid #DCE5EA">
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{threads}}" as="t" hint-placeholder-count="4">
+<li><button type="button" onClick="{{t.pick}}" aria-current="{{t.cur}}" style="width: 100%; display: flex; gap: 12px; text-align: left; border: 0; border-bottom: 1px solid #EEF2F4; background: {{t.bg}}; padding: 14px 16px; cursor: pointer; min-height: 72px">
+<span aria-hidden="true" style="flex: none; width: 44px; height: 44px; border-radius: 50%; background: {{t.av}}; display: grid; place-items: center; font-weight: 700">{{t.init}}</span>
+<span style="flex: 1; min-width: 0">
+<span style="display: flex; justify-content: space-between; gap: 8px"><strong style="font-weight: {{t.weight}}">{{t.name}}</strong><span class="muted" style="font-size: 13px; white-space: nowrap">{{t.time}}</span></span>
+<span class="muted" style="display: block; font-size: 13px">{{t.context}}</span>
+<span style="display: block; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: {{t.prevFg}}; font-weight: {{t.weight}}">{{t.preview}}</span>
+</span>
+<sc-if value="{{t.unread}}" hint-placeholder-val="{{false}}"><span aria-label="Unread" style="flex: none; width: 10px; height: 10px; border-radius: 50%; background: #0A6C7A; margin-top: 6px"></span></sc-if>
+</button></li>
+</sc-for>
+</ul>
+</section>
+
+<section aria-labelledby="th-h" style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column">
+<header style="padding: 14px 18px; border-bottom: 1px solid #DCE5EA; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap">
+<div><h2 id="th-h" style="margin: 0; font-size: 18px">{{cur.name}}</h2><p class="muted" style="margin: 0; font-size: 14px">{{cur.context}}</p></div>
+<a href="Dash-Bookings.dc.html" class="btn btn-g">View booking</a>
+</header>
+<p style="margin: 0; padding: 10px 18px; background: {{cur.noteBg}}; color: {{cur.noteFg}}; font-size: 14px; font-weight: 600">{{cur.note}}</p>
+<div aria-live="polite" style="flex: 1; padding: 18px; display: flex; flex-direction: column; gap: 10px; background: #FAFCFD">
+<sc-for list="{{cur.msgs}}" as="m" hint-placeholder-count="3">
+<div style="align-self: {{m.align}}; max-width: 78%">
+<p style="margin: 0; background: {{m.bg}}; color: {{m.fg}}; border-radius: 16px; padding: 10px 14px; font-size: 15px">{{m.text}}</p>
+<p class="muted" style="margin: 3px 4px 0; font-size: 12px; text-align: {{m.tAlign}}">{{m.meta}}</p>
+</div>
+</sc-for>
+</div>
+<div style="padding: 12px 18px 16px; border-top: 1px solid #DCE5EA">
+<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px">
+<sc-for list="{{quick}}" as="q" hint-placeholder-count="3"><button type="button" onClick="{{q.use}}" style="min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid #C9D6DD; background: #fff; font-size: 14px; cursor: pointer">{{q.label}}</button></sc-for>
+</div>
+<div style="display: flex; gap: 8px; align-items: flex-end">
+<label style="flex: 1"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden">Message {{cur.first}}</span><textarea class="inp" rows="2" placeholder="Write a message…" value="{{draft}}" onChange="{{setDraft}}" onInput="{{setDraft}}"></textarea></label>
+<button type="button" class="btn btn-p" onClick="{{send}}" style="min-height: 52px">Send</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+
+<nav class="tabbar" aria-label="Dashboard">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<a href="{{t.href}}" aria-current="{{t.cur}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; text-decoration: none; color: {{t.fg}}; font-size: 12px; font-weight: 700"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg>{{t.label}}</a>
+</sc-for>
+<button type="button" onClick="{{toggleMore}}" aria-expanded="{{moreExp}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; border: 0; background: transparent; color: #4A5F6E; font-size: 12px; font-weight: 700; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></svg>More</button>
+</nav>
+<sc-if value="{{more}}" hint-placeholder-val="{{false}}">
+<div style="position: fixed; left: 0; right: 0; bottom: 64px; background: #fff; border-top: 1px solid #DCE5EA; border-radius: 20px 20px 0 0; box-shadow: 0 -8px 24px rgba(15,42,61,.15); padding: 12px; z-index: 21">
+<sc-for list="{{moreItems}}" as="n" hint-placeholder-count="7"><a href="{{n.href}}" class="nv">{{n.label}}</a></sc-for>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { more: false, sel: 'hannah', draft: '', read: { hannah: true }, th: {
+      hannah: { name: 'Hannah K.', ctx: "Request · 22' MasterCraft XT22 · Sun, Jun 20", booked: false, av: '#FFE3B3', time: '9:42 AM', msgs: [['r', 'Hi! Is the wakeboard included or an extra? We have 2 beginners in the group.', 'Today 9:40 AM'], ['r', 'Also, can we start at 1:00 instead of 1:30?', 'Today 9:42 AM']] },
+      marcus: { name: 'Marcus L.', ctx: "Request · 26' Harris Grand Mariner · Sat, Jun 19", booked: false, av: '#CDE7EC', time: '8:15 AM', msgs: [['r', 'Planning my dad’s 60th. Can we bring our dog? She’s calm and has her own life jacket.', 'Today 8:15 AM']] },
+      taylor: { name: 'Taylor R.', ctx: "Confirmed · 24' Bennington Pontoon · Sat, Jun 12", booked: true, av: '#D7EDD9', time: 'Yesterday', msgs: [['o', 'Thanks for booking, Taylor! Captain Mike will meet you at dock B at 8:45.', 'Wed 4:10 PM'], ['r', 'Perfect. Is there parking for 3 cars?', 'Wed 6:02 PM'], ['o', 'Yes, the gravel lot has plenty of spaces marked "Rental guests".', 'Wed 6:30 PM']] },
+      alicia: { name: 'Alicia M.', ctx: "On the water now · 24' Bennington Pontoon", booked: true, av: '#E3D7F5', time: '9:05 AM', msgs: [['r', 'We’re at the marina, see Captain Mike now. Thanks!', 'Today 9:05 AM']] }
+    } };
+  }
+  shell(cur) {
+    const N = [
+      ['Overview', 'Dash-Overview.dc.html', 'M3 12l9-8 9 8M5 10v10h14V10'],
+      ['Calendar', 'Dash-Calendar.dc.html', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4'],
+      ['Bookings', 'Dash-Bookings.dc.html', 'M5 4h14v16H5zM9 8h6M9 12h6M9 16h4', '3', 'n'],
+      ['Boats', 'Dash-Boats.dc.html', 'M3 15h18l-2 4H5zM6 15V9h9l3 6M10 9V5'],
+      ['Extras', 'Dash-Extras.dc.html', 'M12 3v18M3 12h18M7 7h10v10H7z'],
+      ['Customers', 'Dash-Customers.dc.html', 'M9 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM3 20c.6-3.4 3-5.4 6-5.4s5.4 2 6 5.4M16 5a3 3 0 0 1 0 6M18 15c1.7.7 2.7 2.4 3 5'],
+      ['Messages', 'Dash-Messages.dc.html', 'M4 5h16v11H8l-4 4z', '2', 'n'],
+      ['Earnings', 'Dash-Earnings.dc.html', 'M12 3v18M16 7H10a2.5 2.5 0 0 0 0 5h4a2.5 2.5 0 0 1 0 5H8'],
+      ['Reviews', 'Dash-Reviews.dc.html', 'M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6L3.3 9.3l6.1-.7z'],
+      ['Verification', 'Dash-Verification.dc.html', 'M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6zM9 12l2 2 4-4', '3', 'w'],
+      ['Settings', 'Dash-Settings.dc.html', 'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2']
+    ];
+    const nav = N.map(([label, href, icon, badge, kind]) => ({ label, href, icon, cls: label === cur ? 'on' : '', cur: label === cur ? 'page' : 'false', hasBadge: !!badge, badge: badge || '', badgeBg: kind === 'w' ? '#FDE2E1' : '#0F2A3D', badgeFg: kind === 'w' ? '#8E1B13' : '#fff' }));
+    const top = ['Overview', 'Calendar', 'Bookings', 'Messages'];
+    const tabs = nav.filter(n => top.indexOf(n.label) >= 0).map(n => Object.assign({}, n, { fg: n.label === cur ? '#0A6C7A' : '#4A5F6E' }));
+    const moreItems = nav.filter(n => top.indexOf(n.label) < 0);
+    return { nav, tabs, moreItems, more: this.state.more, moreExp: this.state.more ? 'true' : 'false', toggleMore: () => this.setState({ more: !this.state.more }) };
+  }
+  renderVals() {
+    const s = this.state;
+    const ids = ['hannah', 'marcus', 'taylor', 'alicia'];
+    const threads = ids.map(id => {
+      const t = s.th[id], last = t.msgs[t.msgs.length - 1], unread = !s.read[id] && last[0] === 'r';
+      return { name: t.name, context: t.ctx, time: t.time, init: t.name[0] + t.name.split(' ')[1][0], av: t.av, preview: (last[0] === 'o' ? 'You: ' : '') + last[1],
+        unread, weight: unread ? 700 : 500, prevFg: unread ? '#0F2A3D' : '#4A5F6E', bg: s.sel === id ? '#E3F2F4' : '#fff', cur: s.sel === id ? 'true' : 'false',
+        pick: () => this.setState({ sel: id, read: Object.assign({}, s.read, { [id]: true }), draft: '' }) };
+    });
+    const t = s.th[s.sel];
+    const cur = { name: t.name, first: t.name.split(' ')[0], context: t.ctx,
+      note: t.booked ? 'Booking confirmed: you and the renter can now see each other’s phone and email.' : 'Phone numbers, emails and links are hidden until the booking is confirmed. Keep payments on Lundro.',
+      noteBg: t.booked ? '#DDF3E4' : '#FFF8E1', noteFg: t.booked ? '#14532D' : '#5C4300',
+      msgs: t.msgs.map(([who, text, meta]) => ({ text, meta: (who === 'o' ? 'You · ' : t.name.split(' ')[0] + ' · ') + meta, align: who === 'o' ? 'flex-end' : 'flex-start', tAlign: who === 'o' ? 'right' : 'left', bg: who === 'o' ? '#0A6C7A' : '#FFFFFF', fg: who === 'o' ? '#FFFFFF' : '#0F2A3D' })) };
+    const Q = t.booked ? ['See you at dock B!', 'Parking is in the gravel lot.', 'Running 10 minutes behind?'] : ['Yes, that works!', 'The wakeboard is a $30 extra.', 'Pets are welcome on this boat.'];
+    const send = () => {
+      let text = s.draft.trim();
+      if (!text) return;
+      let hidden = false;
+      if (!t.booked) { const r = text.replace(/(\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}|[^\s@]+@[^\s@]+\.[^\s@]+/g, '[hidden until booked]'); hidden = r !== text; text = r; }
+      const msgs = t.msgs.concat([['o', text, 'Just now' + (hidden ? ' · contact info hidden' : '')]]);
+      this.setState({ draft: '', th: Object.assign({}, s.th, { [s.sel]: Object.assign({}, t, { msgs, time: 'Now' }) }) });
+    };
+    return Object.assign(this.shell('Messages'), {
+      threads, cur, draft: s.draft, setDraft: e => this.setState({ draft: e.target.value }), send,
+      quick: Q.map(label => ({ label, use: () => this.setState({ draft: label }) }))
+    });
+  }
+}
+</script>
+</body>
+</html>
