@@ -17,7 +17,7 @@ body{margin:0;background:#F4F8F9;color:#0F2A3D}
 </style>
 <div id="renter"></div>
 <div id="owner" hidden></div>
-<div class="sw" role="group" aria-label="Prototype views"><button data-v="renter">Renter site</button><button data-v="ob">Owner signup</button><button data-v="own">Owner dashboard</button><button data-v="adm">Admin</button><button id="acctOut" class="out" hidden></button></div>
+<div class="sw" role="group" aria-label="Prototype views"><button data-v="renter">Renter site</button><button data-v="ob">Owner signup</button><button data-v="own">Owner dashboard</button><button data-v="adm">Admin</button><button data-v="ins">Platform owners</button><button id="acctOut" class="out" hidden></button></div>
 
 <template id="t-renter"><style>
 /* Layout: faithful to the Lundro design PDF. Single light brand look: navy ink, teal actions, sun-yellow accents. */
@@ -391,7 +391,27 @@ tr:last-child td{border-bottom:0}
 .cb{display:flex;gap:10px;align-items:center;font-weight:600;padding-block:6px}
 .cb input{width:20px;height:20px;accent-color:var(--teal)}
 .err{color:var(--red);font-weight:600;font-size:13px;margin:4px 0 0}
-/* toast */
+/* insights */
+.ins-top{background:var(--navy);color:#fff;display:flex;align-items:center;gap:12px;padding:14px 28px;flex-wrap:wrap}
+.ins-top .pill{background:var(--sun);color:var(--navy)}
+.ins-wrap{max-width:1200px;margin:auto;padding:24px 28px 100px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-block:16px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.kpi small{color:var(--muted);display:block;font-weight:600}
+.kpi b{display:block;font:700 36px/1.1 var(--disp);margin-block:6px 4px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--muted)}
+.legend2{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-block:4px 8px}
+.legend2 i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.chartbox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;overflow:hidden}
+.chartbox svg{width:100%;height:auto;display:block}
+.chartbox .tipline{min-height:22px;font-weight:700}
+.chartbox [data-tip]{cursor:pointer}
+.chartbox [data-tip]:hover,.chartbox [data-tip]:focus-visible{opacity:.8;outline:none;stroke:#0F2A3D;stroke-width:2}
+.hbar{display:grid;grid-template-columns:minmax(150px,230px) 1fr 80px;gap:12px;align-items:center;padding-block:8px;border-top:1px solid var(--line)}
+.hbar .tr{background:#EEF4F7;border-radius:6px;height:16px;overflow:hidden}
+.hbar .tr i{display:block;height:100%;border-radius:6px}
+@media (max-width:620px){.hbar{grid-template-columns:1fr 70px}.hbar .tr{grid-column:1/-1;order:3}}
+.lock{max-width:520px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--line);border-radius:22px;padding:34px}
 .toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:12px;font-size:14px;z-index:70;max-width:90vw}
 
 [hidden]{display:none!important}
@@ -404,7 +424,7 @@ tr:last-child td{border-bottom:0}
   var cur='renter';
   function mark(v){document.querySelectorAll('.sw button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.v===v)})}
   window.__onOwnerFlow=function(f){if(cur!=='renter'){cur=f;mark(f)}};
-  window.__setAuth=function(u){var b=document.getElementById('acctOut');if(!u){b.hidden=true;return}b.hidden=false;b.textContent='Log out · '+u.name.split(' ')[0];b.setAttribute('aria-label','Log out '+u.name)};
+  window.__setAuth=function(u){window.__authUser=u;var b=document.getElementById('acctOut');if(!u){b.hidden=true;return}b.hidden=false;b.textContent='Log out · '+u.name.split(' ')[0];b.setAttribute('aria-label','Log out '+u.name)};
   document.getElementById('acctOut').addEventListener('click',function(){if(window.__logout)window.__logout();show('renter')});
   function show(v){
     cur=v;mark(v);
@@ -417,7 +437,7 @@ tr:last-child td{border-bottom:0}
   document.querySelector('.sw').addEventListener('click',function(e){var b=e.target.closest('button');if(b&&b.dataset.v)show(b.dataset.v)});
   [rs,os].forEach(function(sh){sh.addEventListener('click',function(e){
     var t=e.composedPath().filter(function(n){return n.dataset&&n.dataset.xlink})[0];
-    if(t){e.preventDefault();show(t.dataset.xlink)}
+    if(t){e.preventDefault();var xv=t.dataset.xlink;if(xv==='login'){show('renter');if(window.__renterGo)window.__renterGo('login')}else show(xv)}
   })});
   // renter app
   (function($$){
@@ -463,7 +483,7 @@ tr:last-child td{border-bottom:0}
   var EX={tube:'Tube with rope',wake:'Wakeboard',skis:'Water skis',sup:'Paddleboard',mat:'Floating mat',cooler:'Cooler with ice',speaker:'Bluetooth speaker',fishing:'Fishing gear'};
   var X=[['tube','Tube with rope',40,'per booking',2,'gear','1 to 2 riders, tow rope included'],['sup','Paddleboard',25,'each',2,'gear','Inflatable, with paddle'],['mat','Floating mat',35,'per booking',1,'gear','18 ft lily pad for the swim stop'],['cooler','Cooler with ice',20,'per booking',1,'gear','70 qt, filled with ice at pickup'],['speaker','Bluetooth speaker',15,'per booking',1,'gear','Waterproof, extra to the boat stereo'],['hour','Extra hour',85,'per hour',2,'boat','Add time to your trip']];
 
-  var S={lake:'norman',user:null,lerr:'',lemail:'',users:[{name:'Jordan Hale',email:'owner@lundro.test',pw:'lundro-demo-1',role:'own'},{name:'Riley (Trust & Safety)',email:'admin@lundro.test',pw:'lundro-demo-1',role:'adm'}],v:'home',boat:'b1',guests:6,date:'2027-06-12',len:'half',time:'9:00 AM',cap:true,q:{tube:1,cooler:1},step:1,tried:false,
+  var S={lake:'norman',user:null,lerr:'',lemail:'',users:[{name:'Jordan Hale',email:'owner@lundro.test',pw:'lundro-demo-1',role:'own'},{name:'Riley (Trust & Safety)',email:'admin@lundro.test',pw:'lundro-demo-1',role:'adm'},{name:'Alex Founder',email:'founder@lundro.test',pw:'lundro-demo-1',role:'ins'}],v:'home',boat:'b1',guests:6,date:'2027-06-12',len:'half',time:'9:00 AM',cap:true,q:{tube:1,cooler:1},step:1,tried:false,
     f:{name:'',email:'',phone:'',age:false,card:'',pre88:false},org:false,orgType:'nonprofit',terms:false,paid:'',
     sf:{area:'all',types:[],capf:'any',rating:0,tube:false,sort:'rec',view:'list'},sel:'b1',saved:{},faq:'',codeN:'LND-2706-4821',openMap:false};
   var root=$$.getElementById('root');
@@ -631,7 +651,7 @@ tr:last-child td{border-bottom:0}
       +'<label>Password'+(reg?' (8+ characters)':'')+'<input class="inp" id="'+(reg?'rp':'lp')+'" type="password" autocomplete="'+(reg?'new-password':'current-password')+'"></label>'
       +'<button class="btn" type="submit">'+(reg?'Create account':'Log in')+'</button>'
       +(reg?'<div class="or">Already have an account?</div><button type="button" class="btn o" data-go="login" style="margin-top:12px">Log in</button>'
-        :(S.lerr&&S.lnone?'<button type="button" class="btn y" data-go="register" style="margin-top:12px">Create an account</button>':'')+''+(S.lnone?'':'<div class="or">New to Lundro?</div><button type="button" class="btn o" data-go="register" style="margin-top:12px">Create account</button>')+'<button type="button" class="link" data-toast="Password reset email sent (demo)." style="margin-top:14px;display:block;margin-inline:auto">Forgot password?</button><div class="demo"><b>Demo accounts</b> (password <b>lundro-demo-1</b>)<br>owner@lundro.test opens the owner dashboard<br>admin@lundro.test opens the admin queue</div>')
+        :(S.lerr&&S.lnone?'<button type="button" class="btn y" data-go="register" style="margin-top:12px">Create an account</button>':'')+''+(S.lnone?'':'<div class="or">New to Lundro?</div><button type="button" class="btn o" data-go="register" style="margin-top:12px">Create account</button>')+'<button type="button" class="link" data-toast="Password reset email sent (demo)." style="margin-top:14px;display:block;margin-inline:auto">Forgot password?</button><div class="demo"><b>Demo accounts</b> (password <b>lundro-demo-1</b>)<br>owner@lundro.test opens the owner dashboard<br>admin@lundro.test opens the admin queue<br>founder@lundro.test opens the platform overview (owners only)</div>')
       +'</form></div>'+footer();
   }
   // ---------- CONFIRMATION ----------
@@ -666,7 +686,7 @@ tr:last-child td{border-bottom:0}
       if(!u){S.lerr='We couldn\'t find an account with that email.';S.lnone=true;render(true);return}
       if(u.pw!==pw){S.lerr='Incorrect password. Try again or reset it.';S.lnone=false;render(true);return}
       S.lerr='';S.lemail='';S.user=u;window.__setAuth&&window.__setAuth(u);
-      if(u.role==='own'||u.role==='adm'){toast('Welcome back, '+u.name.split(' ')[0]+'.');show(u.role)}
+      if(u.role==='own'||u.role==='adm'||u.role==='ins'){toast('Welcome back, '+u.name.split(' ')[0]+'.');show(u.role)}
       else{toast('Welcome back, '+u.name.split(' ')[0]+'.');S.v='home';render()}
       return}
     if(id==='rform'){
@@ -726,6 +746,7 @@ tr:last-child td{border-bottom:0}
       S.codeN='LND-'+(1000+Math.floor(Math.random()*9000))+'-'+(1000+Math.floor(Math.random()*9000));go('confirm')}
   });
   window.__renterRender=function(){var y=window.scrollY;render();window.scrollTo(0,y)};
+  window.__renterGo=function(v){go(v)};
   window.__logout=function(){S.user=null;window.__setAuth&&window.__setAuth(null);toast('You are logged out.');S.v='home';render()};
   render();
 })(rs);
@@ -746,7 +767,7 @@ tr:last-child td{border-bottom:0}
 
   // ------------- state -------------
   var S={
-    flow:'own',page:'overview',
+    flow:'own',page:'overview',insTab:'Lakes',insLake:'all',
     ob:{step:1,acct:'company',f:{name:'Jordan Hale',email:'jordan@coveandco.example',phone:'(704) 555-0142',addr:'412 Catawba Ave, Cornelius, NC 28031',biz:'Cove & Co. Boat Rentals',legal:'Cove and Co Boat Rentals LLC',sos:'2318804',boat:"24' Tahoe LTZ Pontoon",hin:'TAH41022C727',cap:'12',half:'350',full:'600',photos:3,tier:'moderate',pay:'idle'},safe:{ext:true,throw:false,sound:true,aid:true},times:{'9:00 AM':true,'1:30 PM':true},tried:false,done:false},
     reqs:[
       {id:'r1',name:'Marcus L.',guests:12,boat:"26' Harris Grand Mariner",date:'Sat, Jun 19',d:19,wd:'Sat',len:'Full day',time:'9:00 AM',drive:'Captain',price:1525,hrs:'18 hrs',code:'LND-0619-4800',st:'Request',lines:[['Boat · Full day · 9:00 AM',1050],['Tube with rope',40],['Floating mat',35],['Captain',400]],tax:37.69,cal:'n'},
@@ -974,6 +995,65 @@ tr:last-child td{border-bottom:0}
     if(t==='Notifications')body='<div class="card" style="max-width:640px"><h2>Notifications</h2>'+[['book','New booking requests'],['msg','New messages'],['rev','New reviews'],['exp','Document expiry reminders (30 days before)'],['sms','Text message alerts']].map(function(n){return '<label class="cb" style="border-top:1px solid var(--line);padding-block:12px"><input type="checkbox" data-nf="'+n[0]+'" '+(S.notif[n[0]]?'checked':'')+'> '+n[1]+'</label>'}).join('')+'<button class="btn" style="margin-top:12px" data-savesettings="1">Save changes</button></div>';
     return '<h1 style="margin-bottom:14px">Settings</h1><div class="tabs" role="tablist">'+tabs.map(function(x){return '<button role="tab" data-settab="'+x+'" aria-selected="'+(t===x)+'">'+x+'</button>'}).join('')+'</div>'+body;
   }
+
+  // ------------- PLATFORM OWNERS INSIGHTS -------------
+  var MON=['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'];
+  var LD={
+    norman:{name:'Lake Norman',color:'#0A6C7A',listed:14,active:12,rented:5,gmv:[16000,14000,7600,3400,0,0,0,0,1400,5200,13500,8200],util:[62,58,34,18,0,0,0,0,12,28,55,41]},
+    wylie:{name:'Lake Wylie',color:'#E08A1E',listed:6,active:5,rented:2,gmv:[6200,5400,2800,1200,0,0,0,0,500,2000,5200,3600],util:[48,44,26,14,0,0,0,0,9,22,47,33]}
+  };
+  var TOPB=[["26' Harris Grand Mariner",'norman',12100],["24' Bennington Pontoon",'norman',9800],["22' MasterCraft XT22",'norman',8400],["25' Bennington QX",'norman',7600],["22' Yamaha SX210",'wylie',6900],["23' Sun Tracker Party Barge",'wylie',6300],["21' Malibu Wakesetter",'norman',5200],["24' Barletta Tritoon",'norman',4700],["Hobie Cat 18 sailboat",'wylie',2300]];
+  var REV=0.22, COMM=0.13, FEES=0.09;
+  function nice(m){if(m<=0)return 1;var p=Math.pow(10,Math.floor(Math.log10(m))),n=m/p,k=n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10;return k*p}
+  function lakesSel(){return S.insLake==='all'?['norman','wylie']:[S.insLake]}
+  function sum(a){return a.reduce(function(x,y){return x+y},0)}
+  function axis(W,H,l,t,b,max,fmt){var g='';for(var i=0;i<=4;i++){var v=max/4*i,y=H-b-(H-t-b)*(v/max);g+='<line x1="'+l+'" x2="'+(W-8)+'" y1="'+y+'" y2="'+y+'" stroke="#E3EBEF"/><text x="'+(l-8)+'" y="'+(y+4)+'" font-size="11" text-anchor="end" fill="#4B6272">'+fmt(v)+'</text>'}return g}
+  function stackSvg(series,fmt){
+    var W=760,H=280,l=52,t=10,b=28,n=12,tot=MON.map(function(_,i){return sum(series.map(function(s){return s.vals[i]}))}),max=nice(Math.max.apply(null,tot)),bw=(W-l-8)/n,g=axis(W,H,l,t,b,max,fmt),bars='';
+    MON.forEach(function(m,i){var y=H-b;series.forEach(function(s){var v=s.vals[i];if(!v)return;var h=(H-t-b)*(v/max);y-=h;bars+='<rect x="'+(l+i*bw+bw*0.18)+'" y="'+y+'" width="'+bw*0.64+'" height="'+h+'" rx="2" fill="'+s.color+'" tabindex="0" role="img" aria-label="'+m+' '+s.name+' '+fmt(v)+'" data-tip="'+m+' · '+s.name+': '+fmt(v)+' (total '+fmt(tot[i])+')"/>'});bars+='<text x="'+(l+i*bw+bw/2)+'" y="'+(H-8)+'" font-size="11" text-anchor="middle" fill="#4B6272">'+m+'</text>'});
+    return '<svg viewBox="0 0 '+W+' '+H+'" role="group" aria-label="Monthly chart">'+g+bars+'</svg>';
+  }
+  function lineSvg(series){
+    var W=760,H=280,l=52,t=10,b=28,n=12,max=100,bw=(W-l-8)/n,g=axis(W,H,l,t,b,max,function(v){return Math.round(v)+'%'}),out='';
+    MON.forEach(function(m,i){out+='<text x="'+(l+i*bw+bw/2)+'" y="'+(H-8)+'" font-size="11" text-anchor="middle" fill="#4B6272">'+m+'</text>'});
+    series.forEach(function(s){var pts=s.vals.map(function(v,i){return [l+i*bw+bw/2,H-b-(H-t-b)*(v/max),v,i]});
+      out+='<polyline fill="none" stroke="'+s.color+'" stroke-width="3" stroke-linejoin="round" points="'+pts.map(function(p){return p[0]+','+p[1]}).join(' ')+'"/>';
+      pts.forEach(function(p){out+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5" fill="#fff" stroke="'+s.color+'" stroke-width="3" tabindex="0" role="img" aria-label="'+MON[p[3]]+' '+s.name+' '+p[2]+'%" data-tip="'+MON[p[3]]+' · '+s.name+': '+p[2]+'% of boat-days booked"/>'})});
+    return '<svg viewBox="0 0 '+W+' '+H+'" role="group" aria-label="Utilization by month">'+g+out+'</svg>';
+  }
+  function pInsights(){
+    var u=window.__authUser;
+    if(!u||u.role!=='ins'){
+      return '<div class="ins-top"><span style="display:flex;align-items:center;gap:8px;font:700 24px var(--disp)">'+LOGO+'Lundro</span><span class="pill">Platform owners only</span></div><div class="lock"><div class="av" style="width:56px;height:56px;margin:0 auto 12px;background:#E8EFF2;font-size:26px">🔒</div><h1 style="font-size:30px">This section is for Lundro owners</h1><p class="muted">Boat counts, rentals, revenue and lake performance are visible only to the platform owners. Log in with an owner account to continue.</p><button class="btn" data-xlink="login" style="margin-top:8px">Log in</button><div class="callout c-grey" style="margin-top:18px;text-align:left"><b>Demo account</b> · founder@lundro.test · password lundro-demo-1</div></div>';
+    }
+    var L=lakesSel(),tab=S.insTab;
+    var listed=sum(L.map(function(k){return LD[k].listed})),active=sum(L.map(function(k){return LD[k].active})),rented=sum(L.map(function(k){return LD[k].rented}));
+    var gmv=sum(L.map(function(k){return sum(LD[k].gmv)})),rev=Math.round(gmv*REV),jun=Math.round(sum(L.map(function(k){return LD[k].gmv[11]}))*REV),bookings=Math.round(gmv/520);
+    var kp='<div class="kpis"><div class="kpi"><small>Active boats</small><b>'+active+'</b><span>of '+listed+' listed · '+(listed-active)+' paused or in review</span></div><div class="kpi"><small>Boats rented today</small><b>'+rented+'</b><span>'+Math.round(rented/active*100)+'% of active boats on the water</span></div><div class="kpi"><small>Money earned, season</small><b>'+$(rev).replace('.00','')+'</b><span>Lundro revenue · '+$(jun).replace('.00','')+' in June</span></div><div class="kpi"><small>Booked by renters</small><b>'+$(gmv).replace('.00','')+'</b><span>'+bookings+' bookings, before tax</span></div></div>';
+    var tabs=['Lakes','Earnings','Utilization','Top boats'];
+    var chips=[['all','All lakes'],['norman','Lake Norman'],['wylie','Lake Wylie']].map(function(c){return '<button class="chip" data-inslake="'+c[0]+'" aria-pressed="'+(S.insLake===c[0])+'">'+c[1]+'</button>'}).join('');
+    var body='';
+    if(tab==='Lakes'){
+      var ser=L.map(function(k){return {name:LD[k].name,color:LD[k].color,vals:LD[k].gmv}});
+      body='<div class="chartbox"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2>Bookings value by lake</h2><span class="tipline muted" id="instip" aria-live="polite">Hover or tab to a bar for its value</span></div><div class="legend2">'+ser.map(function(x){return '<span><i style="background:'+x.color+'"></i>'+x.name+'</span>'}).join('')+'</div>'+stackSvg(ser,function(v){return $(Math.round(v)).replace('.00','')})+'<p class="muted" style="font-size:13px;margin:8px 0 0">Jul 2026 – Jun 2027. What renters paid for boats, before tax. No trips Nov–Feb.</p></div>'
+       +'<div class="chartbox tw" style="margin-top:16px"><h2 style="margin-bottom:8px">Lake comparison</h2><table><thead><tr><th>Lake</th><th>Listed</th><th>Active</th><th>Rented today</th><th style="text-align:right">Season bookings value</th><th style="text-align:right">Lundro revenue</th></tr></thead><tbody>'+L.map(function(k){var d=LD[k],g=sum(d.gmv);return '<tr><td><b><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:'+d.color+';margin-right:8px"></i>'+d.name+'</b></td><td>'+d.listed+'</td><td>'+d.active+'</td><td>'+d.rented+'</td><td style="text-align:right">'+$(g)+'</td><td style="text-align:right"><b>'+$(Math.round(g*REV))+'</b></td></tr>'}).join('')+'</tbody></table></div>';
+    }
+    if(tab==='Earnings'){
+      var sc=[{name:'Commission (15% of boat price)',color:'#0A6C7A',vals:MON.map(function(_,i){return Math.round(sum(L.map(function(k){return LD[k].gmv[i]}))*COMM)})},{name:'Service fees (10% paid by renters)',color:'#FFC94A',vals:MON.map(function(_,i){return Math.round(sum(L.map(function(k){return LD[k].gmv[i]}))*FEES)})}];
+      body='<div class="chartbox"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2>Lundro earnings by month</h2><span class="tipline muted" id="instip" aria-live="polite">Hover or tab to a bar for its value</span></div><div class="legend2">'+sc.map(function(x){return '<span><i style="background:'+x.color+'"></i>'+x.name+'</span>'}).join('')+'</div>'+stackSvg(sc,function(v){return $(Math.round(v)).replace('.00','')})+'<p class="muted" style="font-size:13px;margin:8px 0 0">Season earnings '+$(sum(sc[0].vals)+sum(sc[1].vals))+' · commission '+$(sum(sc[0].vals))+' · service fees '+$(sum(sc[1].vals))+'. NC sales tax is collected and remitted, so it is not counted as earnings.</p></div>';
+    }
+    if(tab==='Utilization'){
+      var us=L.map(function(k){return {name:LD[k].name,color:LD[k].color,vals:LD[k].util}});
+      body='<div class="chartbox"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2>Boat utilization</h2><span class="tipline muted" id="instip" aria-live="polite">Hover or tab to a point for its value</span></div><div class="legend2">'+us.map(function(x){return '<span><i style="background:'+x.color+'"></i>'+x.name+'</span>'}).join('')+'</div>'+lineSvg(us)+'<p class="muted" style="font-size:13px;margin:8px 0 0">Share of available boat-days that were booked. Low months show where to run offers or recruit owners.</p></div>';
+    }
+    if(tab==='Top boats'){
+      var tb=TOPB.filter(function(b){return S.insLake==='all'||b[1]===S.insLake}).slice(0,6),mx=Math.max.apply(null,tb.map(function(b){return b[2]}));
+      body='<div class="chartbox"><h2 style="margin-bottom:6px">Top boats by bookings value</h2><p class="muted" style="margin:0 0 8px;font-size:14px">Season to date. Shows which listings carry each lake.</p>'+tb.map(function(b){return '<div class="hbar"><span><b>'+b[0]+'</b><br><span class="muted" style="font-size:13px">'+LD[b[1]].name+'</span></span><span class="tr"><i style="width:'+Math.round(b[2]/mx*100)+'%;background:'+LD[b[1]].color+'"></i></span><b style="text-align:right">'+$(b[2]).replace('.00','')+'</b></div>'}).join('')+'</div>';
+    }
+    return '<div class="ins-top"><span style="display:flex;align-items:center;gap:8px;font:700 24px var(--disp)">'+LOGO+'Lundro</span><span class="pill">Owners only</span><span style="margin-left:auto;font-size:14px">Signed in as '+esc(u.name)+'</span></div>'
+     +'<div class="ins-wrap"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap"><div><h1>Platform overview</h1><p class="muted" style="margin:4px 0 0">How the Lundro marketplace is doing across lakes. Sample data.</p></div><div class="chips" style="margin:0">'+chips+'</div></div>'+kp
+     +'<div class="tabs" role="tablist" aria-label="Chart views">'+tabs.map(function(t){return '<button role="tab" data-instab="'+t+'" aria-selected="'+(tab===t)+'">'+t+(t==='Utilization'||t==='Top boats'?' <span class="cnt">new</span>':'')+'</button>'}).join('')+'</div>'+body+'</div>';
+  }
   var PAGES={overview:pOverview,calendar:pCalendar,bookings:pBookings,boats:pBoats,extras:pExtras,customers:pCustomers,messages:pMessages,earnings:pEarnings,reviews:pReviews,verification:pVerification,settings:pSettings};
 
   // ------------- ONBOARDING -------------
@@ -1027,7 +1107,7 @@ tr:last-child td{border-bottom:0}
   // ------------- render + events -------------
   function render(keep){
     var y=window.scrollY;
-    var html=S.flow==='ob'?pOnboard():S.flow==='adm'?pAdmin():shell(PAGES[S.page]());
+    var html=S.flow==='ob'?pOnboard():S.flow==='adm'?pAdmin():S.flow==='ins'?pInsights():shell(PAGES[S.page]());
     root.innerHTML=html;
     if(window.__onOwnerFlow)window.__onOwnerFlow(S.flow);
     window.scrollTo(0,keep?y:0);
@@ -1056,11 +1136,15 @@ tr:last-child td{border-bottom:0}
     else if(d.safe){S.ob.safe[d.safe]=t.checked;render(true)}
     else if(d.achk){S.aChk[d.achk]=t.checked;render(true)}
   });
+  function showTip(e){var b=e.target.closest&&e.target.closest('[data-tip]');if(b){var el=$$.getElementById('instip');if(el)el.textContent=b.dataset.tip}}
+  root.addEventListener('mouseover',showTip);root.addEventListener('focusin',showTip);
   root.addEventListener('mouseover',function(e){var b=e.target.closest('[data-bar]');if(b){var p=b.dataset.bar.split('|');S.barTip=p[0]+': '+$(+p[1]);var el=root.querySelector('[aria-live="polite"]');if(el)el.textContent=S.barTip}});
   root.addEventListener('focusin',function(e){var b=e.target.closest('[data-bar]');if(b){var p=b.dataset.bar.split('|');S.barTip=p[0]+': '+$(+p[1]);var el=root.querySelector('[aria-live="polite"]');if(el)el.textContent=S.barTip}});
   root.addEventListener('click',function(e){
-    var t=e.target.closest('[data-flow],[data-page],[data-accept],[data-decline],[data-msgto],[data-ev],[data-block],[data-doblock],[data-cm],[data-bktab],[data-bk],[data-addboat],[data-boatf],[data-pause],[data-dup],[data-exsel],[data-addex],[data-saveex],[data-cust],[data-thr],[data-quick],[data-send],[data-bar],[data-rvtab],[data-reply],[data-postreply],[data-ver],[data-settab],[data-savesettings],[data-toast],[data-acct],[data-obnext],[data-obback],[data-obsubmit],[data-addphoto],[data-time],[data-tier],[data-pay],[data-atab],[data-asel],[data-aact],[data-tax],[data-exp]');
+    var t=e.target.closest('[data-instab],[data-inslake],[data-flow],[data-page],[data-accept],[data-decline],[data-msgto],[data-ev],[data-block],[data-doblock],[data-cm],[data-bktab],[data-bk],[data-addboat],[data-boatf],[data-pause],[data-dup],[data-exsel],[data-addex],[data-saveex],[data-cust],[data-thr],[data-quick],[data-send],[data-bar],[data-rvtab],[data-reply],[data-postreply],[data-ver],[data-settab],[data-savesettings],[data-toast],[data-acct],[data-obnext],[data-obback],[data-obsubmit],[data-addphoto],[data-time],[data-tier],[data-pay],[data-atab],[data-asel],[data-aact],[data-tax],[data-exp]');
     if(!t)return;var d=t.dataset;
+    if(d.instab){S.insTab=d.instab;render(true);return}
+    if(d.inslake){S.insLake=d.inslake;render(true);return}
     if(d.flow){setFlow(d.flow);return}
     if(d.accept){accept(d.accept);return}
     if(d.decline){decline(d.decline);return}
