@@ -1,0 +1,340 @@
+// Lundro database schema (PostgreSQL). Money is stored in integer cents.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  RENTER
+  OWNER
+  ADMIN
+}
+
+enum OwnerType {
+  INDIVIDUAL
+  COMPANY
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum DocumentType {
+  GOVERNMENT_ID
+  REGISTRATION
+  INSURANCE
+  CAPTAIN_LICENSE
+  BUSINESS_LICENSE
+}
+
+enum BoatType {
+  PONTOON
+  BOWRIDER
+  DECK_BOAT
+  WAKE_BOAT
+  FISHING
+  YACHT
+  KAYAK_PADDLE
+}
+
+enum BoatStatus {
+  DRAFT
+  PENDING_REVIEW
+  ACTIVE
+  PAUSED
+}
+
+enum CancellationTier {
+  FLEXIBLE
+  MODERATE
+  STRICT
+}
+
+enum RentalLength {
+  HALF_DAY
+  FULL_DAY
+}
+
+enum ExtraCategory {
+  GEAR
+  BOAT
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  DECLINED
+}
+
+enum PaymentStatus {
+  REQUIRES_PAYMENT
+  AUTHORIZED
+  PAID
+  REFUNDED
+  PARTIALLY_REFUNDED
+  FAILED
+}
+
+enum PayoutStatus {
+  PENDING
+  IN_TRANSIT
+  PAID
+  FAILED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String?
+  name         String
+  phone        String?
+  role         Role     @default(RENTER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  owner         Owner?
+  bookings      Booking[]       @relation("RenterBookings")
+  reviews       Review[]
+  sentMessages  Message[]
+  conversations ConversationParticipant[]
+}
+
+model Lake {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  state     String   @default("NC")
+  county    String?
+  boats     Boat[]
+}
+
+model Owner {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          OwnerType @default(INDIVIDUAL)
+  companyName   String?
+  address       String?
+  serviceFeePct Int       @default(10)
+  payoutAccountRef String?  // e.g. Stripe Connect account id
+  verification  VerificationStatus @default(PENDING)
+  createdAt     DateTime  @default(now())
+
+  boats     Boat[]
+  extras    Extra[]
+  documents Document[]
+  payouts   Payout[]
+}
+
+model Document {
+  id        String       @id @default(cuid())
+  ownerId   String
+  owner     Owner        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  boatId    String?
+  boat      Boat?        @relation(fields: [boatId], references: [id], onDelete: Cascade)
+  type      DocumentType
+  fileUrl   String
+  expiresAt DateTime?
+  status    VerificationStatus @default(PENDING)
+  reviewNote String?
+  createdAt DateTime     @default(now())
+
+  @@index([ownerId])
+}
+
+model Boat {
+  id           String     @id @default(cuid())
+  ownerId      String
+  owner        Owner      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  lakeId       String
+  lake         Lake       @relation(fields: [lakeId], references: [id])
+  name         String
+  type         BoatType
+  year         Int?
+  make         String?
+  model        String?
+  capacity     Int
+  description  String?
+  halfDayCents Int
+  fullDayCents Int
+  depositCents Int        @default(50000)
+  captainAvailable Boolean @default(false)
+  selfDrive    Boolean    @default(true)
+  startTimes   String[]
+  safetyGear   String[]
+  amenities    String[]
+  cancellation CancellationTier @default(MODERATE)
+  status       BoatStatus @default(DRAFT)
+  createdAt    DateTime   @default(now())
+
+  photos    BoatPhoto[]
+  extras    BoatExtra[]
+  bookings  Booking[]
+  blocks    CalendarBlock[]
+  reviews   Review[]
+  documents Document[]
+
+  @@index([lakeId, status])
+  @@index([ownerId])
+}
+
+model BoatPhoto {
+  id       String @id @default(cuid())
+  boatId   String
+  boat     Boat   @relation(fields: [boatId], references: [id], onDelete: Cascade)
+  url      String
+  position Int    @default(0)
+}
+
+model Extra {
+  id         String        @id @default(cuid())
+  ownerId    String
+  owner      Owner         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name       String
+  category   ExtraCategory @default(GEAR)
+  priceCents Int
+  active     Boolean       @default(true)
+
+  boats       BoatExtra[]
+  bookingLines BookingExtra[]
+}
+
+model BoatExtra {
+  boatId  String
+  extraId String
+  boat    Boat   @relation(fields: [boatId], references: [id], onDelete: Cascade)
+  extra   Extra  @relation(fields: [extraId], references: [id], onDelete: Cascade)
+
+  @@id([boatId, extraId])
+}
+
+model CalendarBlock {
+  id     String   @id @default(cuid())
+  boatId String
+  boat   Boat     @relation(fields: [boatId], references: [id], onDelete: Cascade)
+  date   DateTime @db.Date
+  reason String?
+
+  @@unique([boatId, date])
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  code        String        @unique // human-readable confirmation code
+  boatId      String
+  boat        Boat          @relation(fields: [boatId], references: [id])
+  renterId    String
+  renter      User          @relation("RenterBookings", fields: [renterId], references: [id])
+  date        DateTime      @db.Date
+  length      RentalLength
+  startTime   String
+  guests      Int
+  captainHours Int          @default(0)
+  taxExempt   Boolean       @default(false)
+  status      BookingStatus @default(PENDING)
+
+  boatCents       Int
+  extrasCents     Int @default(0)
+  captainCents    Int @default(0)
+  serviceFeeCents Int
+  taxStateCents   Int @default(0)
+  taxCountyCents  Int @default(0)
+  taxTransitCents Int @default(0)
+  totalCents      Int
+  depositCents    Int @default(0)
+
+  paymentStatus PaymentStatus @default(REQUIRES_PAYMENT)
+  paymentRef    String?       // e.g. Stripe PaymentIntent id
+  cancelledAt   DateTime?
+  createdAt     DateTime      @default(now())
+
+  extras  BookingExtra[]
+  review  Review?
+  payout  Payout?        @relation(fields: [payoutId], references: [id])
+  payoutId String?
+  conversation Conversation?
+
+  @@index([boatId, date])
+  @@index([renterId])
+}
+
+model BookingExtra {
+  id         String  @id @default(cuid())
+  bookingId  String
+  booking    Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  extraId    String?
+  extra      Extra?  @relation(fields: [extraId], references: [id], onDelete: SetNull)
+  name       String
+  category   ExtraCategory
+  priceCents Int
+  qty        Int @default(1)
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  boatId    String
+  boat      Boat     @relation(fields: [boatId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  rating    Int
+  body      String?
+  ownerReply String?
+  createdAt DateTime @default(now())
+
+  @@index([boatId])
+}
+
+model Conversation {
+  id        String   @id @default(cuid())
+  bookingId String?  @unique
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+
+  participants ConversationParticipant[]
+  messages     Message[]
+}
+
+model ConversationParticipant {
+  conversationId String
+  userId         String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastReadAt     DateTime?
+
+  @@id([conversationId, userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation(fields: [senderId], references: [id])
+  body           String
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+model Payout {
+  id          String       @id @default(cuid())
+  ownerId     String
+  owner       Owner        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  amountCents Int
+  status      PayoutStatus @default(PENDING)
+  externalRef String?
+  paidAt      DateTime?
+  createdAt   DateTime     @default(now())
+
+  bookings Booking[]
+}

@@ -9,6 +9,8 @@ Boat rental marketplace for NC lakes, starting with Lake Norman. 19 screens: ren
 
 See also: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md), [CONTRIBUTING.md](CONTRIBUTING.md).
 
+Database: see [docs/DATABASE.md](docs/DATABASE.md) (Postgres + Prisma).
+
 ## Routes
 `/` home, `/lake-norman`, `/search`, `/boat`, `/checkout`, `/confirmation`, `/owner/signup`,
 `/owner` (+ calendar, bookings, boats, extras, customers, messages, earnings, reviews,
